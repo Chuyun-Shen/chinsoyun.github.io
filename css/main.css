@@ -11,7 +11,7 @@
   --table-row-odd-bg-color: #f9f9f9;
   --table-row-hover-bg-color: #f5f5f5;
   --menu-item-bg-color: #f5f5f5;
-  --btn-default-bg: #2d4c35;
+  --btn-default-bg: #87daff;
   --btn-default-color: #fff;
   --btn-default-border-color: #222;
   --btn-default-hover-bg: #fff;
@@ -167,7 +167,7 @@ template {
   display: none;
 }
 ::selection {
-  background: #2d4c35;
+  background: #87daff;
   color: #eee;
 }
 html,
@@ -1169,7 +1169,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #8bf7ac;
+  background: #ff7598;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -1412,7 +1412,7 @@ pre .javascript .function {
   width: 100%;
 }
 .with-love {
-  color: #ff0000;
+  color: #2d4c35;
   display: inline-block;
   margin: 0 5px;
 }
