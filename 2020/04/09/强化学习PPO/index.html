@@ -17,35 +17,35 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="强化学习Policy Gradientbasic每一个eposide记录为$\tau$     $p_\theta(\tau)$是按策略参数为$\theta$得到这样一个trajectory的概率   要提高这个期望，使用梯度上升，对$\theta$求梯度使用上式中的中间这个求和形式，使用技巧$$\bigtriangledown f(x) &#x3D; f(x)\bigtriangledown \log{f">
+  <meta name="description" content="Policy Gradientbasic每一个eposide记录为$\tau$">
 <meta property="og:type" content="article">
 <meta property="og:title" content="强化学习PPO">
 <meta property="og:url" content="http://yoursite.com/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/index.html">
 <meta property="og:site_name" content="云似乎在学习">
-<meta property="og:description" content="强化学习Policy Gradientbasic每一个eposide记录为$\tau$     $p_\theta(\tau)$是按策略参数为$\theta$得到这样一个trajectory的概率   要提高这个期望，使用梯度上升，对$\theta$求梯度使用上式中的中间这个求和形式，使用技巧$$\bigtriangledown f(x) &#x3D; f(x)\bigtriangledown \log{f">
+<meta property="og:description" content="Policy Gradientbasic每一个eposide记录为$\tau$">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://yoursite.com/4155986-0da7e5f276ec5aca.webp">
-<meta property="og:image" content="http://yoursite.com/1583120692790.png">
-<meta property="og:image" content="http://yoursite.com/1583120878285.png">
-<meta property="og:image" content="http://yoursite.com/1583136617036.png">
-<meta property="og:image" content="http://yoursite.com/1583137118284.png">
-<meta property="og:image" content="http://yoursite.com/1583137342234.png">
-<meta property="og:image" content="http://yoursite.com/1583137476846.png">
-<meta property="og:image" content="http://yoursite.com/1583151524298.png">
-<meta property="og:image" content="http://yoursite.com/1583137724390.png">
-<meta property="og:image" content="http://yoursite.com/1583151733566.png">
-<meta property="og:image" content="http://yoursite.com/1583151778726.png">
-<meta property="og:image" content="http://yoursite.com/1583152327757.png">
-<meta property="og:image" content="http://yoursite.com/1583206637985.png">
-<meta property="og:image" content="http://yoursite.com/1583284441674.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/4155986-0da7e5f276ec5aca.webp">
+<meta property="og:image" content="http://yoursite.com/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583120692790.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583120878285.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583136617036.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583137118284.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583137342234.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583137476846.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583151524298.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583137724390.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583151733566.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583151778726.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583152327757.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583206637985.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583284441674.png">
 <meta property="article:published_time" content="2020-04-09T04:20:16.700Z">
-<meta property="article:modified_time" content="2020-04-09T04:21:16.555Z">
+<meta property="article:modified_time" content="2020-04-09T07:09:00.958Z">
 <meta property="article:author" content="Chinsoyun">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/4155986-0da7e5f276ec5aca.webp">
+<meta name="twitter:image" content="http://yoursite.com/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/4155986-0da7e5f276ec5aca.webp">
 
 <link rel="canonical" href="http://yoursite.com/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/">
 
@@ -189,7 +189,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2020-04-09 12:20:16 / Modified: 12:21:16" itemprop="dateCreated datePublished" datetime="2020-04-09T12:20:16+08:00">2020-04-09</time>
+              <time title="Created: 2020-04-09 12:20:16 / Modified: 15:09:00" itemprop="dateCreated datePublished" datetime="2020-04-09T12:20:16+08:00">2020-04-09</time>
             </span>
 
           
@@ -203,43 +203,45 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="强化学习"><a href="#强化学习" class="headerlink" title="强化学习"></a>强化学习</h1><h2 id="Policy-Gradient"><a href="#Policy-Gradient" class="headerlink" title="Policy Gradient"></a>Policy Gradient</h2><h3 id="basic"><a href="#basic" class="headerlink" title="basic"></a>basic</h3><p>每一个eposide记录为$\tau$</p>
-<img src="/4155986-0da7e5f276ec5aca.webp" style="zoom:80%;" />
+        <h2 id="Policy-Gradient"><a href="#Policy-Gradient" class="headerlink" title="Policy Gradient"></a>Policy Gradient</h2><h3 id="basic"><a href="#basic" class="headerlink" title="basic"></a>basic</h3><p>每一个eposide记录为$\tau$</p>
+<img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/4155986-0da7e5f276ec5aca.webp" style="zoom:80%;">
 
-<img src="/1583120692790.png" alt="1583120692790" style="zoom: 33%;" />
+<img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583120692790.png" alt="1583120692790" style="zoom: 33%;">
+
+ <a id="more"></a> 
 
 <p>$p_\theta(\tau)$是按策略参数为$\theta$得到这样一个trajectory的概率</p>
-<img src="/1583120878285.png" alt="1583120878285" style="zoom: 33%;" />
+<img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583120878285.png" alt="1583120878285" style="zoom: 33%;">
 
 <p>要提高这个期望，使用梯度上升，对$\theta$求梯度使用上式中的中间这个求和形式，使用技巧<br>$$<br>\bigtriangledown f(x) = f(x)\bigtriangledown \log{f(x)}<br>$$<br>这样可以转化为概率采样的形式，<br>$$<br>\begin{aligned}<br>\bigtriangledown\overline{R_\theta} &amp; =\bigtriangledown\sum_{\tau}{R(\tau)p_\theta(\tau)}<br>\&amp; = \sum_\tau{R(\tau)p_\theta(\tau)\bigtriangledown \log{p_\theta(\tau)}}<br>\&amp; = E_{\tau\sim p_\theta}(R(\tau)\bigtriangledown{\log{p_\theta(\tau)}})<br>\&amp; \approx \frac{1}{N}\sum_{n=1}^N{R(\tau^n)\bigtriangledown{\log{p_\theta(\tau^n)}}}<br>\&amp; = \frac{1}{N}\sum_{n=1}^{N}\sum_{t=1}^{T_n}R(\tau^n)\bigtriangledown{\log{p_\theta (a_t^n|s_t^n)}}<br>\end{aligned}<br>$$<br>最后一行中因为我们的梯度不关心$p(s_{t+1}|s_t,a_t)$所以直接忽略掉，$R(\tau^n)$应该放在积分号中间也可以。</p>
 <p>我们可以看到这个梯度与$\theta$有关，所以每次更新梯度，都需要重新采样N次，也就是需要与环境交互，跑一个$\tau$出来，然后更新梯度，然后就需要重新再交互，这相当于是on-policy，换成off-policy就是PPO。</p>
 <p>进行ppo之前先有两个tips。</p>
 <h4 id="tip-1-add-a-base-line"><a href="#tip-1-add-a-base-line" class="headerlink" title="tip 1: add a base line"></a>tip 1: add a base line</h4><p>PG方法在更新策略时，基本思想就是增加reward大的动作出现的概率，减小reward小的策略出现的概率。假设现在有一种情况，我们的reward在无论何时都是正的，对于没有采样到的动作，它的reward是0。因此，如果一个比较好的动作没有被采样到，而采样到的不好的动作得到了一个比较小的正reward，那么没有被采样到的好动作的出现概率会越来越小，这显然是不合适的，因此我们需要增加一个奖励的基线，让reward有正有负。 增加的基线是所获得奖励的平均值b。</p>
-<img src="/1583136617036.png" alt="1583136617036" style="zoom:33%;" />
+<img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583136617036.png" alt="1583136617036" style="zoom:33%;">
 
 <h4 id="tip-2-Assign-Suitable-Credit"><a href="#tip-2-Assign-Suitable-Credit" class="headerlink" title="tip 2: Assign Suitable Credit"></a>tip 2: Assign Suitable Credit</h4><p>当前动作之后获得的奖励才重要</p>
-<img src="/1583137118284.png" alt="1583137118284" style="zoom:33%;" />
+<img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583137118284.png" alt="1583137118284" style="zoom:33%;">
 
 <p>添加一个discount，前面那个系数可以用Advantage Function表示：$A^\theta(s_t,a_t)$</p>
 <p>这个相当于在时间t之后得到的<em>价值总和</em>（忘了专业名词叫啥了）</p>
-<img src="/1583137342234.png" alt="1583137342234" style="zoom:33%;" />
+<img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583137342234.png" alt="1583137342234" style="zoom:33%;">
 
 <h3 id="Proximal-Policy-Optimization"><a href="#Proximal-Policy-Optimization" class="headerlink" title="Proximal Policy Optimization"></a>Proximal Policy Optimization</h3><p>采用重要性采样</p>
-<img src="/1583137476846.png" alt="1583137476846" style="zoom:33%;" />
+<img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583137476846.png" alt="1583137476846" style="zoom:33%;">
 
-<p>可以从p的分布采样，换到从q的分布采样，需要注意，p和q的分布差异不能太大，因为虽然上式的均值相同，但是方差不同，还是会有影响。<br>$$<br>\bigtriangledown\overline{R_\theta}= \frac{1}{N}\sum_{n=1}^{N}\sum_{t=1}^{T_n}R(\tau^n)\bigtriangledown{\log{p_\theta (a_t^n|s_t^n)}}<br>$$<br><img src="/1583151524298.png" alt="1583151524298" style="zoom:33%;" /><img src="/1583137724390.png" alt="1583137724390" style="zoom:33%;" /></p>
+<p>可以从p的分布采样，换到从q的分布采样，需要注意，p和q的分布差异不能太大，因为虽然上式的均值相同，但是方差不同，还是会有影响。<br>$$<br>\bigtriangledown\overline{R_\theta}= \frac{1}{N}\sum_{n=1}^{N}\sum_{t=1}^{T_n}R(\tau^n)\bigtriangledown{\log{p_\theta (a_t^n|s_t^n)}}<br>$$<br><img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583151524298.png" alt="1583151524298" style="zoom:33%;"><img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583137724390.png" alt="1583137724390" style="zoom:33%;"></p>
 <p>这里为什么是从$\pi_\theta$中sample出$(s_t,a_t)$怪不清楚的，现在的理解是</p>
 <p>我们需要控制$\theta$和$\theta’$相似，使用KL divergence，这里肯定比较的是$p_\theta(\bullet|s)$和$p_{\theta’}(\bullet|s)$的距离</p>
-<img src="/1583151733566.png" alt="1583151733566" style="zoom:33%;" />
+<img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583151733566.png" alt="1583151733566" style="zoom:33%;">
 
-<img src="/1583151778726.png" alt="1583151778726" style="zoom:33%;" />
+<img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583151778726.png" alt="1583151778726" style="zoom:33%;">
 
 <p>算法流程：</p>
 <ul>
 <li>Initial policy parameters $\theta^0$</li>
 <li>In each iteration <ul>
 <li>Using $\theta^k$ to interact with the environment to collect $s_t,a_t$  and compute advantage $A^{\theta^k}(s_t,a_t)$</li>
-<li>Find $\theta$ optimizeing $J^{\theta^k}(\theta)-\beta KL(\theta,\theta^k)$ <img src="/1583152327757.png" alt="1583152327757" style="zoom: 50%;" /></li>
+<li>Find $\theta$ optimizeing $J^{\theta^k}(\theta)-\beta KL(\theta,\theta^k)$ <img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583152327757.png" alt="1583152327757" style="zoom: 50%;"></li>
 </ul>
 </li>
 </ul>
@@ -256,14 +258,14 @@
 <p>在算kl divergence的时候，把所有sample到的$s_t$都算下两个model的输出的区别，这个好像还比较麻烦，具体怎么处理还不清楚</p>
 <h4 id="TRPO"><a href="#TRPO" class="headerlink" title="TRPO"></a>TRPO</h4><p>简单写下PPO的前身，更麻烦的处理方式，TRPO讲KL divergence项作为一个constrain，不在optimize项里面。</p>
 <h4 id="PPO2"><a href="#PPO2" class="headerlink" title="PPO2"></a>PPO2</h4><p>PPO2 提出了不用计算KL Divergence的方法</p>
-<img src="/1583206637985.png" alt="1583206637985" style="zoom:67%;" />
+<img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583206637985.png" alt="1583206637985" style="zoom:67%;">
 
 
 
 <p>clip的意思是如果$p_\theta$和$p_{\theta’}$ 的比值如果小于$1-\varepsilon$则等于$1-\varepsilon$。</p>
 <p>图中横轴是clip里的第一项纵轴是输出结果。</p>
 <p>具体算法流程：</p>
-<p><img src="/1583284441674.png" alt="1583284441674"></p>
+<p><img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583284441674.png" alt="1583284441674"></p>
 <p>可以看到在训练过程中，是需要再学一个value function去估测advantage的。</p>
 
     </div>
@@ -278,13 +280,6 @@
 
 
         
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2020/04/09/hello-world/" rel="prev" title="Hello World">
-      <i class="fa fa-chevron-left"></i> Hello World
-    </a></div>
-      <div class="post-nav-item"></div>
-    </div>
       </footer>
     
   </article>
@@ -342,7 +337,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#强化学习"><span class="nav-number">1.</span> <span class="nav-text">强化学习</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Policy-Gradient"><span class="nav-number">1.1.</span> <span class="nav-text">Policy Gradient</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#basic"><span class="nav-number">1.1.1.</span> <span class="nav-text">basic</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#tip-1-add-a-base-line"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">tip 1: add a base line</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tip-2-Assign-Suitable-Credit"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">tip 2: Assign Suitable Credit</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Proximal-Policy-Optimization"><span class="nav-number">1.1.2.</span> <span class="nav-text">Proximal Policy Optimization</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#TRPO"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">TRPO</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PPO2"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">PPO2</span></a></li></ol></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Policy-Gradient"><span class="nav-number">1.</span> <span class="nav-text">Policy Gradient</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#basic"><span class="nav-number">1.1.</span> <span class="nav-text">basic</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#tip-1-add-a-base-line"><span class="nav-number">1.1.1.</span> <span class="nav-text">tip 1: add a base line</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tip-2-Assign-Suitable-Credit"><span class="nav-number">1.1.2.</span> <span class="nav-text">tip 2: Assign Suitable Credit</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Proximal-Policy-Optimization"><span class="nav-number">1.2.</span> <span class="nav-text">Proximal Policy Optimization</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#TRPO"><span class="nav-number">1.2.1.</span> <span class="nav-text">TRPO</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PPO2"><span class="nav-number">1.2.2.</span> <span class="nav-text">PPO2</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -356,7 +351,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-count">1</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
