@@ -11,7 +11,7 @@
   --table-row-odd-bg-color: #f9f9f9;
   --table-row-hover-bg-color: #f5f5f5;
   --menu-item-bg-color: #f5f5f5;
-  --btn-default-bg: #222;
+  --btn-default-bg: #2d4c35;
   --btn-default-color: #fff;
   --btn-default-border-color: #222;
   --btn-default-hover-bg: #fff;
@@ -1169,7 +1169,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #2f2678;
+  background: #c3ff3c;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
