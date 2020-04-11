@@ -75,6 +75,7 @@
     <title>Q-learning（1）</title>
     <url>/2020/04/09/Q-learning%EF%BC%881%EF%BC%89/</url>
     <content><![CDATA[<h2 id="Q-learning"><a href="#Q-learning" class="headerlink" title="Q-learning"></a>Q-learning</h2><p>李宏毅老师主页18年机器学习教程： <a href="http://speech.ee.ntu.edu.tw/~tlkagk/courses_MLDS18.html" target="_blank" rel="noopener">http://speech.ee.ntu.edu.tw/~tlkagk/courses_MLDS18.html</a> （老师的2020年视频也出了）</p>
+ <a id="more"></a> 
 <h3 id="值函数"><a href="#值函数" class="headerlink" title="值函数"></a>值函数</h3><p>值函数分为： State value function ， State-action value function </p>
 <p>状态值函数$V_\pi(s)$，是对状态s的估计</p>
 <h4 id="如何估计状态值函数"><a href="#如何估计状态值函数" class="headerlink" title="如何估计状态值函数"></a>如何估计状态值函数</h4><p><strong>monte-carlo</strong>方法：</p>

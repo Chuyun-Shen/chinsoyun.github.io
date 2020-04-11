@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Q-learning李宏毅老师主页18年机器学习教程： http:&#x2F;&#x2F;speech.ee.ntu.edu.tw&#x2F;~tlkagk&#x2F;courses_MLDS18.html （老师的2020年视频也出了） 值函数值函数分为： State value function ， State-action value function  状态值函数$V_\pi(s)$，是对状态s的估计 如何估计状态值函数mont">
+  <meta name="description" content="Q-learning李宏毅老师主页18年机器学习教程： http:&#x2F;&#x2F;speech.ee.ntu.edu.tw&#x2F;~tlkagk&#x2F;courses_MLDS18.html （老师的2020年视频也出了）">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Q-learning（1）">
 <meta property="og:url" content="http://yoursite.com/2020/04/09/Q-learning%EF%BC%881%EF%BC%89/index.html">
 <meta property="og:site_name" content="云似乎在学习">
-<meta property="og:description" content="Q-learning李宏毅老师主页18年机器学习教程： http:&#x2F;&#x2F;speech.ee.ntu.edu.tw&#x2F;~tlkagk&#x2F;courses_MLDS18.html （老师的2020年视频也出了） 值函数值函数分为： State value function ， State-action value function  状态值函数$V_\pi(s)$，是对状态s的估计 如何估计状态值函数mont">
+<meta property="og:description" content="Q-learning李宏毅老师主页18年机器学习教程： http:&#x2F;&#x2F;speech.ee.ntu.edu.tw&#x2F;~tlkagk&#x2F;courses_MLDS18.html （老师的2020年视频也出了）">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://yoursite.com/2020/04/09/Q-learning%EF%BC%881%EF%BC%89/1586575571217.png">
 <meta property="og:image" content="http://yoursite.com/2020/04/09/Q-learning%EF%BC%881%EF%BC%89/1586575379396.png">
@@ -36,7 +36,7 @@
 <meta property="og:image" content="http://yoursite.com/2020/04/09/Q-learning%EF%BC%881%EF%BC%89/1586586846153.png">
 <meta property="og:image" content="http://yoursite.com/2020/04/09/Q-learning%EF%BC%881%EF%BC%89/1586587733417.png">
 <meta property="article:published_time" content="2020-04-09T12:05:05.000Z">
-<meta property="article:modified_time" content="2020-04-11T06:49:13.129Z">
+<meta property="article:modified_time" content="2020-04-11T06:51:44.985Z">
 <meta property="article:author" content="Chinsoyun">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://yoursite.com/2020/04/09/Q-learning%EF%BC%881%EF%BC%89/1586575571217.png">
@@ -222,7 +222,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-11 14:49:13" itemprop="dateModified" datetime="2020-04-11T14:49:13+08:00">2020-04-11</time>
+                <time title="Modified: 2020-04-11 14:51:44" itemprop="dateModified" datetime="2020-04-11T14:51:44+08:00">2020-04-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -246,6 +246,7 @@
 
       
         <h2 id="Q-learning"><a href="#Q-learning" class="headerlink" title="Q-learning"></a>Q-learning</h2><p>李宏毅老师主页18年机器学习教程： <a href="http://speech.ee.ntu.edu.tw/~tlkagk/courses_MLDS18.html" target="_blank" rel="noopener">http://speech.ee.ntu.edu.tw/~tlkagk/courses_MLDS18.html</a> （老师的2020年视频也出了）</p>
+ <a id="more"></a> 
 <h3 id="值函数"><a href="#值函数" class="headerlink" title="值函数"></a>值函数</h3><p>值函数分为： State value function ， State-action value function </p>
 <p>状态值函数$V_\pi(s)$，是对状态s的估计</p>
 <h4 id="如何估计状态值函数"><a href="#如何估计状态值函数" class="headerlink" title="如何估计状态值函数"></a>如何估计状态值函数</h4><p><strong>monte-carlo</strong>方法：</p>

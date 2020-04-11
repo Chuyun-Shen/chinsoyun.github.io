@@ -211,7 +211,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-11 14:49:13" itemprop="dateModified" datetime="2020-04-11T14:49:13+08:00">2020-04-11</time>
+                <time title="Modified: 2020-04-11 14:51:44" itemprop="dateModified" datetime="2020-04-11T14:51:44+08:00">2020-04-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -235,32 +235,14 @@
 
       
           <h2 id="Q-learning"><a href="#Q-learning" class="headerlink" title="Q-learning"></a>Q-learning</h2><p>李宏毅老师主页18年机器学习教程： <a href="http://speech.ee.ntu.edu.tw/~tlkagk/courses_MLDS18.html" target="_blank" rel="noopener">http://speech.ee.ntu.edu.tw/~tlkagk/courses_MLDS18.html</a> （老师的2020年视频也出了）</p>
-<h3 id="值函数"><a href="#值函数" class="headerlink" title="值函数"></a>值函数</h3><p>值函数分为： State value function ， State-action value function </p>
-<p>状态值函数$V_\pi(s)$，是对状态s的估计</p>
-<h4 id="如何估计状态值函数"><a href="#如何估计状态值函数" class="headerlink" title="如何估计状态值函数"></a>如何估计状态值函数</h4><p><strong>monte-carlo</strong>方法：</p>
-<p>对多个episode求平均，可以用神经网咯拟合</p>
-<p><img src="/2020/04/09/Q-learning%EF%BC%881%EF%BC%89/1586575571217.png" alt="1586575571217"></p>
-<p><strong>TD</strong>方法：</p>
-<p>两个状态之间的值函数之差是reward，拟合reward就可以了</p>
-<p><img src="/2020/04/09/Q-learning%EF%BC%881%EF%BC%89/1586575379396.png" alt="1586575379396"></p>
-<p>注：MC方法相较来说<strong>方差</strong>更大，并且这两种估计方法可能结果不一样大</p>
-<h3 id="Q-Learning"><a href="#Q-Learning" class="headerlink" title="Q-Learning"></a>Q-Learning</h3><p><img src="/2020/04/09/Q-learning%EF%BC%881%EF%BC%89/1586576088554.png" alt="1586576088554" style="zoom: 33%;"></p>
-<p>对于一个状态，选择一个最大的Q func就可以了</p>
-<p><img src="/2020/04/09/Q-learning%EF%BC%881%EF%BC%89/1586585731110.png" alt="1586585731110" style="zoom:33%;"></p>
-<p>证明：</p>
-<p><img src="/2020/04/09/Q-learning%EF%BC%881%EF%BC%89/1586585767328.png" alt="1586585767328" style="zoom:33%;"></p>
-<h4 id="三个技巧"><a href="#三个技巧" class="headerlink" title="三个技巧"></a>三个技巧</h4><p><strong>Target network</strong></p>
-<p>由于对q func的拟合是用的两个q之差与reward的比较，所以需要固定住一个</p>
-<p><img src="/2020/04/09/Q-learning%EF%BC%881%EF%BC%89/1586585935056.png" alt="1586585935056" style="zoom: 33%;"></p>
-<p><strong>Exploration</strong></p>
-<p>策略更新的方式是选择q(s,a)最大的，这在前面阶段肯定是不合适的，因为很多(s,a)没有被遍历过。</p>
-<p>两种解决方法如下图</p>
-<p><img src="/2020/04/09/Q-learning%EF%BC%881%EF%BC%89/1586586846153.png" alt="1586586846153" style="zoom:33%;"></p>
-<p><strong>replay buffer</strong></p>
-<p>弄一个缓存，里面放（st,at,rt,st+1）</p>
-<p>这个对学习q func很有用</p>
-<h4 id="Typical-Q-Learning-Algorithm"><a href="#Typical-Q-Learning-Algorithm" class="headerlink" title="Typical Q-Learning Algorithm"></a>Typical Q-Learning Algorithm</h4><p><img src="/2020/04/09/Q-learning%EF%BC%881%EF%BC%89/1586587733417.png" alt="1586587733417"></p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/04/09/Q-learning%EF%BC%881%EF%BC%89/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
