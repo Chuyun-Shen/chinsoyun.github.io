@@ -20,17 +20,28 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="除了混乱还有什么是稳定的呢？">
-<meta property="og:type" content="website">
-<meta property="og:title" content="云似乎在学习">
-<meta property="og:url" content="http://yoursite.com/archives/index.html">
+  <meta name="description" content="Q-learning李宏毅老师主页18年机器学习教程： http:&#x2F;&#x2F;speech.ee.ntu.edu.tw&#x2F;~tlkagk&#x2F;courses_MLDS18.html （老师的2020年视频也出了） 值函数值函数分为： State value function ， State-action value function  状态值函数$V_\pi(s)$，是对状态s的估计 如何估计状态值函数mont">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Q-learning（1）">
+<meta property="og:url" content="http://yoursite.com/2020/04/09/Q-learning%EF%BC%881%EF%BC%89/index.html">
 <meta property="og:site_name" content="云似乎在学习">
-<meta property="og:description" content="除了混乱还有什么是稳定的呢？">
+<meta property="og:description" content="Q-learning李宏毅老师主页18年机器学习教程： http:&#x2F;&#x2F;speech.ee.ntu.edu.tw&#x2F;~tlkagk&#x2F;courses_MLDS18.html （老师的2020年视频也出了） 值函数值函数分为： State value function ， State-action value function  状态值函数$V_\pi(s)$，是对状态s的估计 如何估计状态值函数mont">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/2020/04/09/Q-learning%EF%BC%881%EF%BC%89/1586575571217.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/09/Q-learning%EF%BC%881%EF%BC%89/1586575379396.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/09/Q-learning%EF%BC%881%EF%BC%89/1586576088554.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/09/Q-learning%EF%BC%881%EF%BC%89/1586585731110.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/09/Q-learning%EF%BC%881%EF%BC%89/1586585767328.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/09/Q-learning%EF%BC%881%EF%BC%89/1586585935056.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/09/Q-learning%EF%BC%881%EF%BC%89/1586586846153.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/09/Q-learning%EF%BC%881%EF%BC%89/1586587733417.png">
+<meta property="article:published_time" content="2020-04-09T12:05:05.000Z">
+<meta property="article:modified_time" content="2020-04-11T06:49:13.129Z">
 <meta property="article:author" content="Chinsoyun">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/04/09/Q-learning%EF%BC%881%EF%BC%89/1586575571217.png">
 
-<link rel="canonical" href="http://yoursite.com/archives/">
+<link rel="canonical" href="http://yoursite.com/2020/04/09/Q-learning%EF%BC%881%EF%BC%89/">
 
 
 <script id="page-configurations">
@@ -38,12 +49,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'en'
   };
 </script>
 
-  <title>Archive | 云似乎在学习</title>
+  <title>Q-learning（1） | 云似乎在学习</title>
   
 
 
@@ -174,70 +185,117 @@
         <div class="content-wrap">
           
 
-          <div class="content archive">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <span class="collection-header">Um..! 2 posts in total. Keep on posting.</span>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/09/Q-learning%EF%BC%881%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Chinsoyun">
+      <meta itemprop="description" content="除了混乱还有什么是稳定的呢？">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="云似乎在学习">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Q-learning（1）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-04-09 20:05:05" itemprop="dateCreated datePublished" datetime="2020-04-09T20:05:05+08:00">2020-04-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-04-11 14:49:13" itemprop="dateModified" datetime="2020-04-11T14:49:13+08:00">2020-04-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">强化学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2020</span>
-    </div>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-04-09T20:05:05+08:00"
-              content="2020-04-09">
-          04-09
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/04/09/Q-learning%EF%BC%881%EF%BC%89/" itemprop="url">
-            <span itemprop="name">Q-learning（1）</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-04-09T12:20:16+08:00"
-              content="2020-04-09">
-          04-09
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/" itemprop="url">
-            <span itemprop="name">强化学习PPO</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
+        <h2 id="Q-learning"><a href="#Q-learning" class="headerlink" title="Q-learning"></a>Q-learning</h2><p>李宏毅老师主页18年机器学习教程： <a href="http://speech.ee.ntu.edu.tw/~tlkagk/courses_MLDS18.html" target="_blank" rel="noopener">http://speech.ee.ntu.edu.tw/~tlkagk/courses_MLDS18.html</a> （老师的2020年视频也出了）</p>
+<h3 id="值函数"><a href="#值函数" class="headerlink" title="值函数"></a>值函数</h3><p>值函数分为： State value function ， State-action value function </p>
+<p>状态值函数$V_\pi(s)$，是对状态s的估计</p>
+<h4 id="如何估计状态值函数"><a href="#如何估计状态值函数" class="headerlink" title="如何估计状态值函数"></a>如何估计状态值函数</h4><p><strong>monte-carlo</strong>方法：</p>
+<p>对多个episode求平均，可以用神经网咯拟合</p>
+<p><img src="/2020/04/09/Q-learning%EF%BC%881%EF%BC%89/1586575571217.png" alt="1586575571217"></p>
+<p><strong>TD</strong>方法：</p>
+<p>两个状态之间的值函数之差是reward，拟合reward就可以了</p>
+<p><img src="/2020/04/09/Q-learning%EF%BC%881%EF%BC%89/1586575379396.png" alt="1586575379396"></p>
+<p>注：MC方法相较来说<strong>方差</strong>更大，并且这两种估计方法可能结果不一样大</p>
+<h3 id="Q-Learning"><a href="#Q-Learning" class="headerlink" title="Q-Learning"></a>Q-Learning</h3><p><img src="/2020/04/09/Q-learning%EF%BC%881%EF%BC%89/1586576088554.png" alt="1586576088554" style="zoom: 33%;"></p>
+<p>对于一个状态，选择一个最大的Q func就可以了</p>
+<p><img src="/2020/04/09/Q-learning%EF%BC%881%EF%BC%89/1586585731110.png" alt="1586585731110" style="zoom:33%;"></p>
+<p>证明：</p>
+<p><img src="/2020/04/09/Q-learning%EF%BC%881%EF%BC%89/1586585767328.png" alt="1586585767328" style="zoom:33%;"></p>
+<h4 id="三个技巧"><a href="#三个技巧" class="headerlink" title="三个技巧"></a>三个技巧</h4><p><strong>Target network</strong></p>
+<p>由于对q func的拟合是用的两个q之差与reward的比较，所以需要固定住一个</p>
+<p><img src="/2020/04/09/Q-learning%EF%BC%881%EF%BC%89/1586585935056.png" alt="1586585935056" style="zoom: 33%;"></p>
+<p><strong>Exploration</strong></p>
+<p>策略更新的方式是选择q(s,a)最大的，这在前面阶段肯定是不合适的，因为很多(s,a)没有被遍历过。</p>
+<p>两种解决方法如下图</p>
+<p><img src="/2020/04/09/Q-learning%EF%BC%881%EF%BC%89/1586586846153.png" alt="1586586846153" style="zoom:33%;"></p>
+<p><strong>replay buffer</strong></p>
+<p>弄一个缓存，里面放（st,at,rt,st+1）</p>
+<p>这个对学习q func很有用</p>
+<h4 id="Typical-Q-Learning-Algorithm"><a href="#Typical-Q-Learning-Algorithm" class="headerlink" title="Typical Q-Learning Algorithm"></a>Typical Q-Learning Algorithm</h4><p><img src="/2020/04/09/Q-learning%EF%BC%881%EF%BC%89/1586587733417.png" alt="1586587733417"></p>
 
     </div>
-  </div>
-  
-  
-  
 
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/" rel="prev" title="强化学习PPO">
+      <i class="fa fa-chevron-left"></i> 强化学习PPO
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
   
 
 
@@ -290,6 +348,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Q-learning"><span class="nav-number">1.</span> <span class="nav-text">Q-learning</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#值函数"><span class="nav-number">1.1.</span> <span class="nav-text">值函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#如何估计状态值函数"><span class="nav-number">1.1.1.</span> <span class="nav-text">如何估计状态值函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q-Learning"><span class="nav-number">1.2.</span> <span class="nav-text">Q-Learning</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#三个技巧"><span class="nav-number">1.2.1.</span> <span class="nav-text">三个技巧</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Typical-Q-Learning-Algorithm"><span class="nav-number">1.2.2.</span> <span class="nav-text">Typical Q-Learning Algorithm</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
