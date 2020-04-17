@@ -109,8 +109,8 @@
   <entry>
     <title>强化基础复习</title>
     <url>/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/</url>
-    <content><![CDATA[<a id="more"></a>
-<p>看李宏毅老师的深度强化会感觉比较东西比较偏应用，正好要看多智体相关的东西，找了张伟楠老师的主页 <a href="http://wnzhang.net/" target="_blank" rel="noopener">http://wnzhang.net/</a> </p>
+    <content><![CDATA[<p>看李宏毅老师的深度强化会感觉比较东西比较偏应用，正好要看多智体相关的东西，找了张伟楠老师的主页 <a href="http://wnzhang.net/" target="_blank" rel="noopener">http://wnzhang.net/</a> ，顺便复习下</p>
+<a id="more"></a>
 <h2 id="bellman-equation-for-value-function"><a href="#bellman-equation-for-value-function" class="headerlink" title="bellman equation for value function"></a>bellman equation for value function</h2><p><img src="/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/1586868221816.png" alt="1586868221816"></p>
 <p>$P_{s\pi}$ is state transition. At state s, use policy pi</p>
 <p>Optimal value function:</p>

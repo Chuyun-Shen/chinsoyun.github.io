@@ -211,7 +211,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-17 10:51:04" itemprop="dateModified" datetime="2020-04-17T10:51:04+08:00">2020-04-17</time>
+                <time title="Modified: 2020-04-17 11:18:53" itemprop="dateModified" datetime="2020-04-17T11:18:53+08:00">2020-04-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -234,42 +234,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <a id="more"></a>
-<p>看李宏毅老师的深度强化会感觉比较东西比较偏应用，正好要看多智体相关的东西，找了张伟楠老师的主页 <a href="http://wnzhang.net/" target="_blank" rel="noopener">http://wnzhang.net/</a> </p>
-<h2 id="bellman-equation-for-value-function"><a href="#bellman-equation-for-value-function" class="headerlink" title="bellman equation for value function"></a>bellman equation for value function</h2><p><img src="/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/1586868221816.png" alt="1586868221816"></p>
-<p>$P_{s\pi}$ is state transition. At state s, use policy pi</p>
-<p>Optimal value function:</p>
-<p><img src="/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/1586868369635.png" alt="1586868369635"></p>
-<h2 id="值函数迭代-amp-策略迭代"><a href="#值函数迭代-amp-策略迭代" class="headerlink" title="值函数迭代&amp;策略迭代"></a>值函数迭代&amp;策略迭代</h2><p><img src="/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/1586917042173.png" alt="1586917042173"></p>
-<p>需要已知转移矩阵和reward function</p>
-<p>这里的reward在这里应该是假设只依赖于状态s</p>
-<p>动态规划：</p>
-<p><img src="/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/1586941139436.png" alt="1586941139436" style="zoom:33%;"></p>
-<h2 id="model-free"><a href="#model-free" class="headerlink" title="model free"></a>model free</h2><h3 id="model-free-prediction"><a href="#model-free-prediction" class="headerlink" title="model-free prediction"></a>model-free prediction</h3><p><strong>MC</strong></p>
-<script type="math/tex; mode=display">
-G_t=R_{t+1}+\gamma R_{t+2}+...+\gamma^{T-1}R_{T}</script><script type="math/tex; mode=display">
-V^{\pi}(s)=E[G_t|s_t=s,\pi]\approx \frac{1}{N}\sum_{i=1}^NG^{(i)}_{t}</script><p><img src="/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/1586919493957.png" alt="1586919493957" style="zoom:33%;"></p>
-<p><img src="/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/1586940567481.png" alt="1586940567481" style="zoom:33%;"></p>
-<p><strong>TD</strong></p>
-<p><img src="/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/1586919744733.png" alt="1586919744733" style="zoom:33%;"></p>
-<p><img src="/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/1586940746277.png" alt="1586940746277" style="zoom:33%;"></p>
-<h3 id="model-free-control"><a href="#model-free-control" class="headerlink" title="model-free control"></a>model-free control</h3><p><strong>$\epsilon$-greedy</strong></p>
-<p><img src="/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/1587038476938.png" alt="1587038476938" style="zoom:33%;"></p>
-<p>前面的mc和td的目的是估计出值函数，<strong>control是为了得到最优的policy</strong></p>
-<p><strong>mc control</strong></p>
-<p><img src="/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/1586954094046.png" alt="1586954094046" style="zoom:33%;"></p>
-<p><strong>SARSA</strong></p>
-<p>state-action-reward-state-action  </p>
-<p><img src="/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/1587038173717.png" alt="1587038173717" style="zoom:33%;"></p>
-<p>可以看到，这里是一个q的预测并不是control，但是q func得到之后就很容易得到pi，因为对于同一个s，选择最大的q(s,a)就可以了</p>
-<p>在线学习版本：</p>
-<p><img src="/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/1587039060349.png" alt="1587039060349"></p>
-<p>似乎sarsa没有看到有用off-policy的，离线的可能就是q-learning了</p>
-<p><strong>Q-learning</strong></p>
-<p>可以参看之前的Q-learning（1）里面的q-learning，与本文的表示方式稍微有点不一样</p>
-<p><img src="/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/1587040735589.png" alt="1587040735589" style="zoom:33%;"></p>
-<p>这里的$\mu$是 交互的策略</p>
-
+          <p>看李宏毅老师的深度强化会感觉比较东西比较偏应用，正好要看多智体相关的东西，找了张伟楠老师的主页 <a href="http://wnzhang.net/" target="_blank" rel="noopener">http://wnzhang.net/</a> ，顺便复习下</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
