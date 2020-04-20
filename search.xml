@@ -152,7 +152,52 @@ V^{\pi}(s)=E[G_t|s_t=s,\pi]\approx \frac{1}{N}\sum_{i=1}^NG^{(i)}_{t}</script><p
   <entry>
     <title>fairness-gym搭建</title>
     <url>/2020/04/18/fairness-gym%E6%90%AD%E5%BB%BA/</url>
-    <content><![CDATA[<a id="more"></a>
+    <content><![CDATA[<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p> github网址<a href="https://github.com/google/ml-fairness-gym" target="_blank" rel="noopener">https://github.com/google/ml-fairness-gym</a> </p>
+<a id="more"></a>
+<p>一个仿真环境</p>
+<p><a href="https://github.com/google/ml-fairness-gym/blob/master/papers/acm_fat_2020_fairness_is_not_static.pdf" target="_blank" rel="noopener">Fairness is not Static: Deeper Understanding of Long Term Fairness via Simulation Studies</a></p>
+<ul>
+<li>College admissions</li>
+<li>Lending</li>
+<li>Attention allocation</li>
+</ul>
+<p><a href="https://github.com/google/ml-fairness-gym/blob/master/papers/fairmlforhealth2019_fair_treatment_allocations_in_social_networks.pdf" target="_blank" rel="noopener">Fair treatment allocations in social networks</a></p>
+<ul>
+<li>Infectious disease</li>
+</ul>
+<h2 id="场景一：-LENDING"><a href="#场景一：-LENDING" class="headerlink" title="场景一：  LENDING"></a>场景一：  LENDING</h2><p>(这个场景相关的设定有三种不同的，gym中文档中最重要，另外两篇论文里的辅助理解)</p>
+<p><strong>Delayed Impact of Fair Machine Learning</strong>这篇文章是one-step的，gym提供的是 many steps  </p>
+<p>个人被标记一个信用分数$\mathcal{X}:=\{1,2,…,C\}$，分数越高表示越有可能带来正向收益<del>，我的理解是越有可能还上款</del>。</p>
+<p>银行采用一个策略$\tau:\mathcal{X}\rightarrow[0,1]$表示选择的概率，我的理解是策略是对一个固定的分数，借钱的概率是相同的。</p>
+<p><img src="/2020/04/18/fairness-gym%E6%90%AD%E5%BB%BA/1587195490449.png" alt="1587195490449" style="zoom: 50%;"></p>
+<p>考虑两个群体，A、B，一个优势，一个劣势，分数分布为$\pi_A$，$\pi_B$</p>
+<p>A群体占总体人数的$g_A$</p>
+<p><img src="/2020/04/18/fairness-gym%E6%90%AD%E5%BB%BA/1587212231669.png" alt="1587212231669" style="zoom:50%;"></p>
+<p><del>没看懂这是个啥</del></p>
+<p>例子中写了，如下</p>
+<p><img src="/2020/04/18/fairness-gym%E6%90%AD%E5%BB%BA/1587214193670.png" alt="1587214193670" style="zoom:50%;"></p>
+<p>我的理解是这是赚多少钱</p>
+<p><img src="/2020/04/18/fairness-gym%E6%90%AD%E5%BB%BA/1587212998930.png" alt="1587212998930" style="zoom:50%;"></p>
+<p><del>持续看不懂成功是指的成功借到钱？</del>看后面的例子说是一个人在固定时间内还钱的概率</p>
+<p><img src="/2020/04/18/fairness-gym%E6%90%AD%E5%BB%BA/1587214352552.png" alt="1587214352552" style="zoom:50%;"></p>
+<p>还钱后分数增加，不换分数减少</p>
+<hr>
+<p><strong>Fairness is not static</strong>中的说明</p>
+<p>C表示分数</p>
+<p>$\pi(C)$表示成功还款率</p>
+<p>$p_{0}^{A}(C)$为A群体的C的分布</p>
+<hr>
+<p><strong>文档中的说明</strong></p>
+<p> <a href="https://github.com/google/ml-fairness-gym/blob/master/docs/quickstart.md" target="_blank" rel="noopener">https://github.com/google/ml-fairness-gym/blob/master/docs/quickstart.md</a> </p>
+<p><img src="/2020/04/18/fairness-gym%E6%90%AD%E5%BB%BA/1587296941877.png" alt="1587296941877"></p>
+<p>文档里这段之后给出了一些衡量的说明，但是看了也不知道怎么写自己的策略，现在能想到的解决办法是学习下python的debug，一步一步看下实例代码跑了哪些</p>
+<p>手动分割，看了下<strong>lending_demo.py</strong>代码似乎还是比较易读</p>
+<p><code>__future__</code>包和absl之前没用过，可能稍微学一下，中文的介绍比较少 <a href="https://abseil.io/docs/" target="_blank" rel="noopener">https://abseil.io/docs/</a> </p>
+<p>下面先记录下重要的代码</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># experiments/lending_demo.py</span></span><br><span class="line">result = lending.Experiment(</span><br><span class="line">    <span class="comment"># 0.5</span></span><br><span class="line">    group_0_prob=group_0_prob,</span><br><span class="line">    <span class="comment"># 利率</span></span><br><span class="line">    interest_rate=<span class="number">1.0</span>,</span><br><span class="line">    bank_starting_cash=<span class="number">10000</span>,</span><br><span class="line">    seed=<span class="number">200</span>,</span><br><span class="line">    num_steps=FLAGS.num_steps,</span><br><span class="line">    <span class="comment"># 我猜是For the first 200 steps, it will give out loans to everyone.</span></span><br><span class="line">    burnin=<span class="number">200</span>,</span><br><span class="line">    <span class="comment"># 暂时不知道是啥</span></span><br><span class="line">    cluster_shift_increment=<span class="number">0.01</span>,</span><br><span class="line">    include_cumulative_loans=<span class="literal">True</span>,</span><br><span class="line">    return_json=<span class="literal">False</span>,</span><br><span class="line">    <span class="comment"># policy就是在这个写</span></span><br><span class="line">    <span class="comment"># MAXIMIZE_REWARD = threshold_policies.ThresholdPolicy.MAXIMIZE_REWARD</span></span><br><span class="line">	<span class="comment"># EQUALIZE_OPPORTUNITY = threshold_policies.ThresholdPolicy.EQUALIZE_OPPORTUNITY</span></span><br><span class="line">    threshold_policy=(EQUALIZE_OPPORTUNITY <span class="keyword">if</span> FLAGS.equalize_opportunity <span class="keyword">else</span></span><br><span class="line">                      MAXIMIZE_REWARD)).run()</span><br></pre></td></tr></table></figure>
+<p>先看看最简单的<code>MAXIMIZE_REWARD</code>是怎么写的</p>
+<p>在agents/threshold_policies.py中看到MAXIMIZE_REWARD只是个枚举类</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ThresholdPolicy</span><span class="params">(enum.Enum)</span>:</span></span><br><span class="line">  SINGLE_THRESHOLD = <span class="string">"single_threshold"</span></span><br><span class="line">  MAXIMIZE_REWARD = <span class="string">"maximize_reward"</span></span><br><span class="line">  EQUALIZE_OPPORTUNITY = <span class="string">"equalize_opportunity"</span></span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>强化学习</category>
