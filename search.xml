@@ -193,8 +193,10 @@ V^{\pi}(s)=E[G_t|s_t=s,\pi]\approx \frac{1}{N}\sum_{i=1}^NG^{(i)}_{t}</script><p
 <p>文档里这段之后给出了一些衡量的说明，但是看了也不知道怎么写自己的策略，现在能想到的解决办法是学习下python的debug，一步一步看下实例代码跑了哪些</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python experiments&#x2F;lending_demo.py --num_steps&#x3D;5000</span><br></pre></td></tr></table></figure>
 <p> The classifier is trying to find one or more appropriate threshold(s) for giving out loans. It will follow a simple rule. For the first 200 steps, it will give out loans to everyone. After that, it will use that data to find the threshold with the <strong>highest accuracy</strong>. (In this simulation, the cost of a false positive is exactly equal to the gain from a true positive, so accuracy is a reasonable metric to optimize). </p>
+<p>（这里的最高的准确率怎么理解不清楚</p>
 <p>手动分割，看了下<strong>lending_demo.py</strong>代码似乎还是比较易读</p>
-<p><code>__future__</code>包和absl之前没用过，可能稍微学一下，中文的介绍比较少 <a href="https://abseil.io/docs/" target="_blank" rel="noopener">https://abseil.io/docs/</a> </p>
+<p><code>__future__</code>包和<code>absl</code>之前没用过，可能稍微学一下， <a href="https://www.jianshu.com/p/2140b519028d" target="_blank" rel="noopener">https://www.jianshu.com/p/2140b519028d</a> 和</p>
+<p> <a href="https://abseil.io/docs/" target="_blank" rel="noopener">https://abseil.io/docs/</a>   <a href="http://www.attrs.org/en/stable/" target="_blank" rel="noopener">http://www.attrs.org/en/stable/</a> </p>
 <p>下面先记录下重要的代码</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># experiments/lending_demo.py</span></span><br><span class="line">result = lending.Experiment(</span><br><span class="line">    <span class="comment"># 0.5</span></span><br><span class="line">    group_0_prob=group_0_prob,</span><br><span class="line">    <span class="comment"># 利率</span></span><br><span class="line">    interest_rate=<span class="number">1.0</span>,</span><br><span class="line">    bank_starting_cash=<span class="number">10000</span>,</span><br><span class="line">    seed=<span class="number">200</span>,</span><br><span class="line">    num_steps=FLAGS.num_steps,</span><br><span class="line">    <span class="comment"># 我猜是For the first 200 steps, it will give out loans to everyone.</span></span><br><span class="line">    burnin=<span class="number">200</span>,</span><br><span class="line">    <span class="comment"># 暂时不知道是啥</span></span><br><span class="line">    cluster_shift_increment=<span class="number">0.01</span>,</span><br><span class="line">    include_cumulative_loans=<span class="literal">True</span>,</span><br><span class="line">    return_json=<span class="literal">False</span>,</span><br><span class="line">    <span class="comment"># policy就是在这个写</span></span><br><span class="line">    <span class="comment"># MAXIMIZE_REWARD = threshold_policies.ThresholdPolicy.MAXIMIZE_REWARD</span></span><br><span class="line">	<span class="comment"># EQUALIZE_OPPORTUNITY = threshold_policies.ThresholdPolicy.EQUALIZE_OPPORTUNITY</span></span><br><span class="line">    threshold_policy=(EQUALIZE_OPPORTUNITY <span class="keyword">if</span> FLAGS.equalize_opportunity <span class="keyword">else</span></span><br><span class="line">                      MAXIMIZE_REWARD)).run()</span><br></pre></td></tr></table></figure>
 <p>先看看最简单的<code>MAXIMIZE_REWARD</code>是怎么写的</p>
@@ -217,6 +219,23 @@ V^{\pi}(s)=E[G_t|s_t=s,\pi]\approx \frac{1}{N}\sum_{i=1}^NG^{(i)}_{t}</script><p
 <p>然后找到</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">action = agent.act(observation, done)</span><br></pre></td></tr></table></figure>
 <p>用pycharm debug到这个agent的base class是ScoringAgent</p>
+<p>agent.act调用的是ScoringAgent 中_act_impl</p>
+<h2 id="场景2-入学"><a href="#场景2-入学" class="headerlink" title="场景2 入学"></a>场景2 入学</h2><p>看文章fairness is not static，入学这段开篇猛击，给钱改分？</p>
+<p> in which individuals are able to <strong>pay a cost to manipulate their features</strong> in order to obtain a desired decision from the agent.   </p>
+<p>个人知道agent的rule，可以 e.g., by investing in test prepcourses  </p>
+<p><strong>暂时理解，agent的rule是知道的，申请者可以花费去改分，agent可以预测更改，然后实施一个robust的决策</strong></p>
+<p>if the agent has knowledge of the cost functions so that it can determine how much applicants must pay to manipulate their scores, then the agent can learn a best-response decision rule that nearly recovers the accuracy of the optimal decision rule on unmanipulated scores. </p>
+<p>这段谷歌翻译翻译的recover是恢复，这样就可以理解了</p>
+<p>robust的决策可能比较保守，使得qualified的人改分数，不qualified的人too costly（这样好像是好的）</p>
+<p>但是可能对于disadvantage的群体，合格者可能会花不成比例的钱</p>
+<p>trade-off的是一边要升高分类的准确，一边要减少qualified的申请人（文中这里没指定是弱势群体比较奇怪）</p>
+<p>研究目标：</p>
+<ol>
+<li>单步和长期训练的区别</li>
+<li>unmanipulated score and their true label之间的noise对于长期训练的影响</li>
+</ol>
+<p>结论：</p>
+<p>if manipulation is occurring, practitioners should consider the fairness implications of robust classifcation<br>even if they are not deploying a robust agent.  </p>
 ]]></content>
       <categories>
         <category>强化学习</category>
@@ -274,6 +293,110 @@ V^{\pi}(s)=E[G_t|s_t=s,\pi]\approx \frac{1}{N}\sum_{i=1}^NG^{(i)}_{t}</script><p
 ]]></content>
       <categories>
         <category>python</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>The Dynamics of Reinforcement Learning in Cooperative Multiagent Systems</title>
+    <url>/2020/05/01/TheDynamicsofReinforcementLearninginCooperativeMultiagentSystems/</url>
+    <content><![CDATA[<p>传送： <a href="https://www.aaai.org/Papers/AAAI/1998/AAAI98-106.pdf" target="_blank" rel="noopener">https://www.aaai.org/Papers/AAAI/1998/AAAI98-106.pdf</a> </p>
+<a id="more"></a>
+<p>多智体入门论文，之前看多智体的文章比较少且比较难看懂，找师兄推荐了篇比较早的简单的论文</p>
+<p><strong>自己总结的摘要</strong>：在单state的场景，通过重复训练来学习Q value，探索了智能体能观察到彼此（JALs）和智能体只知道自己（ILs）两种多智能体系统使用q-learning的表现，在满足一定条件的情况下都可以达到纳什均衡，但是不保证收敛到最优的纳什均衡，论文给出新的探索方式可以让JALs达到纳什均衡。</p>
+<p><strong>纳什均衡</strong>：对于每个智能体，在其他智能体不变策略的情况下，选择最优的策略</p>
+<p><strong>探索策略</strong>：</p>
+<p><strong>normal Boltzmann (NB)</strong>  :</p>
+<p><img src="/2020/05/01/TheDynamicsofReinforcementLearninginCooperativeMultiagentSystems/1588302887668.png" alt="1588302887668" style="zoom:50%;"></p>
+<p>T随着训练降低</p>
+<p>JALs的Q func</p>
+<p><img src="/2020/05/01/TheDynamicsofReinforcementLearninginCooperativeMultiagentSystems/1588303227934.png" alt="1588303227934" style="zoom:50%;"></p>
+<p>该方法不保证能到达最优</p>
+<p><img src="/2020/05/01/TheDynamicsofReinforcementLearninginCooperativeMultiagentSystems/1588303328655.png" alt="1588303328655"></p>
+<p>WOB和Combined方法更有可能到达最优（文章没有严格的证明）</p>
+<p><strong>总结思考</strong>：考虑公平在这篇文章上没有太大用处，因为本文的场景所有agent只有一个reward，只需要让reward更大，所以更多的考虑探索过程，如何有效的探索并且能让agent达成共识，在这个场景下可能直接使用一个agent，把action分成多维度可能更好。</p>
+]]></content>
+      <tags>
+        <tag>MAS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>FairnessIsNotStatic</title>
+    <url>/2020/05/06/FairnessIsNotStatic/</url>
+    <content><![CDATA[<h2 id="Fairness-Is-Not-Static"><a href="#Fairness-Is-Not-Static" class="headerlink" title="Fairness Is Not Static"></a>Fairness Is Not Static</h2><h3 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation:"></a>Motivation:</h3><p>当前的Fairness都是静态的，数据都是fixed，而长期动态的环境中，现有的公平算法可能并不适用。</p>
+<h3 id="主要内容："><a href="#主要内容：" class="headerlink" title="主要内容："></a>主要内容：</h3><p>主要介绍了三个 <a href="https://github.com/google/ml-fairness-gym" target="_blank" rel="noopener">ml-fairness-gym</a> 的仿真环境，通过实验与静态的方法对比，发现静态方法在动态环境中可能会有一些问题。</p>
+<h3 id="环境介绍"><a href="#环境介绍" class="headerlink" title="环境介绍"></a>环境介绍</h3><h4 id="场景一：Lending"><a href="#场景一：Lending" class="headerlink" title="场景一：Lending"></a>场景一：Lending</h4><p>银行设定阈值来作为是否借款的依据，探究不同的策略带来的长期影响和对不同群体的公平影响。</p>
+<p><strong>Environment</strong>：借款申请人</p>
+<p>两个群体，一个优势，一个劣势。</p>
+<p>可观测群体属性，离散的<strong>信用评分</strong>$C\in1,2,3,..,C_{max}$，假定评分到还款概率$\pi(C)$的映射是固定的，优势群体信用评分的分布要高点。</p>
+<p>成功还款的话，用户信用上涨c+，agent收益上升r+，如果拖欠，信用下降c-，agent收益下降c-。</p>
+<p><strong>Metrics</strong>：信用分布，累计的借贷，总真阳率</p>
+<p><strong>agent</strong>：银行，根据信用评分决定是否借款。</p>
+<p>两种agent：</p>
+<ol>
+<li><p>max-reward</p>
+<p> 寻找阈值最大收益。</p>
+<p> 因为收益的r+和r-都是定值，所以只要期望大于0应该就可以借，$\pi(C)&gt;\tau$。所以阈值是fixed的。</p>
+<p> 前200轮全都借，然后找到固定的阈值。</p>
+</li>
+<li><p>EO</p>
+<p> 对不同的群体使用不同的阈值，在每一步中，在不同群体TPR相同的限制下最大化收益。用随机插值将ROC补成连续。（ROC如何得到是个问题）</p>
+</li>
+</ol>
+<p>还有很多细节还是得看代码里怎么写的</p>
+<p><strong>实验结果</strong></p>
+<p>实验是简化的，EO agent是知道当前信用分布的和对应的概率的，那么阈值-真阳率的图像就好做了</p>
+<p>初始分布如下：</p>
+<p><img src="/2020/05/06/FairnessIsNotStatic/1588856812650.png" alt="1588856812650" style="zoom: 33%;"></p>
+<p>max-reward的方法的结果如下。在论文里有分析，如果经过无穷轮，因为信用一旦低于阈值就永久不再能借款，会导致所有的都到阈值以下。</p>
+<p><img src="/2020/05/06/FairnessIsNotStatic/1588856851070.png" alt="1588856851070" style="zoom:33%;"></p>
+<p>EO的结果如下：</p>
+<p><img src="/2020/05/06/FairnessIsNotStatic/1588857016286.png" alt="1588857016286" style="zoom:33%;"></p>
+<p>EO相对来说分布的差距还变得更大了。</p>
+<p>累计的贷款数量和群体的还款概率如下：</p>
+<p><img src="/2020/05/06/FairnessIsNotStatic/1588857167690.png" alt="1588857167690" style="zoom:50%;"></p>
+<p>可以看出EO agent会给弱势群体更多的福利，但是群体的信用，弱势群体下降的更快。</p>
+<p>下图是EO agent的阈值的设定，和正阳率的一个趋势图。</p>
+<p><img src="/2020/05/06/FairnessIsNotStatic/1588858013328.png" alt="1588858013328" style="zoom:50%;"></p>
+<p>可以看到，对于群体2的阈值设定要更低一点。</p>
+<p>而且TPR即使在每一轮中都相同，最后总的TPR也是不同的，如下图。</p>
+<p><img src="/2020/05/06/FairnessIsNotStatic/1588858182023.png" alt="1588858182023"></p>
+<h4 id="场景二：Attention-Allocation"><a href="#场景二：Attention-Allocation" class="headerlink" title="场景二：Attention  Allocation"></a>场景二：Attention  Allocation</h4><p>Agent分配有限的注意力到多个不同的地方，每个地方有不同的发生事故的概率，探究不同策略带来的长期影响</p>
+<p><strong>Environment</strong>：不同地点，每个地点发生事故的数量满足Poisson分布</p>
+<p>agent要分配N个注意，有K个地方，每个时间t每个地方发生事故的数目为$y_{kt} \sim \rm{Poisson}(r_k,t)$   </p>
+<p>发现的数目为$\hat{y}_{kt}:=\rm{min}(a_{kt},y_{kt})$</p>
+<p>考虑动态情况的话，发生的概率会随着attention的数目改变，$d$为常数</p>
+<p><img src="/2020/05/06/FairnessIsNotStatic/1588900713333.png" alt="1588900713333" style="zoom:50%;"></p>
+<p><strong>Metrics</strong>：</p>
+<p>总的发现数目，总的错过数目（真实世界中比较难得到）</p>
+<p><img src="/2020/05/06/FairnessIsNotStatic/1588900949529.png" alt="1588900949529" style="zoom: 50%;"></p>
+<p>作为公平度量。</p>
+<p><strong>Agent</strong>：</p>
+<p>均匀分配的<em>uniform agent</em></p>
+<p><em>proportional agents</em>通过对$r$的估计值$\hat{r}$，探索策略epsilon-greedy，$\epsilon$的概率均匀分配，$1-\epsilon$的概率按照原计划</p>
+<p>fairness-constrained <em>greedy agent</em>，sequentially的分配，最大化 the probability that the next unit of attention will result in a discovery ， 限制the maximum gap in discovery probabilities   between sites小于$\alpha$</p>
+<p><strong>实验结果</strong></p>
+<p>5地方$[8,6,4,3,1.5]$，6个attention</p>
+<p><img src="/2020/05/06/FairnessIsNotStatic/1588902753228.png" alt="1588902753228"></p>
+<p>静态环境表现差不多，动态环境中，purely greedy发现高，错过的也高，所以并不能只把发现的作为优化目标。</p>
+<p><img src="/2020/05/06/FairnessIsNotStatic/1588905665078.png" alt="1588905665078">purely greedy会过多分配注意在刚刚发现了事故的地方</p>
+<p>公平的测量如下</p>
+<p><img src="/2020/05/06/FairnessIsNotStatic/1588907283086.png" alt="1588907283086"></p>
+<p>uniform的表现较差，proportional epsilon=0.1和greedy alpha=0.75效果比较好</p>
+<h4 id="场景三：college-admission"><a href="#场景三：college-admission" class="headerlink" title="场景三：college admission"></a>场景三：college admission</h4><p>学校要公布选择的规则，申请者可以cost to（可以理解为花费精力）改变分数。是一个Stackleberg博弈。</p>
+<p>探索repeated play和以前的one-shot方法达到的均衡的差别。</p>
+<p>鲁棒性的策略可能会带来公平问题，合格的人也需要发费精力，而且不同的群体的花费是不同的。</p>
+<p><strong>Environment</strong>： agent公布阈值分数$\tau$，环境产生带有ground truth的申请者，这些申请者是理性的，只有改分数能去理想的学校而且cost不是过高才会改分数。</p>
+<p><strong>Agent</strong>：目标是最大化准确度。</p>
+<p><em>static agent</em>前几轮全接受，然后训练一个分类器，使用未更改的(score, label)对，这个label应该是是否合格，但是agent是否知道没说。</p>
+<p><em>robust agent</em>使用以前论文的算法获得一个robust的agent，分类准确率应该是可以达到和未改分情况下一样的准确率。</p>
+<p><em>continuous agent</em>  gathers an initial set of unmanipulated applicants, then continuously retrains a non-robust classifier based on the subsequent manipulated scores and labels that it observes.  </p>
+<p><strong>实验结果</strong></p>
+<p><img src="/2020/05/06/FairnessIsNotStatic/1588927276507.png" alt="1588927276507"></p>
+<p>竖着的几条对应着阈值大小</p>
+<p>其他的曲线表示阈值与准确率，社会负担（合格者需要的花费）的关系，左边是分数和合格之间的关系没有噪声，右边是有噪声。</p>
+<p>可以看到有噪声的情况，即使<em>continuous agent</em>未考虑鲁棒性，结果与鲁棒性agent的结果是一样的。</p>
+]]></content>
+      <categories>
+        <category>强化学习</category>
       </categories>
   </entry>
 </search>

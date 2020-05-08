@@ -35,7 +35,7 @@
 <meta property="og:image" content="http://yoursite.com/2020/04/18/fairness-gym%E6%90%AD%E5%BB%BA/1587296941877.png">
 <meta property="og:image" content="http://yoursite.com/2020/04/18/fairness-gym%E6%90%AD%E5%BB%BA/1587440760162.png">
 <meta property="article:published_time" content="2020-04-18T07:09:52.000Z">
-<meta property="article:modified_time" content="2020-04-21T13:51:06.027Z">
+<meta property="article:modified_time" content="2020-04-27T13:51:32.832Z">
 <meta property="article:author" content="Chinsoyun">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://yoursite.com/2020/04/18/fairness-gym%E6%90%AD%E5%BB%BA/1587195490449.png">
@@ -93,7 +93,7 @@
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="Navigationsleiste an/ausschalten">
+    <div class="toggle" aria-label="Toggle navigation bar">
       <span class="toggle-line toggle-line-first"></span>
       <span class="toggle-line toggle-line-middle"></span>
       <span class="toggle-line toggle-line-last"></span>
@@ -123,21 +123,21 @@
   <ul id="menu" class="main-menu menu">
         <li class="menu-item menu-item-home">
 
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Startseite</a>
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Kategorien</a>
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archiv</a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
 
   </li>
       <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Suche
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
         </a>
       </li>
   </ul>
@@ -153,7 +153,7 @@
   </span>
   <div class="search-input-container">
     <input autocomplete="off" autocapitalize="off"
-           placeholder="Suche..." spellcheck="false"
+           placeholder="Searching..." spellcheck="false"
            type="search" class="search-input">
   </div>
   <span class="popup-btn-close">
@@ -212,22 +212,22 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Veröffentlicht am</span>
+              <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Erstellt: 2020-04-18 15:09:52" itemprop="dateCreated datePublished" datetime="2020-04-18T15:09:52+08:00">2020-04-18</time>
+              <time title="Created: 2020-04-18 15:09:52" itemprop="dateCreated datePublished" datetime="2020-04-18T15:09:52+08:00">2020-04-18</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
-                <span class="post-meta-item-text">Bearbeitet am</span>
-                <time title="Geändert am: 2020-04-21 21:51:06" itemprop="dateModified" datetime="2020-04-21T21:51:06+08:00">2020-04-21</time>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-04-27 21:51:32" itemprop="dateModified" datetime="2020-04-27T21:51:32+08:00">2020-04-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
-              <span class="post-meta-item-text">in</span>
+              <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">强化学习</span></a>
                 </span>
@@ -285,8 +285,10 @@
 <p>文档里这段之后给出了一些衡量的说明，但是看了也不知道怎么写自己的策略，现在能想到的解决办法是学习下python的debug，一步一步看下实例代码跑了哪些</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python experiments&#x2F;lending_demo.py --num_steps&#x3D;5000</span><br></pre></td></tr></table></figure>
 <p> The classifier is trying to find one or more appropriate threshold(s) for giving out loans. It will follow a simple rule. For the first 200 steps, it will give out loans to everyone. After that, it will use that data to find the threshold with the <strong>highest accuracy</strong>. (In this simulation, the cost of a false positive is exactly equal to the gain from a true positive, so accuracy is a reasonable metric to optimize). </p>
+<p>（这里的最高的准确率怎么理解不清楚</p>
 <p>手动分割，看了下<strong>lending_demo.py</strong>代码似乎还是比较易读</p>
-<p><code>__future__</code>包和absl之前没用过，可能稍微学一下，中文的介绍比较少 <a href="https://abseil.io/docs/" target="_blank" rel="noopener">https://abseil.io/docs/</a> </p>
+<p><code>__future__</code>包和<code>absl</code>之前没用过，可能稍微学一下， <a href="https://www.jianshu.com/p/2140b519028d" target="_blank" rel="noopener">https://www.jianshu.com/p/2140b519028d</a> 和</p>
+<p> <a href="https://abseil.io/docs/" target="_blank" rel="noopener">https://abseil.io/docs/</a>   <a href="http://www.attrs.org/en/stable/" target="_blank" rel="noopener">http://www.attrs.org/en/stable/</a> </p>
 <p>下面先记录下重要的代码</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># experiments/lending_demo.py</span></span><br><span class="line">result = lending.Experiment(</span><br><span class="line">    <span class="comment"># 0.5</span></span><br><span class="line">    group_0_prob=group_0_prob,</span><br><span class="line">    <span class="comment"># 利率</span></span><br><span class="line">    interest_rate=<span class="number">1.0</span>,</span><br><span class="line">    bank_starting_cash=<span class="number">10000</span>,</span><br><span class="line">    seed=<span class="number">200</span>,</span><br><span class="line">    num_steps=FLAGS.num_steps,</span><br><span class="line">    <span class="comment"># 我猜是For the first 200 steps, it will give out loans to everyone.</span></span><br><span class="line">    burnin=<span class="number">200</span>,</span><br><span class="line">    <span class="comment"># 暂时不知道是啥</span></span><br><span class="line">    cluster_shift_increment=<span class="number">0.01</span>,</span><br><span class="line">    include_cumulative_loans=<span class="literal">True</span>,</span><br><span class="line">    return_json=<span class="literal">False</span>,</span><br><span class="line">    <span class="comment"># policy就是在这个写</span></span><br><span class="line">    <span class="comment"># MAXIMIZE_REWARD = threshold_policies.ThresholdPolicy.MAXIMIZE_REWARD</span></span><br><span class="line">	<span class="comment"># EQUALIZE_OPPORTUNITY = threshold_policies.ThresholdPolicy.EQUALIZE_OPPORTUNITY</span></span><br><span class="line">    threshold_policy=(EQUALIZE_OPPORTUNITY <span class="keyword">if</span> FLAGS.equalize_opportunity <span class="keyword">else</span></span><br><span class="line">                      MAXIMIZE_REWARD)).run()</span><br></pre></td></tr></table></figure>
 <p>先看看最简单的<code>MAXIMIZE_REWARD</code>是怎么写的</p>
@@ -309,6 +311,23 @@
 <p>然后找到</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">action = agent.act(observation, done)</span><br></pre></td></tr></table></figure>
 <p>用pycharm debug到这个agent的base class是ScoringAgent</p>
+<p>agent.act调用的是ScoringAgent 中_act_impl</p>
+<h2 id="场景2-入学"><a href="#场景2-入学" class="headerlink" title="场景2 入学"></a>场景2 入学</h2><p>看文章fairness is not static，入学这段开篇猛击，给钱改分？</p>
+<p> in which individuals are able to <strong>pay a cost to manipulate their features</strong> in order to obtain a desired decision from the agent.   </p>
+<p>个人知道agent的rule，可以 e.g., by investing in test prepcourses  </p>
+<p><strong>暂时理解，agent的rule是知道的，申请者可以花费去改分，agent可以预测更改，然后实施一个robust的决策</strong></p>
+<p>if the agent has knowledge of the cost functions so that it can determine how much applicants must pay to manipulate their scores, then the agent can learn a best-response decision rule that nearly recovers the accuracy of the optimal decision rule on unmanipulated scores. </p>
+<p>这段谷歌翻译翻译的recover是恢复，这样就可以理解了</p>
+<p>robust的决策可能比较保守，使得qualified的人改分数，不qualified的人too costly（这样好像是好的）</p>
+<p>但是可能对于disadvantage的群体，合格者可能会花不成比例的钱</p>
+<p>trade-off的是一边要升高分类的准确，一边要减少qualified的申请人（文中这里没指定是弱势群体比较奇怪）</p>
+<p>研究目标：</p>
+<ol>
+<li>单步和长期训练的区别</li>
+<li>unmanipulated score and their true label之间的noise对于长期训练的影响</li>
+</ol>
+<p>结论：</p>
+<p>if manipulation is occurring, practitioners should consider the fairness implications of robust classifcation<br>even if they are not deploying a robust agent.  </p>
 
     </div>
 
@@ -380,16 +399,16 @@
 
       <ul class="sidebar-nav motion-element">
         <li class="sidebar-nav-toc">
-          Inhaltsverzeichnis
+          Table of Contents
         </li>
         <li class="sidebar-nav-overview">
-          Übersicht
+          Overview
         </li>
       </ul>
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#场景一：-LENDING"><span class="nav-number">2.</span> <span class="nav-text">场景一：  LENDING</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#场景一：-LENDING"><span class="nav-number">2.</span> <span class="nav-text">场景一：  LENDING</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#场景2-入学"><span class="nav-number">3.</span> <span class="nav-text">场景2 入学</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -403,15 +422,19 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">5</span>
-          <span class="site-state-item-name">Artikel</span>
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
         <span class="site-state-item-count">2</span>
-        <span class="site-state-item-name">Kategorien</span></a>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">tags</span>
       </div>
   </nav>
 </div>
