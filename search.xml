@@ -1,86 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>FairnessIsNotStatic</title>
-    <url>/2020/05/06/FairnessIsNotStatic/</url>
-    <content><![CDATA[<h2 id="Fairness-Is-Not-Static"><a href="#Fairness-Is-Not-Static" class="headerlink" title="Fairness Is Not Static"></a>Fairness Is Not Static</h2><h3 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation:"></a>Motivation:</h3><p>当前的Fairness都是静态的，数据都是fixed，而长期动态的环境中，现有的公平算法可能并不适用。</p>
-<h3 id="主要内容："><a href="#主要内容：" class="headerlink" title="主要内容："></a>主要内容：</h3><p>主要介绍了三个 <a href="https://github.com/google/ml-fairness-gym" target="_blank" rel="noopener">ml-fairness-gym</a> 的仿真环境，通过实验与静态的方法对比，发现静态方法在动态环境中可能会有一些问题。</p>
+    <title>The Dynamics of Reinforcement Learning in Cooperative Multiagent Systems</title>
+    <url>/2020/05/01/TheDynamicsofReinforcementLearninginCooperativeMultiagentSystems/</url>
+    <content><![CDATA[<p>传送： <a href="https://www.aaai.org/Papers/AAAI/1998/AAAI98-106.pdf" target="_blank" rel="noopener">https://www.aaai.org/Papers/AAAI/1998/AAAI98-106.pdf</a> </p>
 <a id="more"></a>
-<h3 id="环境介绍"><a href="#环境介绍" class="headerlink" title="环境介绍"></a>环境介绍</h3><h4 id="场景一：Lending"><a href="#场景一：Lending" class="headerlink" title="场景一：Lending"></a>场景一：Lending</h4><p>银行设定阈值来作为是否借款的依据，探究不同的策略带来的长期影响和对不同群体的公平影响。</p>
-<p><strong>Environment</strong>：借款申请人</p>
-<p>两个群体，一个优势，一个劣势。</p>
-<p>可观测群体属性，离散的<strong>信用评分</strong>$C\in1,2,3,..,C_{max}$，假定评分到还款概率$\pi(C)$的映射是固定的，优势群体信用评分的分布要高点。</p>
-<p>成功还款的话，用户信用上涨c+，agent收益上升r+，如果拖欠，信用下降c-，agent收益下降c-。</p>
-<p><strong>Metrics</strong>：信用分布，累计的借贷，总真阳率</p>
-<p><strong>agent</strong>：银行，根据信用评分决定是否借款。</p>
-<p>两种agent：</p>
-<ol>
-<li><p>max-reward</p>
-<p> 寻找阈值最大收益。</p>
-<p> 因为收益的r+和r-都是定值，所以只要期望大于0应该就可以借，$\pi(C)&gt;\tau$。所以阈值是fixed的。</p>
-<p> 前200轮全都借，然后找到固定的阈值。</p>
-</li>
-<li><p>EO</p>
-<p> 对不同的群体使用不同的阈值，在每一步中，在不同群体TPR相同的限制下最大化收益。用随机插值将ROC补成连续。（ROC如何得到是个问题）</p>
-</li>
-</ol>
-<p>还有很多细节还是得看代码里怎么写的</p>
-<p><strong>实验结果</strong></p>
-<p>实验是简化的，EO agent是知道当前信用分布的和对应的概率的，那么阈值-真阳率的图像就好做了</p>
-<p>初始分布如下：</p>
-<p><img src="/2020/05/06/FairnessIsNotStatic/1588856812650.png" alt="1588856812650" style="zoom: 33%;"></p>
-<p>max-reward的方法的结果如下。在论文里有分析，如果经过无穷轮，因为信用一旦低于阈值就永久不再能借款，会导致所有的都到阈值以下。</p>
-<p><img src="/2020/05/06/FairnessIsNotStatic/1588856851070.png" alt="1588856851070" style="zoom:33%;"></p>
-<p>EO的结果如下：</p>
-<p><img src="/2020/05/06/FairnessIsNotStatic/1588857016286.png" alt="1588857016286" style="zoom:33%;"></p>
-<p>EO相对来说分布的差距还变得更大了。</p>
-<p>累计的贷款数量和群体的还款概率如下：</p>
-<p><img src="/2020/05/06/FairnessIsNotStatic/1588857167690.png" alt="1588857167690" style="zoom:50%;"></p>
-<p>可以看出EO agent会给弱势群体更多的福利，但是群体的信用，弱势群体下降的更快。</p>
-<p>下图是EO agent的阈值的设定，和正阳率的一个趋势图。</p>
-<p><img src="/2020/05/06/FairnessIsNotStatic/1588858013328.png" alt="1588858013328" style="zoom:50%;"></p>
-<p>可以看到，对于群体2的阈值设定要更低一点。</p>
-<p>而且TPR即使在每一轮中都相同，最后总的TPR也是不同的，如下图。</p>
-<p><img src="/2020/05/06/FairnessIsNotStatic/1588858182023.png" alt="1588858182023"></p>
-<h4 id="场景二：Attention-Allocation"><a href="#场景二：Attention-Allocation" class="headerlink" title="场景二：Attention  Allocation"></a>场景二：Attention  Allocation</h4><p>Agent分配有限的注意力到多个不同的地方，每个地方有不同的发生事故的概率，探究不同策略带来的长期影响</p>
-<p><strong>Environment</strong>：不同地点，每个地点发生事故的数量满足Poisson分布</p>
-<p>agent要分配N个注意，有K个地方，每个时间t每个地方发生事故的数目为$y_{kt} \sim \rm{Poisson}(r_k,t)$   </p>
-<p>发现的数目为$\hat{y}_{kt}:=\rm{min}(a_{kt},y_{kt})$</p>
-<p>考虑动态情况的话，发生的概率会随着attention的数目改变，$d$为常数</p>
-<p><img src="/2020/05/06/FairnessIsNotStatic/1588900713333.png" alt="1588900713333" style="zoom:50%;"></p>
-<p><strong>Metrics</strong>：</p>
-<p>总的发现数目，总的错过数目（真实世界中比较难得到）</p>
-<p><img src="/2020/05/06/FairnessIsNotStatic/1588900949529.png" alt="1588900949529" style="zoom: 50%;"></p>
-<p>作为公平度量。</p>
-<p><strong>Agent</strong>：</p>
-<p>均匀分配的<em>uniform agent</em></p>
-<p><em>proportional agents</em>通过对$r$的估计值$\hat{r}$，探索策略epsilon-greedy，$\epsilon$的概率均匀分配，$1-\epsilon$的概率按照原计划</p>
-<p>fairness-constrained <em>greedy agent</em>，sequentially的分配，最大化 the probability that the next unit of attention will result in a discovery ， 限制the maximum gap in discovery probabilities   between sites小于$\alpha$</p>
-<p><strong>实验结果</strong></p>
-<p>5地方$[8,6,4,3,1.5]$，6个attention</p>
-<p><img src="/2020/05/06/FairnessIsNotStatic/1588902753228.png" alt="1588902753228"></p>
-<p>静态环境表现差不多，动态环境中，purely greedy发现高，错过的也高，所以并不能只把发现的作为优化目标。</p>
-<p><img src="/2020/05/06/FairnessIsNotStatic/1588905665078.png" alt="1588905665078">purely greedy会过多分配注意在刚刚发现了事故的地方</p>
-<p>公平的测量如下</p>
-<p><img src="/2020/05/06/FairnessIsNotStatic/1588907283086.png" alt="1588907283086"></p>
-<p>uniform的表现较差，proportional epsilon=0.1和greedy alpha=0.75效果比较好</p>
-<h4 id="场景三：college-admission"><a href="#场景三：college-admission" class="headerlink" title="场景三：college admission"></a>场景三：college admission</h4><p>学校要公布选择的规则，申请者可以cost to（可以理解为花费精力）改变分数。是一个Stackleberg博弈。</p>
-<p>探索repeated play和以前的one-shot方法达到的均衡的差别。</p>
-<p>鲁棒性的策略可能会带来公平问题，合格的人也需要发费精力，而且不同的群体的花费是不同的。</p>
-<p><strong>Environment</strong>： agent公布阈值分数$\tau$，环境产生带有ground truth的申请者，这些申请者是理性的，只有改分数能去理想的学校而且cost不是过高才会改分数。</p>
-<p><strong>Agent</strong>：目标是最大化准确度。</p>
-<p><em>static agent</em>前几轮全接受，然后训练一个分类器，使用未更改的(score, label)对，这个label应该是是否合格，但是agent是否知道没说。</p>
-<p><em>robust agent</em>使用以前论文的算法获得一个robust的agent，分类准确率应该是可以达到和未改分情况下一样的准确率。</p>
-<p><em>continuous agent</em>  gathers an initial set of unmanipulated applicants, then continuously retrains a non-robust classifier based on the subsequent manipulated scores and labels that it observes.  </p>
-<p><strong>实验结果</strong></p>
-<p><img src="/2020/05/06/FairnessIsNotStatic/1588927276507.png" alt="1588927276507"></p>
-<p>竖着的几条对应着阈值大小</p>
-<p>其他的曲线表示阈值与准确率，社会负担（合格者需要的花费）的关系，左边是分数和合格之间的关系没有噪声，右边是有噪声。</p>
-<p>可以看到有噪声的情况，即使<em>continuous agent</em>未考虑鲁棒性，结果与鲁棒性agent的结果是一样的。</p>
+<p>多智体入门论文，之前看多智体的文章比较少且比较难看懂，找师兄推荐了篇比较早的简单的论文</p>
+<p><strong>自己总结的摘要</strong>：在单state的场景，通过重复训练来学习Q value，探索了智能体能观察到彼此（JALs）和智能体只知道自己（ILs）两种多智能体系统使用q-learning的表现，在满足一定条件的情况下都可以达到纳什均衡，但是不保证收敛到最优的纳什均衡，论文给出新的探索方式可以让JALs达到纳什均衡。</p>
+<p><strong>纳什均衡</strong>：对于每个智能体，在其他智能体不变策略的情况下，选择最优的策略</p>
+<p><strong>探索策略</strong>：</p>
+<p><strong>normal Boltzmann (NB)</strong>  :</p>
+<p><img src="/2020/05/01/TheDynamicsofReinforcementLearninginCooperativeMultiagentSystems/1588302887668.png" alt="1588302887668" style="zoom:50%;"></p>
+<p>T随着训练降低</p>
+<p>JALs的Q func</p>
+<p><img src="/2020/05/01/TheDynamicsofReinforcementLearninginCooperativeMultiagentSystems/1588303227934.png" alt="1588303227934" style="zoom:50%;"></p>
+<p>该方法不保证能到达最优</p>
+<p><img src="/2020/05/01/TheDynamicsofReinforcementLearninginCooperativeMultiagentSystems/1588303328655.png" alt="1588303328655"></p>
+<p>WOB和Combined方法更有可能到达最优（文章没有严格的证明）</p>
+<p><strong>总结思考</strong>：考虑公平在这篇文章上没有太大用处，因为本文的场景所有agent只有一个reward，只需要让reward更大，所以更多的考虑探索过程，如何有效的探索并且能让agent达成共识，在这个场景下可能直接使用一个agent，把action分成多维度可能更好。</p>
 ]]></content>
-      <categories>
-        <category>强化学习</category>
-      </categories>
+      <tags>
+        <tag>MAS</tag>
+      </tags>
   </entry>
   <entry>
     <title>Q-learning（1）</title>
@@ -116,29 +57,6 @@
       <categories>
         <category>强化学习</category>
       </categories>
-  </entry>
-  <entry>
-    <title>The Dynamics of Reinforcement Learning in Cooperative Multiagent Systems</title>
-    <url>/2020/05/01/TheDynamicsofReinforcementLearninginCooperativeMultiagentSystems/</url>
-    <content><![CDATA[<p>传送： <a href="https://www.aaai.org/Papers/AAAI/1998/AAAI98-106.pdf" target="_blank" rel="noopener">https://www.aaai.org/Papers/AAAI/1998/AAAI98-106.pdf</a> </p>
-<a id="more"></a>
-<p>多智体入门论文，之前看多智体的文章比较少且比较难看懂，找师兄推荐了篇比较早的简单的论文</p>
-<p><strong>自己总结的摘要</strong>：在单state的场景，通过重复训练来学习Q value，探索了智能体能观察到彼此（JALs）和智能体只知道自己（ILs）两种多智能体系统使用q-learning的表现，在满足一定条件的情况下都可以达到纳什均衡，但是不保证收敛到最优的纳什均衡，论文给出新的探索方式可以让JALs达到纳什均衡。</p>
-<p><strong>纳什均衡</strong>：对于每个智能体，在其他智能体不变策略的情况下，选择最优的策略</p>
-<p><strong>探索策略</strong>：</p>
-<p><strong>normal Boltzmann (NB)</strong>  :</p>
-<p><img src="/2020/05/01/TheDynamicsofReinforcementLearninginCooperativeMultiagentSystems/1588302887668.png" alt="1588302887668" style="zoom:50%;"></p>
-<p>T随着训练降低</p>
-<p>JALs的Q func</p>
-<p><img src="/2020/05/01/TheDynamicsofReinforcementLearninginCooperativeMultiagentSystems/1588303227934.png" alt="1588303227934" style="zoom:50%;"></p>
-<p>该方法不保证能到达最优</p>
-<p><img src="/2020/05/01/TheDynamicsofReinforcementLearninginCooperativeMultiagentSystems/1588303328655.png" alt="1588303328655"></p>
-<p>WOB和Combined方法更有可能到达最优（文章没有严格的证明）</p>
-<p><strong>总结思考</strong>：考虑公平在这篇文章上没有太大用处，因为本文的场景所有agent只有一个reward，只需要让reward更大，所以更多的考虑探索过程，如何有效的探索并且能让agent达成共识，在这个场景下可能直接使用一个agent，把action分成多维度可能更好。</p>
-]]></content>
-      <tags>
-        <tag>MAS</tag>
-      </tags>
   </entry>
   <entry>
     <title>fairness-gym搭建</title>
@@ -233,6 +151,142 @@
       </categories>
   </entry>
   <entry>
+    <title>FairnessIsNotStatic</title>
+    <url>/2020/05/06/FairnessIsNotStatic/</url>
+    <content><![CDATA[<h2 id="Fairness-Is-Not-Static"><a href="#Fairness-Is-Not-Static" class="headerlink" title="Fairness Is Not Static"></a>Fairness Is Not Static</h2><h3 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation:"></a>Motivation:</h3><p>当前的Fairness都是静态的，数据都是fixed，而长期动态的环境中，现有的公平算法可能并不适用。</p>
+<h3 id="主要内容："><a href="#主要内容：" class="headerlink" title="主要内容："></a>主要内容：</h3><p>主要介绍了三个 <a href="https://github.com/google/ml-fairness-gym" target="_blank" rel="noopener">ml-fairness-gym</a> 的仿真环境，通过实验与静态的方法对比，发现静态方法在动态环境中可能会有一些问题。</p>
+<a id="more"></a>
+<h3 id="环境介绍"><a href="#环境介绍" class="headerlink" title="环境介绍"></a>环境介绍</h3><h4 id="场景一：Lending"><a href="#场景一：Lending" class="headerlink" title="场景一：Lending"></a>场景一：Lending</h4><p>银行设定阈值来作为是否借款的依据，探究不同的策略带来的长期影响和对不同群体的公平影响。</p>
+<p><strong>Environment</strong>：借款申请人</p>
+<p>两个群体，一个优势，一个劣势。</p>
+<p>可观测群体属性，离散的<strong>信用评分</strong>$C\in1,2,3,..,C_{max}$，假定评分到还款概率$\pi(C)$的映射是固定的，优势群体信用评分的分布要高点。</p>
+<p>成功还款的话，用户信用上涨c+，agent收益上升r+，如果拖欠，信用下降c-，agent收益下降c-。</p>
+<p><strong>Metrics</strong>：信用分布，累计的借贷，总真阳率</p>
+<p><strong>agent</strong>：银行，根据信用评分决定是否借款。</p>
+<p>两种agent：</p>
+<ol>
+<li><p>max-reward</p>
+<p> 寻找阈值最大收益。</p>
+<p> 因为收益的r+和r-都是定值，所以只要期望大于0应该就可以借，$\pi(C)&gt;\tau$。所以阈值是fixed的。</p>
+<p> 前200轮全都借，然后找到固定的阈值。</p>
+</li>
+<li><p>EO</p>
+<p> 对不同的群体使用不同的阈值，在每一步中，在不同群体TPR相同的限制下最大化收益。用随机插值将ROC补成连续。（ROC如何得到是个问题）</p>
+</li>
+</ol>
+<p>还有很多细节还是得看代码里怎么写的</p>
+<p><strong>实验结果</strong></p>
+<p>实验是简化的，EO agent是知道当前信用分布的和对应的概率的，那么阈值-真阳率的图像就好做了</p>
+<p>初始分布如下：</p>
+<p><img src="/2020/05/06/FairnessIsNotStatic/1588856812650.png" alt="1588856812650" style="zoom: 33%;"></p>
+<p>max-reward的方法的结果如下。在论文里有分析，如果经过无穷轮，因为信用一旦低于阈值就永久不再能借款，会导致所有的都到阈值以下。</p>
+<p><img src="/2020/05/06/FairnessIsNotStatic/1588856851070.png" alt="1588856851070" style="zoom:33%;"></p>
+<p>EO的结果如下：</p>
+<p><img src="/2020/05/06/FairnessIsNotStatic/1588857016286.png" alt="1588857016286" style="zoom:33%;"></p>
+<p>EO相对来说分布的差距还变得更大了。</p>
+<p>累计的贷款数量和群体的还款概率如下：</p>
+<p><img src="/2020/05/06/FairnessIsNotStatic/1588857167690.png" alt="1588857167690" style="zoom:50%;"></p>
+<p>可以看出EO agent会给弱势群体更多的福利，但是群体的信用，弱势群体下降的更快。</p>
+<p>下图是EO agent的阈值的设定，和正阳率的一个趋势图。</p>
+<p><img src="/2020/05/06/FairnessIsNotStatic/1588858013328.png" alt="1588858013328" style="zoom:50%;"></p>
+<p>可以看到，对于群体2的阈值设定要更低一点。</p>
+<p>而且TPR即使在每一轮中都相同，最后总的TPR也是不同的，如下图。</p>
+<p><img src="/2020/05/06/FairnessIsNotStatic/1588858182023.png" alt="1588858182023"></p>
+<h4 id="场景二：Attention-Allocation"><a href="#场景二：Attention-Allocation" class="headerlink" title="场景二：Attention  Allocation"></a>场景二：Attention  Allocation</h4><p>Agent分配有限的注意力到多个不同的地方，每个地方有不同的发生事故的概率，探究不同策略带来的长期影响</p>
+<p><strong>Environment</strong>：不同地点，每个地点发生事故的数量满足Poisson分布</p>
+<p>agent要分配N个注意，有K个地方，每个时间t每个地方发生事故的数目为$y_{kt} \sim \rm{Poisson}(r_k,t)$   </p>
+<p>发现的数目为$\hat{y}_{kt}:=\rm{min}(a_{kt},y_{kt})$</p>
+<p>考虑动态情况的话，发生的概率会随着attention的数目改变，$d$为常数</p>
+<p><img src="/2020/05/06/FairnessIsNotStatic/1588900713333.png" alt="1588900713333" style="zoom:50%;"></p>
+<p><strong>Metrics</strong>：</p>
+<p>总的发现数目，总的错过数目（真实世界中比较难得到）</p>
+<p><img src="/2020/05/06/FairnessIsNotStatic/1588900949529.png" alt="1588900949529" style="zoom: 50%;"></p>
+<p>作为公平度量。</p>
+<p><strong>Agent</strong>：</p>
+<p>均匀分配的<em>uniform agent</em></p>
+<p><em>proportional agents</em>通过对$r$的估计值$\hat{r}$，探索策略epsilon-greedy，$\epsilon$的概率均匀分配，$1-\epsilon$的概率按照原计划</p>
+<p>fairness-constrained <em>greedy agent</em>，sequentially的分配，最大化 the probability that the next unit of attention will result in a discovery ， 限制the maximum gap in discovery probabilities   between sites小于$\alpha$</p>
+<p><strong>实验结果</strong></p>
+<p>5地方$[8,6,4,3,1.5]$，6个attention</p>
+<p><img src="/2020/05/06/FairnessIsNotStatic/1588902753228.png" alt="1588902753228"></p>
+<p>静态环境表现差不多，动态环境中，purely greedy发现高，错过的也高，所以并不能只把发现的作为优化目标。</p>
+<p><img src="/2020/05/06/FairnessIsNotStatic/1588905665078.png" alt="1588905665078">purely greedy会过多分配注意在刚刚发现了事故的地方</p>
+<p>公平的测量如下</p>
+<p><img src="/2020/05/06/FairnessIsNotStatic/1588907283086.png" alt="1588907283086"></p>
+<p>uniform的表现较差，proportional epsilon=0.1和greedy alpha=0.75效果比较好</p>
+<h4 id="场景三：college-admission"><a href="#场景三：college-admission" class="headerlink" title="场景三：college admission"></a>场景三：college admission</h4><p>学校要公布选择的规则，申请者可以cost to（可以理解为花费精力）改变分数。是一个Stackleberg博弈。</p>
+<p>探索repeated play和以前的one-shot方法达到的均衡的差别。</p>
+<p>鲁棒性的策略可能会带来公平问题，合格的人也需要发费精力，而且不同的群体的花费是不同的。</p>
+<p><strong>Environment</strong>： agent公布阈值分数$\tau$，环境产生带有ground truth的申请者，这些申请者是理性的，只有改分数能去理想的学校而且cost不是过高才会改分数。</p>
+<p><strong>Agent</strong>：目标是最大化准确度。</p>
+<p><em>static agent</em>前几轮全接受，然后训练一个分类器，使用未更改的(score, label)对，这个label应该是是否合格，但是agent是否知道没说。</p>
+<p><em>robust agent</em>使用以前论文的算法获得一个robust的agent，分类准确率应该是可以达到和未改分情况下一样的准确率。</p>
+<p><em>continuous agent</em>  gathers an initial set of unmanipulated applicants, then continuously retrains a non-robust classifier based on the subsequent manipulated scores and labels that it observes.  </p>
+<p><strong>实验结果</strong></p>
+<p><img src="/2020/05/06/FairnessIsNotStatic/1588927276507.png" alt="1588927276507"></p>
+<p>竖着的几条对应着阈值大小</p>
+<p>其他的曲线表示阈值与准确率，社会负担（合格者需要的花费）的关系，左边是分数和合格之间的关系没有噪声，右边是有噪声。</p>
+<p>可以看到有噪声的情况，即使<em>continuous agent</em>未考虑鲁棒性，结果与鲁棒性agent的结果是一样的。</p>
+]]></content>
+      <categories>
+        <category>强化学习</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>python面向对象</title>
+    <url>/2020/04/21/python%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/</url>
+    <content><![CDATA[<p>看fair gym然后发现我对python里的继承的用法有些误解</p>
+<a id="more"></a>
+<p>使用教程 <a href="https://www.liaoxuefeng.com/wiki/1016959663602400/1017495723838528" target="_blank" rel="noopener">https://www.liaoxuefeng.com/wiki/1016959663602400/1017495723838528</a> </p>
+<p>想要学到知识</p>
+<ul>
+<li>[x] 继承是继承哪些东西，方法和属性？</li>
+<li>[x] 有没有private类</li>
+<li>[ ] 怎么选择继承</li>
+</ul>
+<h2 id="class"><a href="#class" class="headerlink" title="class"></a>class</h2><p>所有类最终的父类都是object</p>
+<p> 如果要让内部属性不被外部访问，可以把属性的名称前加上两个下划线<code>__</code>，在Python中，实例的变量名如果以<code>__</code>开头，就变成了一个私有变量（<strong>private</strong>），只有内部可以访问，外部不能访问 </p>
+<p>看到 <a href="https://blog.csdn.net/brucewong0516/article/details/79119551" target="_blank" rel="noopener">https://blog.csdn.net/brucewong0516/article/details/79119551</a> 中提到<strong>实例方法、静态方法和类方法</strong> </p>
+<p><strong>实例方法</strong></p>
+<p>第一个参数self，可以通过self访问类属性，这个好像我自己常用的方法</p>
+<p><strong>静态方法</strong></p>
+<p>定义的时候使用<code>@staticmethod</code>装饰器，打开了新世界，。。。不需要实例参数也不需要类参数</p>
+<p>看起来很迷幻。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">person</span><span class="params">(object)</span>:</span></span><br><span class="line">    tall = <span class="number">180</span></span><br><span class="line">    hobbies = []</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age,weight)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">        self.weight = weight</span><br><span class="line"><span class="meta">    @staticmethod    #静态方法装饰器</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">infoma</span><span class="params">()</span>:</span>     <span class="comment">#没有参数限制，既不要实例参数，也不用类参数</span></span><br><span class="line">        print(person.tall)</span><br><span class="line">        print(person.hobbies)</span><br><span class="line"><span class="comment">#person.infoma()   #静态法可以通过类名访问</span></span><br><span class="line">Bruce = person(<span class="string">"Bruce"</span>, <span class="number">25</span>,<span class="number">180</span>)   <span class="comment">#通过实例访问</span></span><br><span class="line">Bruce.infoma()</span><br></pre></td></tr></table></figure>
+<p><strong>类方法</strong></p>
+<p>类方法<strong>以cls作为第一个参数</strong>，<strong>cls表示类本身</strong>，定义时<strong>使用@classmethod装饰器</strong>。通过cls可以访问类的相关属性。 </p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">person</span><span class="params">(object)</span>:</span></span><br><span class="line">    tall = <span class="number">180</span></span><br><span class="line">    hobbies = []</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age,weight)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">        self.weight = weight</span><br><span class="line"><span class="meta">    @classmethod     #类的装饰器</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">infoma</span><span class="params">(cls)</span>:</span>   <span class="comment">#cls表示类本身，使用类参数cls</span></span><br><span class="line">        print(cls.__name__)</span><br><span class="line">        print(dir(cls))</span><br><span class="line"><span class="comment">#cls表示类本身</span></span><br><span class="line"><span class="comment">#person.infoma()  直接调用类的装饰器函数，通过cls可以访问类的相关属性</span></span><br><span class="line">Bruce = person(<span class="string">"Bruce"</span>, <span class="number">25</span>,<span class="number">180</span>)   <span class="comment">#也可以通过两步骤来实现，第一步实例化person，第二步调用装饰器</span></span><br><span class="line">Bruce.infoma()</span><br></pre></td></tr></table></figure>
+<p>就像学了假python</p>
+<h2 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h2><p>继承很简单，在定义子类的时候把父类放在括号里就可以</p>
+<p>父类的方法和属性都会被继承</p>
+<p>子类自定义属性、方法可以覆盖父类，实现多态</p>
+<p>这个时候如果要访问父类的属性，可以使用直接通过父类名调用，需要把self传进去不过（有点神奇，这个self应该是子类，相当于把子类传到了父类？）。</p>
+<p>但是这样需要父类名硬编码到子类（忘了啥是硬编码了），所以推荐使用<code>super</code></p>
+<p><code>super(Child,self)</code>，第一个参数子类，第二个参数父类</p>
+<h2 id="装饰器"><a href="#装饰器" class="headerlink" title="装饰器"></a>装饰器</h2><p>这个东西很有趣，顺便学一下， <a href="https://foofish.net/python-decorator.html" target="_blank" rel="noopener">https://foofish.net/python-decorator.html</a> </p>
+<p>装饰器本质上是一个 Python 函数或类，它可以让其他函数或类在不需要做任何代码修改的前提下增加额外功能，装饰器的返回值也是一个函数/类对象。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">use_logging</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">()</span>:</span></span><br><span class="line">        logging.warn(<span class="string">"%s is running"</span> % func.__name__)</span><br><span class="line">        <span class="keyword">return</span> func()   <span class="comment"># 把 foo 当做参数传递进来时，执行func()就相当于执行foo()</span></span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'i am foo'</span>)</span><br><span class="line">foo = use_logging(foo)  <span class="comment"># 因为装饰器 use_logging(foo) 返回的时函数对象 wrapper，这条语句相当于  foo = wrapper</span></span><br><span class="line">foo()                   <span class="comment"># 执行foo()就相当于执行 wrapper()</span></span><br></pre></td></tr></table></figure>
+<p>有点意思，层层套娃</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">use_logging</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">()</span>:</span></span><br><span class="line">        logging.warn(<span class="string">"%s is running"</span> % func.__name__)</span><br><span class="line">        <span class="keyword">return</span> func()</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"><span class="meta">@use_logging</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"i am foo"</span>)</span><br><span class="line">foo()</span><br></pre></td></tr></table></figure>
+<p>这里这个@就替代了上面的foo=use_logging(foo)</p>
+<p>注意这里的foo()是没有参数的</p>
+<p>如果有多个参数</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args)</span>:</span></span><br><span class="line">        logging.warn(<span class="string">"%s is running"</span> % func.__name__)</span><br><span class="line">        <span class="keyword">return</span> func(*args)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br></pre></td></tr></table></figure>
+<p>  foo 函数还定义了一些关键字参数呢？ </p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        <span class="comment"># args是一个数组，kwargs一个字典</span></span><br><span class="line">        logging.warn(<span class="string">"%s is running"</span> % func.__name__)</span><br><span class="line">        <span class="keyword">return</span> func(*args, **kwargs)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br></pre></td></tr></table></figure>
+<p>奇怪的知识又增加了</p>
+<p>装饰器还可以带参数（暂时不记。</p>
+<hr>
+<p>分割，上面讲的是函数的装饰器</p>
+<p>还有<strong>类装饰器</strong></p>
+<p> 使用类装饰器主要依靠类的<code>__call__</code>方法，当使用 @ 形式将装饰器附加到函数上时，就会调用此方法。 </p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, func)</span>:</span></span><br><span class="line">        self._func = func</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">print</span> (<span class="string">'class decorator runing'</span>)</span><br><span class="line">        self._func()</span><br><span class="line">        <span class="keyword">print</span> (<span class="string">'class decorator ending'</span>)</span><br><span class="line"><span class="meta">@Foo</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bar</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">print</span> (<span class="string">'bar'</span>)</span><br><span class="line">bar()</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>python</category>
+      </categories>
+  </entry>
+  <entry>
     <title>强化学习PPO</title>
     <url>/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/</url>
     <content><![CDATA[<h2 id="Policy-Gradient"><a href="#Policy-Gradient" class="headerlink" title="Policy Gradient"></a>Policy Gradient</h2><h3 id="basic"><a href="#basic" class="headerlink" title="basic"></a>basic</h3><p>每一个eposide记录为$\tau$</p>
@@ -301,60 +355,6 @@
 ]]></content>
       <categories>
         <category>强化学习</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>python面向对象</title>
-    <url>/2020/04/21/python%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/</url>
-    <content><![CDATA[<p>看fair gym然后发现我对python里的继承的用法有些误解</p>
-<a id="more"></a>
-<p>使用教程 <a href="https://www.liaoxuefeng.com/wiki/1016959663602400/1017495723838528" target="_blank" rel="noopener">https://www.liaoxuefeng.com/wiki/1016959663602400/1017495723838528</a> </p>
-<p>想要学到知识</p>
-<ul>
-<li>[x] 继承是继承哪些东西，方法和属性？</li>
-<li>[x] 有没有private类</li>
-<li>[ ] 怎么选择继承</li>
-</ul>
-<h2 id="class"><a href="#class" class="headerlink" title="class"></a>class</h2><p>所有类最终的父类都是object</p>
-<p> 如果要让内部属性不被外部访问，可以把属性的名称前加上两个下划线<code>__</code>，在Python中，实例的变量名如果以<code>__</code>开头，就变成了一个私有变量（<strong>private</strong>），只有内部可以访问，外部不能访问 </p>
-<p>看到 <a href="https://blog.csdn.net/brucewong0516/article/details/79119551" target="_blank" rel="noopener">https://blog.csdn.net/brucewong0516/article/details/79119551</a> 中提到<strong>实例方法、静态方法和类方法</strong> </p>
-<p><strong>实例方法</strong></p>
-<p>第一个参数self，可以通过self访问类属性，这个好像我自己常用的方法</p>
-<p><strong>静态方法</strong></p>
-<p>定义的时候使用<code>@staticmethod</code>装饰器，打开了新世界，。。。不需要实例参数也不需要类参数</p>
-<p>看起来很迷幻。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">person</span><span class="params">(object)</span>:</span></span><br><span class="line">    tall = <span class="number">180</span></span><br><span class="line">    hobbies = []</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age,weight)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">        self.weight = weight</span><br><span class="line"><span class="meta">    @staticmethod    #静态方法装饰器</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">infoma</span><span class="params">()</span>:</span>     <span class="comment">#没有参数限制，既不要实例参数，也不用类参数</span></span><br><span class="line">        print(person.tall)</span><br><span class="line">        print(person.hobbies)</span><br><span class="line"><span class="comment">#person.infoma()   #静态法可以通过类名访问</span></span><br><span class="line">Bruce = person(<span class="string">"Bruce"</span>, <span class="number">25</span>,<span class="number">180</span>)   <span class="comment">#通过实例访问</span></span><br><span class="line">Bruce.infoma()</span><br></pre></td></tr></table></figure>
-<p><strong>类方法</strong></p>
-<p>类方法<strong>以cls作为第一个参数</strong>，<strong>cls表示类本身</strong>，定义时<strong>使用@classmethod装饰器</strong>。通过cls可以访问类的相关属性。 </p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">person</span><span class="params">(object)</span>:</span></span><br><span class="line">    tall = <span class="number">180</span></span><br><span class="line">    hobbies = []</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age,weight)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">        self.weight = weight</span><br><span class="line"><span class="meta">    @classmethod     #类的装饰器</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">infoma</span><span class="params">(cls)</span>:</span>   <span class="comment">#cls表示类本身，使用类参数cls</span></span><br><span class="line">        print(cls.__name__)</span><br><span class="line">        print(dir(cls))</span><br><span class="line"><span class="comment">#cls表示类本身</span></span><br><span class="line"><span class="comment">#person.infoma()  直接调用类的装饰器函数，通过cls可以访问类的相关属性</span></span><br><span class="line">Bruce = person(<span class="string">"Bruce"</span>, <span class="number">25</span>,<span class="number">180</span>)   <span class="comment">#也可以通过两步骤来实现，第一步实例化person，第二步调用装饰器</span></span><br><span class="line">Bruce.infoma()</span><br></pre></td></tr></table></figure>
-<p>就像学了假python</p>
-<h2 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h2><p>继承很简单，在定义子类的时候把父类放在括号里就可以</p>
-<p>父类的方法和属性都会被继承</p>
-<p>子类自定义属性、方法可以覆盖父类，实现多态</p>
-<p>这个时候如果要访问父类的属性，可以使用直接通过父类名调用，需要把self传进去不过（有点神奇，这个self应该是子类，相当于把子类传到了父类？）。</p>
-<p>但是这样需要父类名硬编码到子类（忘了啥是硬编码了），所以推荐使用<code>super</code></p>
-<p><code>super(Child,self)</code>，第一个参数子类，第二个参数父类</p>
-<h2 id="装饰器"><a href="#装饰器" class="headerlink" title="装饰器"></a>装饰器</h2><p>这个东西很有趣，顺便学一下， <a href="https://foofish.net/python-decorator.html" target="_blank" rel="noopener">https://foofish.net/python-decorator.html</a> </p>
-<p>装饰器本质上是一个 Python 函数或类，它可以让其他函数或类在不需要做任何代码修改的前提下增加额外功能，装饰器的返回值也是一个函数/类对象。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">use_logging</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">()</span>:</span></span><br><span class="line">        logging.warn(<span class="string">"%s is running"</span> % func.__name__)</span><br><span class="line">        <span class="keyword">return</span> func()   <span class="comment"># 把 foo 当做参数传递进来时，执行func()就相当于执行foo()</span></span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'i am foo'</span>)</span><br><span class="line">foo = use_logging(foo)  <span class="comment"># 因为装饰器 use_logging(foo) 返回的时函数对象 wrapper，这条语句相当于  foo = wrapper</span></span><br><span class="line">foo()                   <span class="comment"># 执行foo()就相当于执行 wrapper()</span></span><br></pre></td></tr></table></figure>
-<p>有点意思，层层套娃</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">use_logging</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">()</span>:</span></span><br><span class="line">        logging.warn(<span class="string">"%s is running"</span> % func.__name__)</span><br><span class="line">        <span class="keyword">return</span> func()</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"><span class="meta">@use_logging</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"i am foo"</span>)</span><br><span class="line">foo()</span><br></pre></td></tr></table></figure>
-<p>这里这个@就替代了上面的foo=use_logging(foo)</p>
-<p>注意这里的foo()是没有参数的</p>
-<p>如果有多个参数</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args)</span>:</span></span><br><span class="line">        logging.warn(<span class="string">"%s is running"</span> % func.__name__)</span><br><span class="line">        <span class="keyword">return</span> func(*args)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br></pre></td></tr></table></figure>
-<p>  foo 函数还定义了一些关键字参数呢？ </p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        <span class="comment"># args是一个数组，kwargs一个字典</span></span><br><span class="line">        logging.warn(<span class="string">"%s is running"</span> % func.__name__)</span><br><span class="line">        <span class="keyword">return</span> func(*args, **kwargs)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br></pre></td></tr></table></figure>
-<p>奇怪的知识又增加了</p>
-<p>装饰器还可以带参数（暂时不记。</p>
-<hr>
-<p>分割，上面讲的是函数的装饰器</p>
-<p>还有<strong>类装饰器</strong></p>
-<p> 使用类装饰器主要依靠类的<code>__call__</code>方法，当使用 @ 形式将装饰器附加到函数上时，就会调用此方法。 </p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, func)</span>:</span></span><br><span class="line">        self._func = func</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">print</span> (<span class="string">'class decorator runing'</span>)</span><br><span class="line">        self._func()</span><br><span class="line">        <span class="keyword">print</span> (<span class="string">'class decorator ending'</span>)</span><br><span class="line"><span class="meta">@Foo</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bar</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">print</span> (<span class="string">'bar'</span>)</span><br><span class="line">bar()</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>python</category>
       </categories>
   </entry>
   <entry>
