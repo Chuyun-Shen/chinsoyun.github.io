@@ -83,6 +83,29 @@
       </categories>
   </entry>
   <entry>
+    <title>The Dynamics of Reinforcement Learning in Cooperative Multiagent Systems</title>
+    <url>/2020/05/01/TheDynamicsofReinforcementLearninginCooperativeMultiagentSystems/</url>
+    <content><![CDATA[<p>传送： <a href="https://www.aaai.org/Papers/AAAI/1998/AAAI98-106.pdf" target="_blank" rel="noopener">https://www.aaai.org/Papers/AAAI/1998/AAAI98-106.pdf</a> </p>
+<a id="more"></a>
+<p>多智体入门论文，之前看多智体的文章比较少且比较难看懂，找师兄推荐了篇比较早的简单的论文</p>
+<p><strong>自己总结的摘要</strong>：在单state的场景，通过重复训练来学习Q value，探索了智能体能观察到彼此（JALs）和智能体只知道自己（ILs）两种多智能体系统使用q-learning的表现，在满足一定条件的情况下都可以达到纳什均衡，但是不保证收敛到最优的纳什均衡，论文给出新的探索方式可以让JALs达到纳什均衡。</p>
+<p><strong>纳什均衡</strong>：对于每个智能体，在其他智能体不变策略的情况下，选择最优的策略</p>
+<p><strong>探索策略</strong>：</p>
+<p><strong>normal Boltzmann (NB)</strong>  :</p>
+<p><img src="/2020/05/01/TheDynamicsofReinforcementLearninginCooperativeMultiagentSystems/1588302887668.png" alt="1588302887668" style="zoom:50%;"></p>
+<p>T随着训练降低</p>
+<p>JALs的Q func</p>
+<p><img src="/2020/05/01/TheDynamicsofReinforcementLearninginCooperativeMultiagentSystems/1588303227934.png" alt="1588303227934" style="zoom:50%;"></p>
+<p>该方法不保证能到达最优</p>
+<p><img src="/2020/05/01/TheDynamicsofReinforcementLearninginCooperativeMultiagentSystems/1588303328655.png" alt="1588303328655"></p>
+<p>WOB和Combined方法更有可能到达最优（文章没有严格的证明）</p>
+<p><strong>总结思考</strong>：考虑公平在这篇文章上没有太大用处，因为本文的场景所有agent只有一个reward，只需要让reward更大，所以更多的考虑探索过程，如何有效的探索并且能让agent达成共识，在这个场景下可能直接使用一个agent，把action分成多维度可能更好。</p>
+]]></content>
+      <tags>
+        <tag>MAS</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Q-learning（1）</title>
     <url>/2020/04/09/Q-learning%EF%BC%881%EF%BC%89/</url>
     <content><![CDATA[<h2 id="Q-learning"><a href="#Q-learning" class="headerlink" title="Q-learning"></a>Q-learning</h2><p>李宏毅老师主页18年机器学习教程： <a href="http://speech.ee.ntu.edu.tw/~tlkagk/courses_MLDS18.html" target="_blank" rel="noopener">http://speech.ee.ntu.edu.tw/~tlkagk/courses_MLDS18.html</a> （老师的2020年视频也出了）</p>
@@ -116,29 +139,6 @@
       <categories>
         <category>强化学习</category>
       </categories>
-  </entry>
-  <entry>
-    <title>The Dynamics of Reinforcement Learning in Cooperative Multiagent Systems</title>
-    <url>/2020/05/01/TheDynamicsofReinforcementLearninginCooperativeMultiagentSystems/</url>
-    <content><![CDATA[<p>传送： <a href="https://www.aaai.org/Papers/AAAI/1998/AAAI98-106.pdf" target="_blank" rel="noopener">https://www.aaai.org/Papers/AAAI/1998/AAAI98-106.pdf</a> </p>
-<a id="more"></a>
-<p>多智体入门论文，之前看多智体的文章比较少且比较难看懂，找师兄推荐了篇比较早的简单的论文</p>
-<p><strong>自己总结的摘要</strong>：在单state的场景，通过重复训练来学习Q value，探索了智能体能观察到彼此（JALs）和智能体只知道自己（ILs）两种多智能体系统使用q-learning的表现，在满足一定条件的情况下都可以达到纳什均衡，但是不保证收敛到最优的纳什均衡，论文给出新的探索方式可以让JALs达到纳什均衡。</p>
-<p><strong>纳什均衡</strong>：对于每个智能体，在其他智能体不变策略的情况下，选择最优的策略</p>
-<p><strong>探索策略</strong>：</p>
-<p><strong>normal Boltzmann (NB)</strong>  :</p>
-<p><img src="/2020/05/01/TheDynamicsofReinforcementLearninginCooperativeMultiagentSystems/1588302887668.png" alt="1588302887668" style="zoom:50%;"></p>
-<p>T随着训练降低</p>
-<p>JALs的Q func</p>
-<p><img src="/2020/05/01/TheDynamicsofReinforcementLearninginCooperativeMultiagentSystems/1588303227934.png" alt="1588303227934" style="zoom:50%;"></p>
-<p>该方法不保证能到达最优</p>
-<p><img src="/2020/05/01/TheDynamicsofReinforcementLearninginCooperativeMultiagentSystems/1588303328655.png" alt="1588303328655"></p>
-<p>WOB和Combined方法更有可能到达最优（文章没有严格的证明）</p>
-<p><strong>总结思考</strong>：考虑公平在这篇文章上没有太大用处，因为本文的场景所有agent只有一个reward，只需要让reward更大，所以更多的考虑探索过程，如何有效的探索并且能让agent达成共识，在这个场景下可能直接使用一个agent，把action分成多维度可能更好。</p>
-]]></content>
-      <tags>
-        <tag>MAS</tag>
-      </tags>
   </entry>
   <entry>
     <title>fairness-gym搭建</title>
@@ -230,6 +230,60 @@
 ]]></content>
       <categories>
         <category>强化学习</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>python面向对象</title>
+    <url>/2020/04/21/python%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/</url>
+    <content><![CDATA[<p>看fair gym然后发现我对python里的继承的用法有些误解</p>
+<a id="more"></a>
+<p>使用教程 <a href="https://www.liaoxuefeng.com/wiki/1016959663602400/1017495723838528" target="_blank" rel="noopener">https://www.liaoxuefeng.com/wiki/1016959663602400/1017495723838528</a> </p>
+<p>想要学到知识</p>
+<ul>
+<li>[x] 继承是继承哪些东西，方法和属性？</li>
+<li>[x] 有没有private类</li>
+<li>[ ] 怎么选择继承</li>
+</ul>
+<h2 id="class"><a href="#class" class="headerlink" title="class"></a>class</h2><p>所有类最终的父类都是object</p>
+<p> 如果要让内部属性不被外部访问，可以把属性的名称前加上两个下划线<code>__</code>，在Python中，实例的变量名如果以<code>__</code>开头，就变成了一个私有变量（<strong>private</strong>），只有内部可以访问，外部不能访问 </p>
+<p>看到 <a href="https://blog.csdn.net/brucewong0516/article/details/79119551" target="_blank" rel="noopener">https://blog.csdn.net/brucewong0516/article/details/79119551</a> 中提到<strong>实例方法、静态方法和类方法</strong> </p>
+<p><strong>实例方法</strong></p>
+<p>第一个参数self，可以通过self访问类属性，这个好像我自己常用的方法</p>
+<p><strong>静态方法</strong></p>
+<p>定义的时候使用<code>@staticmethod</code>装饰器，打开了新世界，。。。不需要实例参数也不需要类参数</p>
+<p>看起来很迷幻。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">person</span><span class="params">(object)</span>:</span></span><br><span class="line">    tall = <span class="number">180</span></span><br><span class="line">    hobbies = []</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age,weight)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">        self.weight = weight</span><br><span class="line"><span class="meta">    @staticmethod    #静态方法装饰器</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">infoma</span><span class="params">()</span>:</span>     <span class="comment">#没有参数限制，既不要实例参数，也不用类参数</span></span><br><span class="line">        print(person.tall)</span><br><span class="line">        print(person.hobbies)</span><br><span class="line"><span class="comment">#person.infoma()   #静态法可以通过类名访问</span></span><br><span class="line">Bruce = person(<span class="string">"Bruce"</span>, <span class="number">25</span>,<span class="number">180</span>)   <span class="comment">#通过实例访问</span></span><br><span class="line">Bruce.infoma()</span><br></pre></td></tr></table></figure>
+<p><strong>类方法</strong></p>
+<p>类方法<strong>以cls作为第一个参数</strong>，<strong>cls表示类本身</strong>，定义时<strong>使用@classmethod装饰器</strong>。通过cls可以访问类的相关属性。 </p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">person</span><span class="params">(object)</span>:</span></span><br><span class="line">    tall = <span class="number">180</span></span><br><span class="line">    hobbies = []</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age,weight)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">        self.weight = weight</span><br><span class="line"><span class="meta">    @classmethod     #类的装饰器</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">infoma</span><span class="params">(cls)</span>:</span>   <span class="comment">#cls表示类本身，使用类参数cls</span></span><br><span class="line">        print(cls.__name__)</span><br><span class="line">        print(dir(cls))</span><br><span class="line"><span class="comment">#cls表示类本身</span></span><br><span class="line"><span class="comment">#person.infoma()  直接调用类的装饰器函数，通过cls可以访问类的相关属性</span></span><br><span class="line">Bruce = person(<span class="string">"Bruce"</span>, <span class="number">25</span>,<span class="number">180</span>)   <span class="comment">#也可以通过两步骤来实现，第一步实例化person，第二步调用装饰器</span></span><br><span class="line">Bruce.infoma()</span><br></pre></td></tr></table></figure>
+<p>就像学了假python</p>
+<h2 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h2><p>继承很简单，在定义子类的时候把父类放在括号里就可以</p>
+<p>父类的方法和属性都会被继承</p>
+<p>子类自定义属性、方法可以覆盖父类，实现多态</p>
+<p>这个时候如果要访问父类的属性，可以使用直接通过父类名调用，需要把self传进去不过（有点神奇，这个self应该是子类，相当于把子类传到了父类？）。</p>
+<p>但是这样需要父类名硬编码到子类（忘了啥是硬编码了），所以推荐使用<code>super</code></p>
+<p><code>super(Child,self)</code>，第一个参数子类，第二个参数父类</p>
+<h2 id="装饰器"><a href="#装饰器" class="headerlink" title="装饰器"></a>装饰器</h2><p>这个东西很有趣，顺便学一下， <a href="https://foofish.net/python-decorator.html" target="_blank" rel="noopener">https://foofish.net/python-decorator.html</a> </p>
+<p>装饰器本质上是一个 Python 函数或类，它可以让其他函数或类在不需要做任何代码修改的前提下增加额外功能，装饰器的返回值也是一个函数/类对象。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">use_logging</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">()</span>:</span></span><br><span class="line">        logging.warn(<span class="string">"%s is running"</span> % func.__name__)</span><br><span class="line">        <span class="keyword">return</span> func()   <span class="comment"># 把 foo 当做参数传递进来时，执行func()就相当于执行foo()</span></span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'i am foo'</span>)</span><br><span class="line">foo = use_logging(foo)  <span class="comment"># 因为装饰器 use_logging(foo) 返回的时函数对象 wrapper，这条语句相当于  foo = wrapper</span></span><br><span class="line">foo()                   <span class="comment"># 执行foo()就相当于执行 wrapper()</span></span><br></pre></td></tr></table></figure>
+<p>有点意思，层层套娃</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">use_logging</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">()</span>:</span></span><br><span class="line">        logging.warn(<span class="string">"%s is running"</span> % func.__name__)</span><br><span class="line">        <span class="keyword">return</span> func()</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"><span class="meta">@use_logging</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"i am foo"</span>)</span><br><span class="line">foo()</span><br></pre></td></tr></table></figure>
+<p>这里这个@就替代了上面的foo=use_logging(foo)</p>
+<p>注意这里的foo()是没有参数的</p>
+<p>如果有多个参数</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args)</span>:</span></span><br><span class="line">        logging.warn(<span class="string">"%s is running"</span> % func.__name__)</span><br><span class="line">        <span class="keyword">return</span> func(*args)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br></pre></td></tr></table></figure>
+<p>  foo 函数还定义了一些关键字参数呢？ </p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        <span class="comment"># args是一个数组，kwargs一个字典</span></span><br><span class="line">        logging.warn(<span class="string">"%s is running"</span> % func.__name__)</span><br><span class="line">        <span class="keyword">return</span> func(*args, **kwargs)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br></pre></td></tr></table></figure>
+<p>奇怪的知识又增加了</p>
+<p>装饰器还可以带参数（暂时不记。</p>
+<hr>
+<p>分割，上面讲的是函数的装饰器</p>
+<p>还有<strong>类装饰器</strong></p>
+<p> 使用类装饰器主要依靠类的<code>__call__</code>方法，当使用 @ 形式将装饰器附加到函数上时，就会调用此方法。 </p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, func)</span>:</span></span><br><span class="line">        self._func = func</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">print</span> (<span class="string">'class decorator runing'</span>)</span><br><span class="line">        self._func()</span><br><span class="line">        <span class="keyword">print</span> (<span class="string">'class decorator ending'</span>)</span><br><span class="line"><span class="meta">@Foo</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bar</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">print</span> (<span class="string">'bar'</span>)</span><br><span class="line">bar()</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>python</category>
       </categories>
   </entry>
   <entry>
@@ -455,60 +509,6 @@ V^{\pi}(s)=E[G_t|s_t=s,\pi]\approx \frac{1}{N}\sum_{i=1}^NG^{(i)}_{t}</script><p
 ]]></content>
       <categories>
         <category>强化学习</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>python面向对象</title>
-    <url>/2020/04/21/python%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/</url>
-    <content><![CDATA[<p>看fair gym然后发现我对python里的继承的用法有些误解</p>
-<a id="more"></a>
-<p>使用教程 <a href="https://www.liaoxuefeng.com/wiki/1016959663602400/1017495723838528" target="_blank" rel="noopener">https://www.liaoxuefeng.com/wiki/1016959663602400/1017495723838528</a> </p>
-<p>想要学到知识</p>
-<ul>
-<li>[x] 继承是继承哪些东西，方法和属性？</li>
-<li>[x] 有没有private类</li>
-<li>[ ] 怎么选择继承</li>
-</ul>
-<h2 id="class"><a href="#class" class="headerlink" title="class"></a>class</h2><p>所有类最终的父类都是object</p>
-<p> 如果要让内部属性不被外部访问，可以把属性的名称前加上两个下划线<code>__</code>，在Python中，实例的变量名如果以<code>__</code>开头，就变成了一个私有变量（<strong>private</strong>），只有内部可以访问，外部不能访问 </p>
-<p>看到 <a href="https://blog.csdn.net/brucewong0516/article/details/79119551" target="_blank" rel="noopener">https://blog.csdn.net/brucewong0516/article/details/79119551</a> 中提到<strong>实例方法、静态方法和类方法</strong> </p>
-<p><strong>实例方法</strong></p>
-<p>第一个参数self，可以通过self访问类属性，这个好像我自己常用的方法</p>
-<p><strong>静态方法</strong></p>
-<p>定义的时候使用<code>@staticmethod</code>装饰器，打开了新世界，。。。不需要实例参数也不需要类参数</p>
-<p>看起来很迷幻。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">person</span><span class="params">(object)</span>:</span></span><br><span class="line">    tall = <span class="number">180</span></span><br><span class="line">    hobbies = []</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age,weight)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">        self.weight = weight</span><br><span class="line"><span class="meta">    @staticmethod    #静态方法装饰器</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">infoma</span><span class="params">()</span>:</span>     <span class="comment">#没有参数限制，既不要实例参数，也不用类参数</span></span><br><span class="line">        print(person.tall)</span><br><span class="line">        print(person.hobbies)</span><br><span class="line"><span class="comment">#person.infoma()   #静态法可以通过类名访问</span></span><br><span class="line">Bruce = person(<span class="string">"Bruce"</span>, <span class="number">25</span>,<span class="number">180</span>)   <span class="comment">#通过实例访问</span></span><br><span class="line">Bruce.infoma()</span><br></pre></td></tr></table></figure>
-<p><strong>类方法</strong></p>
-<p>类方法<strong>以cls作为第一个参数</strong>，<strong>cls表示类本身</strong>，定义时<strong>使用@classmethod装饰器</strong>。通过cls可以访问类的相关属性。 </p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">person</span><span class="params">(object)</span>:</span></span><br><span class="line">    tall = <span class="number">180</span></span><br><span class="line">    hobbies = []</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age,weight)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">        self.weight = weight</span><br><span class="line"><span class="meta">    @classmethod     #类的装饰器</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">infoma</span><span class="params">(cls)</span>:</span>   <span class="comment">#cls表示类本身，使用类参数cls</span></span><br><span class="line">        print(cls.__name__)</span><br><span class="line">        print(dir(cls))</span><br><span class="line"><span class="comment">#cls表示类本身</span></span><br><span class="line"><span class="comment">#person.infoma()  直接调用类的装饰器函数，通过cls可以访问类的相关属性</span></span><br><span class="line">Bruce = person(<span class="string">"Bruce"</span>, <span class="number">25</span>,<span class="number">180</span>)   <span class="comment">#也可以通过两步骤来实现，第一步实例化person，第二步调用装饰器</span></span><br><span class="line">Bruce.infoma()</span><br></pre></td></tr></table></figure>
-<p>就像学了假python</p>
-<h2 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h2><p>继承很简单，在定义子类的时候把父类放在括号里就可以</p>
-<p>父类的方法和属性都会被继承</p>
-<p>子类自定义属性、方法可以覆盖父类，实现多态</p>
-<p>这个时候如果要访问父类的属性，可以使用直接通过父类名调用，需要把self传进去不过（有点神奇，这个self应该是子类，相当于把子类传到了父类？）。</p>
-<p>但是这样需要父类名硬编码到子类（忘了啥是硬编码了），所以推荐使用<code>super</code></p>
-<p><code>super(Child,self)</code>，第一个参数子类，第二个参数父类</p>
-<h2 id="装饰器"><a href="#装饰器" class="headerlink" title="装饰器"></a>装饰器</h2><p>这个东西很有趣，顺便学一下， <a href="https://foofish.net/python-decorator.html" target="_blank" rel="noopener">https://foofish.net/python-decorator.html</a> </p>
-<p>装饰器本质上是一个 Python 函数或类，它可以让其他函数或类在不需要做任何代码修改的前提下增加额外功能，装饰器的返回值也是一个函数/类对象。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">use_logging</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">()</span>:</span></span><br><span class="line">        logging.warn(<span class="string">"%s is running"</span> % func.__name__)</span><br><span class="line">        <span class="keyword">return</span> func()   <span class="comment"># 把 foo 当做参数传递进来时，执行func()就相当于执行foo()</span></span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'i am foo'</span>)</span><br><span class="line">foo = use_logging(foo)  <span class="comment"># 因为装饰器 use_logging(foo) 返回的时函数对象 wrapper，这条语句相当于  foo = wrapper</span></span><br><span class="line">foo()                   <span class="comment"># 执行foo()就相当于执行 wrapper()</span></span><br></pre></td></tr></table></figure>
-<p>有点意思，层层套娃</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">use_logging</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">()</span>:</span></span><br><span class="line">        logging.warn(<span class="string">"%s is running"</span> % func.__name__)</span><br><span class="line">        <span class="keyword">return</span> func()</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"><span class="meta">@use_logging</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"i am foo"</span>)</span><br><span class="line">foo()</span><br></pre></td></tr></table></figure>
-<p>这里这个@就替代了上面的foo=use_logging(foo)</p>
-<p>注意这里的foo()是没有参数的</p>
-<p>如果有多个参数</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args)</span>:</span></span><br><span class="line">        logging.warn(<span class="string">"%s is running"</span> % func.__name__)</span><br><span class="line">        <span class="keyword">return</span> func(*args)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br></pre></td></tr></table></figure>
-<p>  foo 函数还定义了一些关键字参数呢？ </p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        <span class="comment"># args是一个数组，kwargs一个字典</span></span><br><span class="line">        logging.warn(<span class="string">"%s is running"</span> % func.__name__)</span><br><span class="line">        <span class="keyword">return</span> func(*args, **kwargs)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br></pre></td></tr></table></figure>
-<p>奇怪的知识又增加了</p>
-<p>装饰器还可以带参数（暂时不记。</p>
-<hr>
-<p>分割，上面讲的是函数的装饰器</p>
-<p>还有<strong>类装饰器</strong></p>
-<p> 使用类装饰器主要依靠类的<code>__call__</code>方法，当使用 @ 形式将装饰器附加到函数上时，就会调用此方法。 </p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, func)</span>:</span></span><br><span class="line">        self._func = func</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">print</span> (<span class="string">'class decorator runing'</span>)</span><br><span class="line">        self._func()</span><br><span class="line">        <span class="keyword">print</span> (<span class="string">'class decorator ending'</span>)</span><br><span class="line"><span class="meta">@Foo</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bar</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">print</span> (<span class="string">'bar'</span>)</span><br><span class="line">bar()</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>python</category>
       </categories>
   </entry>
 </search>
