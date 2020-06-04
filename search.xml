@@ -59,6 +59,88 @@
       </categories>
   </entry>
   <entry>
+    <title>FairnessIsNotStatic</title>
+    <url>/2020/05/06/FairnessIsNotStatic/</url>
+    <content><![CDATA[<h2 id="Fairness-Is-Not-Static"><a href="#Fairness-Is-Not-Static" class="headerlink" title="Fairness Is Not Static"></a>Fairness Is Not Static</h2><h3 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation:"></a>Motivation:</h3><p>当前的Fairness都是静态的，数据都是fixed，而长期动态的环境中，现有的公平算法可能并不适用。</p>
+<h3 id="主要内容："><a href="#主要内容：" class="headerlink" title="主要内容："></a>主要内容：</h3><p>主要介绍了三个 <a href="https://github.com/google/ml-fairness-gym" target="_blank" rel="noopener">ml-fairness-gym</a> 的仿真环境，通过实验与静态的方法对比，发现静态方法在动态环境中可能会有一些问题。</p>
+<a id="more"></a>
+<h3 id="环境介绍"><a href="#环境介绍" class="headerlink" title="环境介绍"></a>环境介绍</h3><h4 id="场景一：Lending"><a href="#场景一：Lending" class="headerlink" title="场景一：Lending"></a>场景一：Lending</h4><p>银行设定阈值来作为是否借款的依据，探究不同的策略带来的长期影响和对不同群体的公平影响。</p>
+<p><strong>Environment</strong>：借款申请人</p>
+<p>两个群体，一个优势，一个劣势。</p>
+<p>可观测群体属性，离散的<strong>信用评分</strong>$C\in1,2,3,..,C_{max}$，假定评分到还款概率$\pi(C)$的映射是固定的，优势群体信用评分的分布要高点。</p>
+<p>成功还款的话，用户信用上涨c+，agent收益上升r+，如果拖欠，信用下降c-，agent收益下降c-。</p>
+<p><strong>Metrics</strong>：信用分布，累计的借贷，总真阳率</p>
+<p><strong>agent</strong>：银行，根据信用评分决定是否借款。</p>
+<p>两种agent：</p>
+<ol>
+<li><p>max-reward</p>
+<p> 寻找阈值最大收益。</p>
+<p> 因为收益的r+和r-都是定值，所以只要期望大于0应该就可以借，$\pi(C)&gt;\tau$。所以阈值是fixed的。</p>
+<p> 前200轮全都借，然后找到固定的阈值。</p>
+</li>
+<li><p>EO</p>
+<p> 对不同的群体使用不同的阈值，在每一步中，在不同群体TPR相同的限制下最大化收益。用随机插值将ROC补成连续。（ROC如何得到是个问题）</p>
+</li>
+</ol>
+<p>还有很多细节还是得看代码里怎么写的</p>
+<p><strong>实验结果</strong></p>
+<p>实验是简化的，EO agent是知道当前信用分布的和对应的概率的，那么阈值-真阳率的图像就好做了</p>
+<p>初始分布如下：</p>
+<p><img src="/2020/05/06/FairnessIsNotStatic/1588856812650.png" alt="1588856812650" style="zoom: 33%;"></p>
+<p>max-reward的方法的结果如下。在论文里有分析，如果经过无穷轮，因为信用一旦低于阈值就永久不再能借款，会导致所有的都到阈值以下。</p>
+<p><img src="/2020/05/06/FairnessIsNotStatic/1588856851070.png" alt="1588856851070" style="zoom:33%;"></p>
+<p>EO的结果如下：</p>
+<p><img src="/2020/05/06/FairnessIsNotStatic/1588857016286.png" alt="1588857016286" style="zoom:33%;"></p>
+<p>EO相对来说分布的差距还变得更大了。</p>
+<p>累计的贷款数量和群体的还款概率如下：</p>
+<p><img src="/2020/05/06/FairnessIsNotStatic/1588857167690.png" alt="1588857167690" style="zoom:50%;"></p>
+<p>可以看出EO agent会给弱势群体更多的福利，但是群体的信用，弱势群体下降的更快。</p>
+<p>下图是EO agent的阈值的设定，和正阳率的一个趋势图。</p>
+<p><img src="/2020/05/06/FairnessIsNotStatic/1588858013328.png" alt="1588858013328" style="zoom:50%;"></p>
+<p>可以看到，对于群体2的阈值设定要更低一点。</p>
+<p>而且TPR即使在每一轮中都相同，最后总的TPR也是不同的，如下图。</p>
+<p><img src="/2020/05/06/FairnessIsNotStatic/1588858182023.png" alt="1588858182023"></p>
+<h4 id="场景二：Attention-Allocation"><a href="#场景二：Attention-Allocation" class="headerlink" title="场景二：Attention  Allocation"></a>场景二：Attention  Allocation</h4><p>Agent分配有限的注意力到多个不同的地方，每个地方有不同的发生事故的概率，探究不同策略带来的长期影响</p>
+<p><strong>Environment</strong>：不同地点，每个地点发生事故的数量满足Poisson分布</p>
+<p>agent要分配N个注意，有K个地方，每个时间t每个地方发生事故的数目为$y_{kt} \sim \rm{Poisson}(r_k,t)$   </p>
+<p>发现的数目为$\hat{y}_{kt}:=\rm{min}(a_{kt},y_{kt})$</p>
+<p>考虑动态情况的话，发生的概率会随着attention的数目改变，$d$为常数</p>
+<p><img src="/2020/05/06/FairnessIsNotStatic/1588900713333.png" alt="1588900713333" style="zoom:50%;"></p>
+<p><strong>Metrics</strong>：</p>
+<p>总的发现数目，总的错过数目（真实世界中比较难得到）</p>
+<p><img src="/2020/05/06/FairnessIsNotStatic/1588900949529.png" alt="1588900949529" style="zoom: 50%;"></p>
+<p>作为公平度量。</p>
+<p><strong>Agent</strong>：</p>
+<p>均匀分配的<em>uniform agent</em></p>
+<p><em>proportional agents</em>通过对$r$的估计值$\hat{r}$，探索策略epsilon-greedy，$\epsilon$的概率均匀分配，$1-\epsilon$的概率按照原计划</p>
+<p>fairness-constrained <em>greedy agent</em>，sequentially的分配，最大化 the probability that the next unit of attention will result in a discovery ， 限制the maximum gap in discovery probabilities   between sites小于$\alpha$</p>
+<p><strong>实验结果</strong></p>
+<p>5地方$[8,6,4,3,1.5]$，6个attention</p>
+<p><img src="/2020/05/06/FairnessIsNotStatic/1588902753228.png" alt="1588902753228"></p>
+<p>静态环境表现差不多，动态环境中，purely greedy发现高，错过的也高，所以并不能只把发现的作为优化目标。</p>
+<p><img src="/2020/05/06/FairnessIsNotStatic/1588905665078.png" alt="1588905665078">purely greedy会过多分配注意在刚刚发现了事故的地方</p>
+<p>公平的测量如下</p>
+<p><img src="/2020/05/06/FairnessIsNotStatic/1588907283086.png" alt="1588907283086"></p>
+<p>uniform的表现较差，proportional epsilon=0.1和greedy alpha=0.75效果比较好</p>
+<h4 id="场景三：college-admission"><a href="#场景三：college-admission" class="headerlink" title="场景三：college admission"></a>场景三：college admission</h4><p>学校要公布选择的规则，申请者可以cost to（可以理解为花费精力）改变分数。是一个Stackleberg博弈。</p>
+<p>探索repeated play和以前的one-shot方法达到的均衡的差别。</p>
+<p>鲁棒性的策略可能会带来公平问题，合格的人也需要发费精力，而且不同的群体的花费是不同的。</p>
+<p><strong>Environment</strong>： agent公布阈值分数$\tau$，环境产生带有ground truth的申请者，这些申请者是理性的，只有改分数能去理想的学校而且cost不是过高才会改分数。</p>
+<p><strong>Agent</strong>：目标是最大化准确度。</p>
+<p><em>static agent</em>前几轮全接受，然后训练一个分类器，使用未更改的(score, label)对，这个label应该是是否合格，但是agent是否知道没说。</p>
+<p><em>robust agent</em>使用以前论文的算法获得一个robust的agent，分类准确率应该是可以达到和未改分情况下一样的准确率。</p>
+<p><em>continuous agent</em>  gathers an initial set of unmanipulated applicants, then continuously retrains a non-robust classifier based on the subsequent manipulated scores and labels that it observes.  </p>
+<p><strong>实验结果</strong></p>
+<p><img src="/2020/05/06/FairnessIsNotStatic/1588927276507.png" alt="1588927276507"></p>
+<p>竖着的几条对应着阈值大小</p>
+<p>其他的曲线表示阈值与准确率，社会负担（合格者需要的花费）的关系，左边是分数和合格之间的关系没有噪声，右边是有噪声。</p>
+<p>可以看到有噪声的情况，即使<em>continuous agent</em>未考虑鲁棒性，结果与鲁棒性agent的结果是一样的。</p>
+]]></content>
+      <categories>
+        <category>强化学习</category>
+      </categories>
+  </entry>
+  <entry>
     <title>fairness-gym搭建</title>
     <url>/2020/04/18/fairness-gym%E6%90%AD%E5%BB%BA/</url>
     <content><![CDATA[<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p> github网址<a href="https://github.com/google/ml-fairness-gym" target="_blank" rel="noopener">https://github.com/google/ml-fairness-gym</a> </p>
@@ -151,82 +233,43 @@
       </categories>
   </entry>
   <entry>
-    <title>FairnessIsNotStatic</title>
-    <url>/2020/05/06/FairnessIsNotStatic/</url>
-    <content><![CDATA[<h2 id="Fairness-Is-Not-Static"><a href="#Fairness-Is-Not-Static" class="headerlink" title="Fairness Is Not Static"></a>Fairness Is Not Static</h2><h3 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation:"></a>Motivation:</h3><p>当前的Fairness都是静态的，数据都是fixed，而长期动态的环境中，现有的公平算法可能并不适用。</p>
-<h3 id="主要内容："><a href="#主要内容：" class="headerlink" title="主要内容："></a>主要内容：</h3><p>主要介绍了三个 <a href="https://github.com/google/ml-fairness-gym" target="_blank" rel="noopener">ml-fairness-gym</a> 的仿真环境，通过实验与静态的方法对比，发现静态方法在动态环境中可能会有一些问题。</p>
+    <title>强化基础复习</title>
+    <url>/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/</url>
+    <content><![CDATA[<p>看李宏毅老师的深度强化会感觉比较东西比较偏应用，正好要看多智体相关的东西，找了张伟楠老师的主页 <a href="http://wnzhang.net/" target="_blank" rel="noopener">http://wnzhang.net/</a> ，顺便复习下</p>
 <a id="more"></a>
-<h3 id="环境介绍"><a href="#环境介绍" class="headerlink" title="环境介绍"></a>环境介绍</h3><h4 id="场景一：Lending"><a href="#场景一：Lending" class="headerlink" title="场景一：Lending"></a>场景一：Lending</h4><p>银行设定阈值来作为是否借款的依据，探究不同的策略带来的长期影响和对不同群体的公平影响。</p>
-<p><strong>Environment</strong>：借款申请人</p>
-<p>两个群体，一个优势，一个劣势。</p>
-<p>可观测群体属性，离散的<strong>信用评分</strong>$C\in1,2,3,..,C_{max}$，假定评分到还款概率$\pi(C)$的映射是固定的，优势群体信用评分的分布要高点。</p>
-<p>成功还款的话，用户信用上涨c+，agent收益上升r+，如果拖欠，信用下降c-，agent收益下降c-。</p>
-<p><strong>Metrics</strong>：信用分布，累计的借贷，总真阳率</p>
-<p><strong>agent</strong>：银行，根据信用评分决定是否借款。</p>
-<p>两种agent：</p>
-<ol>
-<li><p>max-reward</p>
-<p> 寻找阈值最大收益。</p>
-<p> 因为收益的r+和r-都是定值，所以只要期望大于0应该就可以借，$\pi(C)&gt;\tau$。所以阈值是fixed的。</p>
-<p> 前200轮全都借，然后找到固定的阈值。</p>
-</li>
-<li><p>EO</p>
-<p> 对不同的群体使用不同的阈值，在每一步中，在不同群体TPR相同的限制下最大化收益。用随机插值将ROC补成连续。（ROC如何得到是个问题）</p>
-</li>
-</ol>
-<p>还有很多细节还是得看代码里怎么写的</p>
-<p><strong>实验结果</strong></p>
-<p>实验是简化的，EO agent是知道当前信用分布的和对应的概率的，那么阈值-真阳率的图像就好做了</p>
-<p>初始分布如下：</p>
-<p><img src="/2020/05/06/FairnessIsNotStatic/1588856812650.png" alt="1588856812650" style="zoom: 33%;"></p>
-<p>max-reward的方法的结果如下。在论文里有分析，如果经过无穷轮，因为信用一旦低于阈值就永久不再能借款，会导致所有的都到阈值以下。</p>
-<p><img src="/2020/05/06/FairnessIsNotStatic/1588856851070.png" alt="1588856851070" style="zoom:33%;"></p>
-<p>EO的结果如下：</p>
-<p><img src="/2020/05/06/FairnessIsNotStatic/1588857016286.png" alt="1588857016286" style="zoom:33%;"></p>
-<p>EO相对来说分布的差距还变得更大了。</p>
-<p>累计的贷款数量和群体的还款概率如下：</p>
-<p><img src="/2020/05/06/FairnessIsNotStatic/1588857167690.png" alt="1588857167690" style="zoom:50%;"></p>
-<p>可以看出EO agent会给弱势群体更多的福利，但是群体的信用，弱势群体下降的更快。</p>
-<p>下图是EO agent的阈值的设定，和正阳率的一个趋势图。</p>
-<p><img src="/2020/05/06/FairnessIsNotStatic/1588858013328.png" alt="1588858013328" style="zoom:50%;"></p>
-<p>可以看到，对于群体2的阈值设定要更低一点。</p>
-<p>而且TPR即使在每一轮中都相同，最后总的TPR也是不同的，如下图。</p>
-<p><img src="/2020/05/06/FairnessIsNotStatic/1588858182023.png" alt="1588858182023"></p>
-<h4 id="场景二：Attention-Allocation"><a href="#场景二：Attention-Allocation" class="headerlink" title="场景二：Attention  Allocation"></a>场景二：Attention  Allocation</h4><p>Agent分配有限的注意力到多个不同的地方，每个地方有不同的发生事故的概率，探究不同策略带来的长期影响</p>
-<p><strong>Environment</strong>：不同地点，每个地点发生事故的数量满足Poisson分布</p>
-<p>agent要分配N个注意，有K个地方，每个时间t每个地方发生事故的数目为$y_{kt} \sim \rm{Poisson}(r_k,t)$   </p>
-<p>发现的数目为$\hat{y}_{kt}:=\rm{min}(a_{kt},y_{kt})$</p>
-<p>考虑动态情况的话，发生的概率会随着attention的数目改变，$d$为常数</p>
-<p><img src="/2020/05/06/FairnessIsNotStatic/1588900713333.png" alt="1588900713333" style="zoom:50%;"></p>
-<p><strong>Metrics</strong>：</p>
-<p>总的发现数目，总的错过数目（真实世界中比较难得到）</p>
-<p><img src="/2020/05/06/FairnessIsNotStatic/1588900949529.png" alt="1588900949529" style="zoom: 50%;"></p>
-<p>作为公平度量。</p>
-<p><strong>Agent</strong>：</p>
-<p>均匀分配的<em>uniform agent</em></p>
-<p><em>proportional agents</em>通过对$r$的估计值$\hat{r}$，探索策略epsilon-greedy，$\epsilon$的概率均匀分配，$1-\epsilon$的概率按照原计划</p>
-<p>fairness-constrained <em>greedy agent</em>，sequentially的分配，最大化 the probability that the next unit of attention will result in a discovery ， 限制the maximum gap in discovery probabilities   between sites小于$\alpha$</p>
-<p><strong>实验结果</strong></p>
-<p>5地方$[8,6,4,3,1.5]$，6个attention</p>
-<p><img src="/2020/05/06/FairnessIsNotStatic/1588902753228.png" alt="1588902753228"></p>
-<p>静态环境表现差不多，动态环境中，purely greedy发现高，错过的也高，所以并不能只把发现的作为优化目标。</p>
-<p><img src="/2020/05/06/FairnessIsNotStatic/1588905665078.png" alt="1588905665078">purely greedy会过多分配注意在刚刚发现了事故的地方</p>
-<p>公平的测量如下</p>
-<p><img src="/2020/05/06/FairnessIsNotStatic/1588907283086.png" alt="1588907283086"></p>
-<p>uniform的表现较差，proportional epsilon=0.1和greedy alpha=0.75效果比较好</p>
-<h4 id="场景三：college-admission"><a href="#场景三：college-admission" class="headerlink" title="场景三：college admission"></a>场景三：college admission</h4><p>学校要公布选择的规则，申请者可以cost to（可以理解为花费精力）改变分数。是一个Stackleberg博弈。</p>
-<p>探索repeated play和以前的one-shot方法达到的均衡的差别。</p>
-<p>鲁棒性的策略可能会带来公平问题，合格的人也需要发费精力，而且不同的群体的花费是不同的。</p>
-<p><strong>Environment</strong>： agent公布阈值分数$\tau$，环境产生带有ground truth的申请者，这些申请者是理性的，只有改分数能去理想的学校而且cost不是过高才会改分数。</p>
-<p><strong>Agent</strong>：目标是最大化准确度。</p>
-<p><em>static agent</em>前几轮全接受，然后训练一个分类器，使用未更改的(score, label)对，这个label应该是是否合格，但是agent是否知道没说。</p>
-<p><em>robust agent</em>使用以前论文的算法获得一个robust的agent，分类准确率应该是可以达到和未改分情况下一样的准确率。</p>
-<p><em>continuous agent</em>  gathers an initial set of unmanipulated applicants, then continuously retrains a non-robust classifier based on the subsequent manipulated scores and labels that it observes.  </p>
-<p><strong>实验结果</strong></p>
-<p><img src="/2020/05/06/FairnessIsNotStatic/1588927276507.png" alt="1588927276507"></p>
-<p>竖着的几条对应着阈值大小</p>
-<p>其他的曲线表示阈值与准确率，社会负担（合格者需要的花费）的关系，左边是分数和合格之间的关系没有噪声，右边是有噪声。</p>
-<p>可以看到有噪声的情况，即使<em>continuous agent</em>未考虑鲁棒性，结果与鲁棒性agent的结果是一样的。</p>
+<h2 id="bellman-equation-for-value-function"><a href="#bellman-equation-for-value-function" class="headerlink" title="bellman equation for value function"></a>bellman equation for value function</h2><p><img src="/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/1586868221816.png" alt="1586868221816"></p>
+<p>$P_{s\pi}$ is state transition. At state s, use policy pi</p>
+<p>Optimal value function:</p>
+<p><img src="/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/1586868369635.png" alt="1586868369635"></p>
+<h2 id="值函数迭代-amp-策略迭代"><a href="#值函数迭代-amp-策略迭代" class="headerlink" title="值函数迭代&amp;策略迭代"></a>值函数迭代&amp;策略迭代</h2><p><img src="/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/1586917042173.png" alt="1586917042173"></p>
+<p>需要已知转移矩阵和reward function</p>
+<p>这里的reward在这里应该是假设只依赖于状态s</p>
+<p>动态规划：</p>
+<p><img src="/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/1586941139436.png" alt="1586941139436" style="zoom:33%;"></p>
+<h2 id="model-free"><a href="#model-free" class="headerlink" title="model free"></a>model free</h2><h3 id="model-free-prediction"><a href="#model-free-prediction" class="headerlink" title="model-free prediction"></a>model-free prediction</h3><p><strong>MC</strong></p>
+<script type="math/tex; mode=display">
+G_t=R_{t+1}+\gamma R_{t+2}+...+\gamma^{T-1}R_{T}</script><script type="math/tex; mode=display">
+V^{\pi}(s)=E[G_t|s_t=s,\pi]\approx \frac{1}{N}\sum_{i=1}^NG^{(i)}_{t}</script><p><img src="/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/1586919493957.png" alt="1586919493957" style="zoom:33%;"></p>
+<p><img src="/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/1586940567481.png" alt="1586940567481" style="zoom:33%;"></p>
+<p><strong>TD</strong></p>
+<p><img src="/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/1586919744733.png" alt="1586919744733" style="zoom:33%;"></p>
+<p><img src="/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/1586940746277.png" alt="1586940746277" style="zoom:33%;"></p>
+<h3 id="model-free-control"><a href="#model-free-control" class="headerlink" title="model-free control"></a>model-free control</h3><p><strong>$\epsilon$-greedy</strong></p>
+<p><img src="/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/1587038476938.png" alt="1587038476938" style="zoom:33%;"></p>
+<p>前面的mc和td的目的是估计出值函数，<strong>control是为了得到最优的policy</strong></p>
+<p><strong>mc control</strong></p>
+<p><img src="/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/1586954094046.png" alt="1586954094046" style="zoom:33%;"></p>
+<p><strong>SARSA</strong></p>
+<p>state-action-reward-state-action  </p>
+<p><img src="/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/1587038173717.png" alt="1587038173717" style="zoom:33%;"></p>
+<p>可以看到，这里是一个q的预测并不是control，但是q func得到之后就很容易得到pi，因为对于同一个s，选择最大的q(s,a)就可以了</p>
+<p>在线学习版本：</p>
+<p><img src="/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/1587039060349.png" alt="1587039060349"></p>
+<p>似乎sarsa没有看到有用off-policy的，离线的可能就是q-learning了</p>
+<p><strong>Q-learning</strong></p>
+<p>可以参看之前的Q-learning（1）里面的q-learning，与本文的表示方式稍微有点不一样</p>
+<p><img src="/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/1587040735589.png" alt="1587040735589" style="zoom:33%;"></p>
+<p>这里的$\mu$是 交互的策略</p>
 ]]></content>
       <categories>
         <category>强化学习</category>
@@ -284,120 +327,6 @@
 ]]></content>
       <categories>
         <category>python</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>强化学习PPO</title>
-    <url>/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/</url>
-    <content><![CDATA[<h2 id="Policy-Gradient"><a href="#Policy-Gradient" class="headerlink" title="Policy Gradient"></a>Policy Gradient</h2><h3 id="basic"><a href="#basic" class="headerlink" title="basic"></a>basic</h3><p>每一个eposide记录为$\tau$</p>
-<p><img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/4155986-0da7e5f276ec5aca.webp" style="zoom:80%;"></p>
-<p><img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583120692790.png" alt="1583120692790" style="zoom: 33%;"></p>
- <a id="more"></a> 
-<p>$p_\theta(\tau)$是按策略参数为$\theta$得到这样一个trajectory的概率</p>
-<p><img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583120878285.png" alt="1583120878285" style="zoom: 33%;"></p>
-<p>要提高这个期望，使用梯度上升，对$\theta$求梯度使用上式中的中间这个求和形式，使用技巧</p>
-<script type="math/tex; mode=display">
-\bigtriangledown f(x) = f(x)\bigtriangledown \log{f(x)}</script><p>这样可以转化为概率采样的形式，</p>
-<script type="math/tex; mode=display">
-\begin{aligned} 
-\bigtriangledown\overline{R_\theta} & =\bigtriangledown\sum_{\tau}{R(\tau)p_\theta(\tau)}
-\\& = \sum_\tau{R(\tau)p_\theta(\tau)\bigtriangledown \log{p_\theta(\tau)}}
-\\& = E_{\tau\sim p_\theta}(R(\tau)\bigtriangledown{\log{p_\theta(\tau)}})
-\\& \approx \frac{1}{N}\sum_{n=1}^N{R(\tau^n)\bigtriangledown{\log{p_\theta(\tau^n)}}}
-\\& = \frac{1}{N}\sum_{n=1}^{N}\sum_{t=1}^{T_n}R(\tau^n)\bigtriangledown{\log{p_\theta (a_t^n|s_t^n)}}
-\end{aligned}</script><p>最后一行中因为我们的梯度不关心$p(s_{t+1}|s_t,a_t)$所以直接忽略掉，$R(\tau^n)$应该放在积分号中间也可以。</p>
-<p>我们可以看到这个梯度与$\theta$有关，所以每次更新梯度，都需要重新采样N次，也就是需要与环境交互，跑一个$\tau$出来，然后更新梯度，然后就需要重新再交互，这相当于是on-policy，换成off-policy就是PPO。</p>
-<p>进行ppo之前先有两个tips。</p>
-<h4 id="tip-1-add-a-base-line"><a href="#tip-1-add-a-base-line" class="headerlink" title="tip 1: add a base line"></a>tip 1: add a base line</h4><p>PG方法在更新策略时，基本思想就是增加reward大的动作出现的概率，减小reward小的策略出现的概率。假设现在有一种情况，我们的reward在无论何时都是正的，对于没有采样到的动作，它的reward是0。因此，如果一个比较好的动作没有被采样到，而采样到的不好的动作得到了一个比较小的正reward，那么没有被采样到的好动作的出现概率会越来越小，这显然是不合适的，因此我们需要增加一个奖励的基线，让reward有正有负。 增加的基线是所获得奖励的平均值b。</p>
-<p><img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583136617036.png" alt="1583136617036" style="zoom:33%;"></p>
-<h4 id="tip-2-Assign-Suitable-Credit"><a href="#tip-2-Assign-Suitable-Credit" class="headerlink" title="tip 2: Assign Suitable Credit"></a>tip 2: Assign Suitable Credit</h4><p>当前动作之后获得的奖励才重要</p>
-<p><img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583137118284.png" alt="1583137118284" style="zoom:33%;"></p>
-<p>添加一个discount，前面那个系数可以用Advantage Function表示：$A^\theta(s_t,a_t)$</p>
-<p>这个相当于在时间t之后得到的<em>价值总和</em>（忘了专业名词叫啥了）</p>
-<p><img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583137342234.png" alt="1583137342234" style="zoom:33%;"></p>
-<h3 id="Proximal-Policy-Optimization"><a href="#Proximal-Policy-Optimization" class="headerlink" title="Proximal Policy Optimization"></a>Proximal Policy Optimization</h3><p>采用重要性采样</p>
-<p><img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583137476846.png" alt="1583137476846" style="zoom:33%;"></p>
-<p>可以从p的分布采样，换到从q的分布采样，需要注意，p和q的分布差异不能太大，因为虽然上式的均值相同，但是方差不同，还是会有影响。</p>
-<script type="math/tex; mode=display">
-\bigtriangledown\overline{R_\theta}= \frac{1}{N}\sum_{n=1}^{N}\sum_{t=1}^{T_n}R(\tau^n)\bigtriangledown{\log{p_\theta (a_t^n|s_t^n)}}</script><p><img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583151524298.png" alt="1583151524298" style="zoom:33%;"><img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583137724390.png" alt="1583137724390" style="zoom:33%;"></p>
-<p>这里为什么是从$\pi_\theta$中sample出$(s_t,a_t)$怪不清楚的，现在的理解是</p>
-<p>我们需要控制$\theta$和$\theta’$相似，使用KL divergence，这里肯定比较的是$p_\theta(\bullet|s)$和$p_{\theta’}(\bullet|s)$的距离</p>
-<p><img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583151733566.png" alt="1583151733566" style="zoom:33%;"></p>
-<p><img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583151778726.png" alt="1583151778726" style="zoom:33%;"></p>
-<p>算法流程：</p>
-<ul>
-<li>Initial policy parameters $\theta^0$</li>
-<li>In each iteration <ul>
-<li>Using $\theta^k$ to interact with the environment to collect $s_t,a_t$  and compute advantage $A^{\theta^k}(s_t,a_t)$</li>
-<li>Find $\theta$ optimizeing $J^{\theta^k}(\theta)-\beta KL(\theta,\theta^k)$ <img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583152327757.png" alt="1583152327757" style="zoom: 50%;"></li>
-</ul>
-</li>
-</ul>
-<p>上面这些 来自于<a href="http://speech.ee.ntu.edu.tw/~tlkagk/courses/MLDS_2018/Lecture/PPO (v3" target="_blank" rel="noopener">李宏毅课程</a>.pdf) 。</p>
-<p>有几点没有懂</p>
-<ul>
-<li>新的策略需要凑一条条完整的流程$\tau$吗</li>
-<li>advantage function 应该怎么计算</li>
-<li>为什么要优化函数J</li>
-</ul>
-<p>更正：</p>
-<p>重新看了下课程，之前弄错了，$\theta’$才是与环境交互的:smile:</p>
-<p>优化的J的原因是，$\bigtriangledown f(x) = f(x)\bigtriangledown \log{f(x)}$相当于原函数是f(x)，也就是这里的J</p>
-<p>在算kl divergence的时候，把所有sample到的$s_t$都算下两个model的输出的区别，这个好像还比较麻烦，具体怎么处理还不清楚</p>
-<h4 id="TRPO"><a href="#TRPO" class="headerlink" title="TRPO"></a>TRPO</h4><p>简单写下PPO的前身，更麻烦的处理方式，TRPO讲KL divergence项作为一个constrain，不在optimize项里面。</p>
-<h4 id="PPO2"><a href="#PPO2" class="headerlink" title="PPO2"></a>PPO2</h4><p>PPO2 提出了不用计算KL Divergence的方法</p>
-<p><img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583206637985.png" alt="1583206637985" style="zoom:67%;"></p>
-<p>clip的意思是如果$p_\theta$和$p_{\theta’}$ 的比值如果小于$1-\varepsilon$则等于$1-\varepsilon$。</p>
-<p>图中横轴是clip里的第一项纵轴是输出结果。</p>
-<p>具体算法流程：</p>
-<p><img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583284441674.png" alt="1583284441674"></p>
-<p>可以看到在训练过程中，是需要再学一个value function去估测advantage的。</p>
-]]></content>
-      <categories>
-        <category>强化学习</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>强化基础复习</title>
-    <url>/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/</url>
-    <content><![CDATA[<p>看李宏毅老师的深度强化会感觉比较东西比较偏应用，正好要看多智体相关的东西，找了张伟楠老师的主页 <a href="http://wnzhang.net/" target="_blank" rel="noopener">http://wnzhang.net/</a> ，顺便复习下</p>
-<a id="more"></a>
-<h2 id="bellman-equation-for-value-function"><a href="#bellman-equation-for-value-function" class="headerlink" title="bellman equation for value function"></a>bellman equation for value function</h2><p><img src="/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/1586868221816.png" alt="1586868221816"></p>
-<p>$P_{s\pi}$ is state transition. At state s, use policy pi</p>
-<p>Optimal value function:</p>
-<p><img src="/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/1586868369635.png" alt="1586868369635"></p>
-<h2 id="值函数迭代-amp-策略迭代"><a href="#值函数迭代-amp-策略迭代" class="headerlink" title="值函数迭代&amp;策略迭代"></a>值函数迭代&amp;策略迭代</h2><p><img src="/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/1586917042173.png" alt="1586917042173"></p>
-<p>需要已知转移矩阵和reward function</p>
-<p>这里的reward在这里应该是假设只依赖于状态s</p>
-<p>动态规划：</p>
-<p><img src="/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/1586941139436.png" alt="1586941139436" style="zoom:33%;"></p>
-<h2 id="model-free"><a href="#model-free" class="headerlink" title="model free"></a>model free</h2><h3 id="model-free-prediction"><a href="#model-free-prediction" class="headerlink" title="model-free prediction"></a>model-free prediction</h3><p><strong>MC</strong></p>
-<script type="math/tex; mode=display">
-G_t=R_{t+1}+\gamma R_{t+2}+...+\gamma^{T-1}R_{T}</script><script type="math/tex; mode=display">
-V^{\pi}(s)=E[G_t|s_t=s,\pi]\approx \frac{1}{N}\sum_{i=1}^NG^{(i)}_{t}</script><p><img src="/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/1586919493957.png" alt="1586919493957" style="zoom:33%;"></p>
-<p><img src="/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/1586940567481.png" alt="1586940567481" style="zoom:33%;"></p>
-<p><strong>TD</strong></p>
-<p><img src="/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/1586919744733.png" alt="1586919744733" style="zoom:33%;"></p>
-<p><img src="/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/1586940746277.png" alt="1586940746277" style="zoom:33%;"></p>
-<h3 id="model-free-control"><a href="#model-free-control" class="headerlink" title="model-free control"></a>model-free control</h3><p><strong>$\epsilon$-greedy</strong></p>
-<p><img src="/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/1587038476938.png" alt="1587038476938" style="zoom:33%;"></p>
-<p>前面的mc和td的目的是估计出值函数，<strong>control是为了得到最优的policy</strong></p>
-<p><strong>mc control</strong></p>
-<p><img src="/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/1586954094046.png" alt="1586954094046" style="zoom:33%;"></p>
-<p><strong>SARSA</strong></p>
-<p>state-action-reward-state-action  </p>
-<p><img src="/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/1587038173717.png" alt="1587038173717" style="zoom:33%;"></p>
-<p>可以看到，这里是一个q的预测并不是control，但是q func得到之后就很容易得到pi，因为对于同一个s，选择最大的q(s,a)就可以了</p>
-<p>在线学习版本：</p>
-<p><img src="/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/1587039060349.png" alt="1587039060349"></p>
-<p>似乎sarsa没有看到有用off-policy的，离线的可能就是q-learning了</p>
-<p><strong>Q-learning</strong></p>
-<p>可以参看之前的Q-learning（1）里面的q-learning，与本文的表示方式稍微有点不一样</p>
-<p><img src="/2020/04/14/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/1587040735589.png" alt="1587040735589" style="zoom:33%;"></p>
-<p>这里的$\mu$是 交互的策略</p>
-]]></content>
-      <categories>
-        <category>强化学习</category>
       </categories>
   </entry>
   <entry>
@@ -506,6 +435,77 @@ V^{\pi}(s)=E[G_t|s_t=s,\pi]\approx \frac{1}{N}\sum_{i=1}^NG^{(i)}_{t}</script><p
 <h4 id="4-5异步动态规划"><a href="#4-5异步动态规划" class="headerlink" title="4.5异步动态规划"></a>4.5异步动态规划</h4><p>之前的DP的一大缺点在于，它涉及到对整个状态集的操作，也就是说，他需要对整个状态集进行遍历，如果状态集合很大，哪怕单次遍历，开销也是无法承受的。</p>
 <p>异步DP算法是一种就地迭代的算法，随机选择状态值就行更新，可能一个状态值被更新一次，另外一些已经被更新多次。但只要保证，某个时间点，所有状态值都被更新，它终会收敛。</p>
 <p>一种典型的异步更新是，在价值迭代的基础上，每次只更新一个状态sk的值，而不是遍历状态集合。</p>
+]]></content>
+      <categories>
+        <category>强化学习</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>强化学习PPO</title>
+    <url>/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/</url>
+    <content><![CDATA[<h2 id="Policy-Gradient"><a href="#Policy-Gradient" class="headerlink" title="Policy Gradient"></a>Policy Gradient</h2><h3 id="basic"><a href="#basic" class="headerlink" title="basic"></a>basic</h3><p>每一个eposide记录为$\tau$</p>
+<p><img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/4155986-0da7e5f276ec5aca.webp" style="zoom:80%;"></p>
+<p><img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583120692790.png" alt="1583120692790" style="zoom: 33%;"></p>
+ <a id="more"></a> 
+<p>$p_\theta(\tau)$是按策略参数为$\theta$得到这样一个trajectory的概率</p>
+<p><img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583120878285.png" alt="1583120878285" style="zoom: 33%;"></p>
+<p>要提高这个期望，使用梯度上升，对$\theta$求梯度使用上式中的中间这个求和形式，使用技巧</p>
+<script type="math/tex; mode=display">
+\bigtriangledown f(x) = f(x)\bigtriangledown \log{f(x)}</script><p>这样可以转化为概率采样的形式，</p>
+<script type="math/tex; mode=display">
+\begin{aligned} 
+\bigtriangledown\overline{R_\theta} & =\bigtriangledown\sum_{\tau}{R(\tau)p_\theta(\tau)}
+\\& = \sum_\tau{R(\tau)p_\theta(\tau)\bigtriangledown \log{p_\theta(\tau)}}
+\\& = E_{\tau\sim p_\theta}(R(\tau)\bigtriangledown{\log{p_\theta(\tau)}})
+\\& \approx \frac{1}{N}\sum_{n=1}^N{R(\tau^n)\bigtriangledown{\log{p_\theta(\tau^n)}}}
+\\& = \frac{1}{N}\sum_{n=1}^{N}\sum_{t=1}^{T_n}R(\tau^n)\bigtriangledown{\log{p_\theta (a_t^n|s_t^n)}}
+\end{aligned}</script><p>最后一行中因为我们的梯度不关心$p(s_{t+1}|s_t,a_t)$所以直接忽略掉，$R(\tau^n)$应该放在积分号中间也可以。</p>
+<p>我们可以看到这个梯度与$\theta$有关，所以每次更新梯度，都需要重新采样N次，也就是需要与环境交互，跑一个$\tau$出来，然后更新梯度，然后就需要重新再交互，这相当于是on-policy，换成off-policy就是PPO。</p>
+<p>进行ppo之前先有两个tips。</p>
+<h4 id="tip-1-add-a-base-line"><a href="#tip-1-add-a-base-line" class="headerlink" title="tip 1: add a base line"></a>tip 1: add a base line</h4><p>PG方法在更新策略时，基本思想就是增加reward大的动作出现的概率，减小reward小的策略出现的概率。假设现在有一种情况，我们的reward在无论何时都是正的，对于没有采样到的动作，它的reward是0。因此，如果一个比较好的动作没有被采样到，而采样到的不好的动作得到了一个比较小的正reward，那么没有被采样到的好动作的出现概率会越来越小，这显然是不合适的，因此我们需要增加一个奖励的基线，让reward有正有负。 增加的基线是所获得奖励的平均值b。</p>
+<p><img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583136617036.png" alt="1583136617036" style="zoom:33%;"></p>
+<h4 id="tip-2-Assign-Suitable-Credit"><a href="#tip-2-Assign-Suitable-Credit" class="headerlink" title="tip 2: Assign Suitable Credit"></a>tip 2: Assign Suitable Credit</h4><p>当前动作之后获得的奖励才重要</p>
+<p><img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583137118284.png" alt="1583137118284" style="zoom:33%;"></p>
+<p>添加一个discount，前面那个系数可以用Advantage Function表示：$A^\theta(s_t,a_t)$</p>
+<p>这个相当于在时间t之后得到的<em>价值总和</em>（忘了专业名词叫啥了）</p>
+<p><img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583137342234.png" alt="1583137342234" style="zoom:33%;"></p>
+<h3 id="Proximal-Policy-Optimization"><a href="#Proximal-Policy-Optimization" class="headerlink" title="Proximal Policy Optimization"></a>Proximal Policy Optimization</h3><p>采用重要性采样</p>
+<p><img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583137476846.png" alt="1583137476846" style="zoom:33%;"></p>
+<p>可以从p的分布采样，换到从q的分布采样，需要注意，p和q的分布差异不能太大，因为虽然上式的均值相同，但是方差不同，还是会有影响。</p>
+<script type="math/tex; mode=display">
+\bigtriangledown\overline{R_\theta}= \frac{1}{N}\sum_{n=1}^{N}\sum_{t=1}^{T_n}R(\tau^n)\bigtriangledown{\log{p_\theta (a_t^n|s_t^n)}}</script><p><img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583151524298.png" alt="1583151524298" style="zoom:33%;"><img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583137724390.png" alt="1583137724390" style="zoom:33%;"></p>
+<p>这里为什么是从$\pi_\theta$中sample出$(s_t,a_t)$怪不清楚的，现在的理解是</p>
+<p>我们需要控制$\theta$和$\theta’$相似，使用KL divergence，这里肯定比较的是$p_\theta(\bullet|s)$和$p_{\theta’}(\bullet|s)$的距离</p>
+<p><img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583151733566.png" alt="1583151733566" style="zoom:33%;"></p>
+<p><img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583151778726.png" alt="1583151778726" style="zoom:33%;"></p>
+<p>算法流程：</p>
+<ul>
+<li>Initial policy parameters $\theta^0$</li>
+<li>In each iteration <ul>
+<li>Using $\theta^k$ to interact with the environment to collect $s_t,a_t$  and compute advantage $A^{\theta^k}(s_t,a_t)$</li>
+<li>Find $\theta$ optimizeing $J^{\theta^k}(\theta)-\beta KL(\theta,\theta^k)$ <img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583152327757.png" alt="1583152327757" style="zoom: 50%;"></li>
+</ul>
+</li>
+</ul>
+<p>上面这些 来自于<a href="http://speech.ee.ntu.edu.tw/~tlkagk/courses/MLDS_2018/Lecture/PPO (v3" target="_blank" rel="noopener">李宏毅课程</a>.pdf) 。</p>
+<p>有几点没有懂</p>
+<ul>
+<li>新的策略需要凑一条条完整的流程$\tau$吗</li>
+<li>advantage function 应该怎么计算</li>
+<li>为什么要优化函数J</li>
+</ul>
+<p>更正：</p>
+<p>重新看了下课程，之前弄错了，$\theta’$才是与环境交互的:smile:</p>
+<p>优化的J的原因是，$\bigtriangledown f(x) = f(x)\bigtriangledown \log{f(x)}$相当于原函数是f(x)，也就是这里的J</p>
+<p>在算kl divergence的时候，把所有sample到的$s_t$都算下两个model的输出的区别，这个好像还比较麻烦，具体怎么处理还不清楚</p>
+<h4 id="TRPO"><a href="#TRPO" class="headerlink" title="TRPO"></a>TRPO</h4><p>简单写下PPO的前身，更麻烦的处理方式，TRPO讲KL divergence项作为一个constrain，不在optimize项里面。</p>
+<h4 id="PPO2"><a href="#PPO2" class="headerlink" title="PPO2"></a>PPO2</h4><p>PPO2 提出了不用计算KL Divergence的方法</p>
+<p><img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583206637985.png" alt="1583206637985" style="zoom:67%;"></p>
+<p>clip的意思是如果$p_\theta$和$p_{\theta’}$ 的比值如果小于$1-\varepsilon$则等于$1-\varepsilon$。</p>
+<p>图中横轴是clip里的第一项纵轴是输出结果。</p>
+<p>具体算法流程：</p>
+<p><img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583284441674.png" alt="1583284441674"></p>
+<p>可以看到在训练过程中，是需要再学一个value function去估测advantage的。</p>
 ]]></content>
       <categories>
         <category>强化学习</category>
