@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="5ix8u43_u8wpPrJALYJjx6xtb9gOXrKi0Km9ovoaQe0" />
+  <meta name="baidu-site-verification" content="O4crfwLGyH" />
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"chuyun-shen.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Ch1.1-Ch1.6：崔昊川 https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_41608822&#x2F;article&#x2F;details&#x2F;105902504 Ch2.1-Ch2.4：韦国梁 见正文 Ch2.5-Ch2.8：崔昊川 https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_41608822&#x2F;article&#x2F;details&#x2F;105928928 Ch3.1-Ch3.3：韦国梁 见正文">
+<meta property="og:type" content="article">
+<meta property="og:title" content="强化学习读书（1.1-6.3）">
+<meta property="og:url" content="https://chuyun-shen.github.io/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/index.html">
+<meta property="og:site_name" content="云似乎在学习">
+<meta property="og:description" content="Ch1.1-Ch1.6：崔昊川 https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_41608822&#x2F;article&#x2F;details&#x2F;105902504 Ch2.1-Ch2.4：韦国梁 见正文 Ch2.5-Ch2.8：崔昊川 https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_41608822&#x2F;article&#x2F;details&#x2F;105928928 Ch3.1-Ch3.3：韦国梁 见正文">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image002-1591233462658.jpg">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image004-1591233462658.jpg">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image006-1591233462658.jpg">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image008-1591233462658.jpg">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image010-1591233462658.jpg">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image012-1591233462658.jpg">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image014-1591233462658.jpg">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image016-1591233462658.jpg">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image002.jpg">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image004.jpg">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image006.jpg">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image008.png">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image002-1591233191615.jpg">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image004-1591233191615.jpg">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image006-1591233191615.jpg">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image008.jpg">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image010.jpg">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image012.jpg">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image014.jpg">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image016.jpg">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image018.jpg">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image020.jpg">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image022.jpg">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image024.jpg">
+<meta property="article:published_time" content="2020-06-04T01:01:09.000Z">
+<meta property="article:modified_time" content="2020-06-04T01:19:45.710Z">
+<meta property="article:author" content="Chinsoyun">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://chuyun-shen.github.io/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image002-1591233462658.jpg">
+
+<link rel="canonical" href="https://chuyun-shen.github.io/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>强化学习读书（1.1-6.3） | 云似乎在学习</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">云似乎在学习</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://chuyun-shen.github.io/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Chinsoyun">
+      <meta itemprop="description" content="除了混乱还有什么是稳定的呢？">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="云似乎在学习">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          强化学习读书（1.1-6.3）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-06-04 09:01:09 / 修改时间：09:19:45" itemprop="dateCreated datePublished" datetime="2020-06-04T09:01:09+08:00">2020-06-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">强化学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><strong>Ch1.1-Ch1.6</strong>：崔昊川</p>
+<p><a href="https://blog.csdn.net/qq_41608822/article/details/105902504" target="_blank" rel="noopener">https://blog.csdn.net/qq_41608822/article/details/105902504</a></p>
+<p><strong>Ch2.1-Ch2.4</strong>：韦国梁</p>
+<p>见正文</p>
+<p><strong>Ch2.5-Ch2.8</strong>：崔昊川</p>
+<p><a href="https://blog.csdn.net/qq_41608822/article/details/105928928" target="_blank" rel="noopener">https://blog.csdn.net/qq_41608822/article/details/105928928</a></p>
+<p><strong>Ch3.1-Ch3.3</strong>：韦国梁</p>
+<p>见正文</p>
+<a id="more"></a>
+<p><strong>Ch3.4-Ch3.8</strong>：崔昊川</p>
+<p><a href="https://blog.csdn.net/qq_41608822/article/details/106187983" target="_blank" rel="noopener">https://blog.csdn.net/qq_41608822/article/details/106187983</a></p>
+<p><strong>Ch4.1-Ch4.5</strong>：韦国梁</p>
+<p>见正文</p>
+<p><strong>Ch4.6-Ch5.2</strong>：崔昊川</p>
+<p><a href="https://blog.csdn.net/qq_41608822/article/details/106289904" target="_blank" rel="noopener">https://blog.csdn.net/qq_41608822/article/details/106289904</a> </p>
+<p><strong>Ch5.8-Ch6.3</strong>：崔昊川</p>
+<p><a href="https://blog.csdn.net/qq_41608822/article/details/106468105" target="_blank" rel="noopener">https://blog.csdn.net/qq_41608822/article/details/106468105</a> </p>
+<hr>
+<h4 id="2-1-A-k-Armed-Bandit-Problem"><a href="#2-1-A-k-Armed-Bandit-Problem" class="headerlink" title="2.1 A k-Armed Bandit Problem"></a>2.1 A k-Armed Bandit Problem</h4><p>在k-手臂匪徒问题中， 你每次面临k个不同选项或操作中的选择。 在每次选择后，你会收到一个数值奖励，该数值奖励取决于您选择的行动的平稳概率分布。 你的目标是最大化某段时间内的预期总回报，例如，超过1000个动作选择或时间步骤。</p>
+<p> 在我们的k-手臂匪徒问题中，考虑到该行动被选中，k个行动中的每一个行动都具有预期的或平均的奖励; 现在让我们将其称之为该行动的价值。 我们表示在时间步骤 t 选择的行动为 At ，相应的回报为 Rt 。 q∗(a)表示为任意行为的值是 a的时候， 选择时的期望回报：</p>
+<p><img src="/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image002-1591233462658.jpg" alt="img"></p>
+<p>如果我们知道每个action对应的value，那么我们只需要每次都选择最高的那个value对应的action即可，但事实却是我们在玩游戏之前，不知道每个action确切的value，我们可以通过多次测试来估计每个action的value,将t 时刻的action a对应的估计价值（estimated value) 记作 Qt(a) ,我们的目标是使得 Qt(a)尽可能的接近q∗(a),然后根据Qt(a)选择 a.</p>
+<h4 id="2-2-Action-Value-Methods"><a href="#2-2-Action-Value-Methods" class="headerlink" title="2.2 Action-Value Methods"></a><strong>2.2 Action-Value Methods</strong></h4><p>最简单的value 估计方式就是sample-average（采样平均），即</p>
+<p><img src="/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image004-1591233462658.jpg" alt="img">其中，</p>
+<p><img src="/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image006-1591233462658.jpg" alt="img"></p>
+<p>简单来说就是对每个action a对应的奖励做平均。通过增加实验次数，当实验次数趋于无穷大时，Qt(a) 趋于 q∗(a)</p>
+<p><strong>greedy 与 ϵ-greedy</strong></p>
+<p>greedy方法：</p>
+<p>如果我们每次都选择最大value对应的action，即</p>
+<p><img src="/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image008-1591233462658.jpg" alt="img"></p>
+<p>那么我们采取的是greedy policy。</p>
+<p>ϵ-greedy：</p>
+<p>如果我们会在一些时间内选择最大value对应action外的其他action，则表明我们对环境进行了Exploration。ϵ-greedy方法在greedy方法基础上进行改进：</p>
+<p><img src="/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image010-1591233462658.jpg" alt="img"></p>
+<h4 id="2-3-The-10-armed-Testbed"><a href="#2-3-The-10-armed-Testbed" class="headerlink" title="2.3 The 10-armed Testbed"></a><strong>2.3 The 10-armed Testbed</strong></h4><p><img src="/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image012-1591233462658.jpg" alt="img"></p>
+<p>要评测强化学习的优劣，需要一个模型，the 10-arm testbed就是其中一个，可以一次在2000组上进行评测，在每一组中，每一组有一个独立的模型，每一次选择a对应的reward是通过q*(a)的一个高斯分布来返回的，然后再所有组上的表现可以代表我们算法的平均行为。</p>
+<p><img src="/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image014-1591233462658.jpg" alt="img"></p>
+<p>上图简单来说代表了greedy和ϵ-greedy的优劣。通常来说，两种方法都会随着探索次数增加，效果越来越好。Greedy方法可能刚开始比其他更快，但是长远来看，由于短时，不探索的原因，最后效果不如ϵ-greedy。</p>
+<p>通常来说，如果任务方差小，greedy表现更好，反之ϵ-greedy表现更好。所以在实际中，两种方法需要在exploration 和exploitation之间找到平衡。</p>
+<h4 id="2-4-Incremental-Implementation"><a href="#2-4-Incremental-Implementation" class="headerlink" title="2.4 Incremental Implementation"></a><strong>2.4 Incremental Implementation</strong></h4><p>上一节介绍的sample average方法是将所有的历史信息全部记录下来然后求平均，如果历史记忆很长，甚至无限，那么直接求解将受到内存和运行时间的限制。下面将结合数学中的迭代思想推导出增量式的求解方法，该方法仅耗费固定大小的内存，且可以单步更新。</p>
+<p>为了简化表达，我们只关注一个action,假设Ri是第 i 次选择这个action所获得的reward， 将这个action第n 次被选择的estimate value表示为Qn+1，</p>
+<p><img src="/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image016-1591233462658.jpg" alt="img"></p>
+<hr>
+<h4 id="3-1-“智能体-环境”交互接口"><a href="#3-1-“智能体-环境”交互接口" class="headerlink" title="3.1 “智能体-环境”交互接口"></a>3.1 “智能体-环境”交互接口</h4><p>有限马尔可夫决策过程MDP是一种通过交互式学习来实现目标的理论框架，包含以下元素：</p>
+<p>智体：实施决策的机器</p>
+<p>环境: 智体之外所有与其相互作用的事务</p>
+<p>收益：智体选择交互后，环境会呈现新的状态，并且产生收益，智体的目标是最大化累计收益。</p>
+<p><img src="/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image002.jpg" alt="img"></p>
+<p>有限马尔可夫性：</p>
+<p>St和Rt的每个可能的值出现的概率只取决于前一个状态St-1和前一个动作At-1，并且与更早之前的状态和动作无关。</p>
+<p>基于以上特性，可以推出以下四个公式：</p>
+<p>随机变量Rt和St的概率分布：</p>
+<p>P（s’,r|s,a）=Pr{St=s’,Rt=r|St-1=s,At-1=a}</p>
+<p>状态转移概率：</p>
+<p><img src="/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image004.jpg" alt="img"></p>
+<p>状态-动作 二元组的期望收益：</p>
+<p><img src="/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image006.jpg" alt="img"></p>
+<p>状态-动作-后继状态 三元组的期望收益：</p>
+<p><img src="/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image008.png" alt="img"></p>
+<h4 id="3-2-目标和收益"><a href="#3-2-目标和收益" class="headerlink" title="3.2 目标和收益"></a><strong>3.2</strong> <strong>目标和收益</strong></h4><p>在强化学习中，智能体的目标被形式化表征为一种特殊的信号，称为收益，通过环境传递给智能体。</p>
+<p>我们所有的目标都可以归结为：最大化智能体接收到的标量信号（收益）累积和的概率期望值。</p>
+<p>一般的，我们将目标设定为取得最大收益时的情况，不可以将收益设定为完成目标的先验知识。举例：在国际象棋中，如果设定吃子为收益，而不是达成胜利，智能体可能为了尽可能多的吃子，达成最大收益而输掉比赛。</p>
+<h4 id="3-3-回报和分幕"><a href="#3-3-回报和分幕" class="headerlink" title="3.3 回报和分幕"></a><strong>3.3</strong> <strong>回报和分幕</strong></h4><p>在有终止情况的任务下，比如下棋，智能体和环境交互可以被自然的分成一系列子系列，每个包含终止情况的子系列称为幕。</p>
+<p>对于分慕情况，优化目标为：</p>
+<p>Gt=Rt+1 + Rt+2 + Rt+3 + Rt+4 +…+RT</p>
+<p>T为终止时刻</p>
+<p>而对于无法分幕的连续过程，优化目标调整为：</p>
+<p>Gt=Rt+1 + yRt+2 +y^2Rt+3+…</p>
+<p>Gt=Rt+1+yGt+1</p>
+<p>其中</p>
+<p>0&lt;=y&lt;=1</p>
+<p>y称为折扣率，引入折扣率是防止G趋于无穷大。折扣率决定了未来收益的现值：未来时刻k的收益率只有它的当前值的y^（k-1）倍。y越小，智能体越关注当前收益，y越大，智能体相对越有远见，关注未来收益/</p>
+<p> 本章节主要介绍了基于动态规划来求解最优策略。</p>
+<hr>
+<h4 id="4-1策略评估"><a href="#4-1策略评估" class="headerlink" title="4.1策略评估"></a>4.1策略评估</h4><p> 对于策略Π，其状态价值函数定义如下：</p>
+<p><img src="/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image002-1591233191615.jpg" alt="img"></p>
+<p>其中，Π（a|s）代表策略，即状态s情况下，选取行动a的概率，由智能体决定。</p>
+<p><img src="/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image004-1591233191615.jpg" alt="img">为转移概率，是系统的动态特性。</p>
+<p>理论上，知道了系统的动态特性和用户的策略，则基于上述公式，仅有状态价值函数为未知数，而对s个状态，有s个等式，可以直接求解，但是由于计算繁琐，采用迭代法求解。</p>
+<p>其中，初始化时，除了终止状态的价值函数为0，其余均可以是随机数，采用以下式子迭代：</p>
+<p><img src="/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image006-1591233191615.jpg" alt="img"></p>
+<p>理论上k趋于无穷，终会收敛，但是我们可以在变化很小的时候就停止计算。计算流程如下：</p>
+<p><img src="/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image008.jpg" alt="img"></p>
+<h4 id="4-2策略改进"><a href="#4-2策略改进" class="headerlink" title="4.2策略改进"></a>4.2策略改进</h4><p>知道了给定策略下的价值函数，则可以对策略进行改进。</p>
+<p>考虑一种情况，在s状态下，选择新的策略，其余状态下保持策略Π不变，则此动作的价值函数为，</p>
+<p><img src="/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image010.jpg" alt="img"> </p>
+<p>由于其余状态下的策略都一样，要评判策略Π’是否优于策略Π，关键在于判断</p>
+<p><img src="/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image012.jpg" alt="img"></p>
+<p>如果上式成立，则<img src="/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image014.jpg" alt="img"></p>
+<p>证明如下：</p>
+<p><img src="/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image016.jpg" alt="img"></p>
+<p>所以证明了，一个策略，如果在一个状态下的动作优于另一个状态下的动作，其余 状态下动作相同，则此策略优于后者策略。由此我们可以使用一种贪心法来求解最优策略，在每个状态选取价值函数最高的动作，不断更新策略。由于动作空间有限，必然可以找到最优策略。</p>
+<p><img src="/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image018.jpg" alt="img"></p>
+<h4 id="4-3策略迭代"><a href="#4-3策略迭代" class="headerlink" title="4.3策略迭代"></a>4.3策略迭代</h4><p><img src="/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image020.jpg" alt="img"></p>
+<p>在每个策略中，使用策略评估，计算当前策略的价值函数，然后通过策略改进，得到一个更优的策略，在新的策略中，又需要使用策略评估来收敛，依次循环。</p>
+<p>由于一个有限MDP必然只有有限种策略，所以在有限次策略迭代中，必然收敛到最有策略。</p>
+<p>流程如下图：</p>
+<p><img src="/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image022.jpg" alt="img"></p>
+<h4 id="4-4价值迭代"><a href="#4-4价值迭代" class="headerlink" title="4.4价值迭代"></a>4.4价值迭代</h4><p>策略迭代的一个缺点是，每次迭代都要使用策略评估，策略评估的收敛非常耗时，可不可以不等策略vΠ收敛就进行策略改进呢？一种特例是，每次评估，只对每个状态更新一次，这种更新方式叫价值迭代。公式如下：</p>
+<p><img src="/2020/06/04/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%BB%E4%B9%A6/clip_image024.jpg" alt="img"></p>
+<h4 id="4-5异步动态规划"><a href="#4-5异步动态规划" class="headerlink" title="4.5异步动态规划"></a>4.5异步动态规划</h4><p>之前的DP的一大缺点在于，它涉及到对整个状态集的操作，也就是说，他需要对整个状态集进行遍历，如果状态集合很大，哪怕单次遍历，开销也是无法承受的。</p>
+<p>异步DP算法是一种就地迭代的算法，随机选择状态值就行更新，可能一个状态值被更新一次，另外一些已经被更新多次。但只要保证，某个时间点，所有状态值都被更新，它终会收敛。</p>
+<p>一种典型的异步更新是，在价值迭代的基础上，每次只更新一个状态sk的值，而不是遍历状态集合。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/05/06/FairnessIsNotStatic/" rel="prev" title="FairnessIsNotStatic">
+      <i class="fa fa-chevron-left"></i> FairnessIsNotStatic
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-A-k-Armed-Bandit-Problem"><span class="nav-number">1.</span> <span class="nav-text">2.1 A k-Armed Bandit Problem</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-Action-Value-Methods"><span class="nav-number">2.</span> <span class="nav-text">2.2 Action-Value Methods</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-The-10-armed-Testbed"><span class="nav-number">3.</span> <span class="nav-text">2.3 The 10-armed Testbed</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-Incremental-Implementation"><span class="nav-number">4.</span> <span class="nav-text">2.4 Incremental Implementation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-“智能体-环境”交互接口"><span class="nav-number">5.</span> <span class="nav-text">3.1 “智能体-环境”交互接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-目标和收益"><span class="nav-number">6.</span> <span class="nav-text">3.2 目标和收益</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-回报和分幕"><span class="nav-number">7.</span> <span class="nav-text">3.3 回报和分幕</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1策略评估"><span class="nav-number">8.</span> <span class="nav-text">4.1策略评估</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2策略改进"><span class="nav-number">9.</span> <span class="nav-text">4.2策略改进</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3策略迭代"><span class="nav-number">10.</span> <span class="nav-text">4.3策略迭代</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-4价值迭代"><span class="nav-number">11.</span> <span class="nav-text">4.4价值迭代</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-5异步动态规划"><span class="nav-number">12.</span> <span class="nav-text">4.5异步动态规划</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Chinsoyun</p>
+  <div class="site-description" itemprop="description">除了混乱还有什么是稳定的呢？</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Chinsoyun</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="5ix8u43_u8wpPrJALYJjx6xtb9gOXrKi0Km9ovoaQe0" />
+  <meta name="baidu-site-verification" content="O4crfwLGyH" />
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"chuyun-shen.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Policy Gradientbasic每一个eposide记录为$\tau$">
+<meta property="og:type" content="article">
+<meta property="og:title" content="强化学习PPO">
+<meta property="og:url" content="https://chuyun-shen.github.io/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/index.html">
+<meta property="og:site_name" content="云似乎在学习">
+<meta property="og:description" content="Policy Gradientbasic每一个eposide记录为$\tau$">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/4155986-0da7e5f276ec5aca.webp">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583120692790.png">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583120878285.png">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583136617036.png">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583137118284.png">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583137342234.png">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583137476846.png">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583151524298.png">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583137724390.png">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583151733566.png">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583151778726.png">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583152327757.png">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583206637985.png">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583284441674.png">
+<meta property="article:published_time" content="2020-04-09T04:20:16.700Z">
+<meta property="article:modified_time" content="2020-04-09T09:31:14.501Z">
+<meta property="article:author" content="Chinsoyun">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://chuyun-shen.github.io/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/4155986-0da7e5f276ec5aca.webp">
+
+<link rel="canonical" href="https://chuyun-shen.github.io/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>强化学习PPO | 云似乎在学习</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">云似乎在学习</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://chuyun-shen.github.io/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Chinsoyun">
+      <meta itemprop="description" content="除了混乱还有什么是稳定的呢？">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="云似乎在学习">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          强化学习PPO
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-04-09 12:20:16 / 修改时间：17:31:14" itemprop="dateCreated datePublished" datetime="2020-04-09T12:20:16+08:00">2020-04-09</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">强化学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Policy-Gradient"><a href="#Policy-Gradient" class="headerlink" title="Policy Gradient"></a>Policy Gradient</h2><h3 id="basic"><a href="#basic" class="headerlink" title="basic"></a>basic</h3><p>每一个eposide记录为$\tau$</p>
+<p><img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/4155986-0da7e5f276ec5aca.webp" style="zoom:80%;"></p>
+<p><img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583120692790.png" alt="1583120692790" style="zoom: 33%;"></p>
+ <a id="more"></a> 
+<p>$p_\theta(\tau)$是按策略参数为$\theta$得到这样一个trajectory的概率</p>
+<p><img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583120878285.png" alt="1583120878285" style="zoom: 33%;"></p>
+<p>要提高这个期望，使用梯度上升，对$\theta$求梯度使用上式中的中间这个求和形式，使用技巧</p>
+<script type="math/tex; mode=display">
+\bigtriangledown f(x) = f(x)\bigtriangledown \log{f(x)}</script><p>这样可以转化为概率采样的形式，</p>
+<script type="math/tex; mode=display">
+\begin{aligned} 
+\bigtriangledown\overline{R_\theta} & =\bigtriangledown\sum_{\tau}{R(\tau)p_\theta(\tau)}
+\\& = \sum_\tau{R(\tau)p_\theta(\tau)\bigtriangledown \log{p_\theta(\tau)}}
+\\& = E_{\tau\sim p_\theta}(R(\tau)\bigtriangledown{\log{p_\theta(\tau)}})
+\\& \approx \frac{1}{N}\sum_{n=1}^N{R(\tau^n)\bigtriangledown{\log{p_\theta(\tau^n)}}}
+\\& = \frac{1}{N}\sum_{n=1}^{N}\sum_{t=1}^{T_n}R(\tau^n)\bigtriangledown{\log{p_\theta (a_t^n|s_t^n)}}
+\end{aligned}</script><p>最后一行中因为我们的梯度不关心$p(s_{t+1}|s_t,a_t)$所以直接忽略掉，$R(\tau^n)$应该放在积分号中间也可以。</p>
+<p>我们可以看到这个梯度与$\theta$有关，所以每次更新梯度，都需要重新采样N次，也就是需要与环境交互，跑一个$\tau$出来，然后更新梯度，然后就需要重新再交互，这相当于是on-policy，换成off-policy就是PPO。</p>
+<p>进行ppo之前先有两个tips。</p>
+<h4 id="tip-1-add-a-base-line"><a href="#tip-1-add-a-base-line" class="headerlink" title="tip 1: add a base line"></a>tip 1: add a base line</h4><p>PG方法在更新策略时，基本思想就是增加reward大的动作出现的概率，减小reward小的策略出现的概率。假设现在有一种情况，我们的reward在无论何时都是正的，对于没有采样到的动作，它的reward是0。因此，如果一个比较好的动作没有被采样到，而采样到的不好的动作得到了一个比较小的正reward，那么没有被采样到的好动作的出现概率会越来越小，这显然是不合适的，因此我们需要增加一个奖励的基线，让reward有正有负。 增加的基线是所获得奖励的平均值b。</p>
+<p><img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583136617036.png" alt="1583136617036" style="zoom:33%;"></p>
+<h4 id="tip-2-Assign-Suitable-Credit"><a href="#tip-2-Assign-Suitable-Credit" class="headerlink" title="tip 2: Assign Suitable Credit"></a>tip 2: Assign Suitable Credit</h4><p>当前动作之后获得的奖励才重要</p>
+<p><img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583137118284.png" alt="1583137118284" style="zoom:33%;"></p>
+<p>添加一个discount，前面那个系数可以用Advantage Function表示：$A^\theta(s_t,a_t)$</p>
+<p>这个相当于在时间t之后得到的<em>价值总和</em>（忘了专业名词叫啥了）</p>
+<p><img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583137342234.png" alt="1583137342234" style="zoom:33%;"></p>
+<h3 id="Proximal-Policy-Optimization"><a href="#Proximal-Policy-Optimization" class="headerlink" title="Proximal Policy Optimization"></a>Proximal Policy Optimization</h3><p>采用重要性采样</p>
+<p><img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583137476846.png" alt="1583137476846" style="zoom:33%;"></p>
+<p>可以从p的分布采样，换到从q的分布采样，需要注意，p和q的分布差异不能太大，因为虽然上式的均值相同，但是方差不同，还是会有影响。</p>
+<script type="math/tex; mode=display">
+\bigtriangledown\overline{R_\theta}= \frac{1}{N}\sum_{n=1}^{N}\sum_{t=1}^{T_n}R(\tau^n)\bigtriangledown{\log{p_\theta (a_t^n|s_t^n)}}</script><p><img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583151524298.png" alt="1583151524298" style="zoom:33%;"><img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583137724390.png" alt="1583137724390" style="zoom:33%;"></p>
+<p>这里为什么是从$\pi_\theta$中sample出$(s_t,a_t)$怪不清楚的，现在的理解是</p>
+<p>我们需要控制$\theta$和$\theta’$相似，使用KL divergence，这里肯定比较的是$p<em>\theta(\bullet|s)$和$p</em>{\theta’}(\bullet|s)$的距离</p>
+<p><img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583151733566.png" alt="1583151733566" style="zoom:33%;"></p>
+<p><img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583151778726.png" alt="1583151778726" style="zoom:33%;"></p>
+<p>算法流程：</p>
+<ul>
+<li>Initial policy parameters $\theta^0$</li>
+<li>In each iteration <ul>
+<li>Using $\theta^k$ to interact with the environment to collect $s_t,a_t$  and compute advantage $A^{\theta^k}(s_t,a_t)$</li>
+<li>Find $\theta$ optimizeing $J^{\theta^k}(\theta)-\beta KL(\theta,\theta^k)$ <img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583152327757.png" alt="1583152327757" style="zoom: 50%;"></li>
+</ul>
+</li>
+</ul>
+<p>上面这些 来自于<a href="http://speech.ee.ntu.edu.tw/~tlkagk/courses/MLDS_2018/Lecture/PPO (v3" target="_blank" rel="noopener">李宏毅课程</a>.pdf) 。</p>
+<p>有几点没有懂</p>
+<ul>
+<li>新的策略需要凑一条条完整的流程$\tau$吗</li>
+<li>advantage function 应该怎么计算</li>
+<li>为什么要优化函数J</li>
+</ul>
+<p>更正：</p>
+<p>重新看了下课程，之前弄错了，$\theta’$才是与环境交互的:smile:</p>
+<p>优化的J的原因是，$\bigtriangledown f(x) = f(x)\bigtriangledown \log{f(x)}$相当于原函数是f(x)，也就是这里的J</p>
+<p>在算kl divergence的时候，把所有sample到的$s_t$都算下两个model的输出的区别，这个好像还比较麻烦，具体怎么处理还不清楚</p>
+<h4 id="TRPO"><a href="#TRPO" class="headerlink" title="TRPO"></a>TRPO</h4><p>简单写下PPO的前身，更麻烦的处理方式，TRPO讲KL divergence项作为一个constrain，不在optimize项里面。</p>
+<h4 id="PPO2"><a href="#PPO2" class="headerlink" title="PPO2"></a>PPO2</h4><p>PPO2 提出了不用计算KL Divergence的方法</p>
+<p><img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583206637985.png" alt="1583206637985" style="zoom:67%;"></p>
+<p>clip的意思是如果$p<em>\theta$和$p</em>{\theta’}$ 的比值如果小于$1-\varepsilon$则等于$1-\varepsilon$。</p>
+<p>图中横轴是clip里的第一项纵轴是输出结果。</p>
+<p>具体算法流程：</p>
+<p><img src="/2020/04/09/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0PPO/1583284441674.png" alt="1583284441674"></p>
+<p>可以看到在训练过程中，是需要再学一个value function去估测advantage的。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/04/09/Q-learning%EF%BC%881%EF%BC%89/" rel="next" title="Q-learning（1）">
+      Q-learning（1） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Policy-Gradient"><span class="nav-number">1.</span> <span class="nav-text">Policy Gradient</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#basic"><span class="nav-number">1.1.</span> <span class="nav-text">basic</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#tip-1-add-a-base-line"><span class="nav-number">1.1.1.</span> <span class="nav-text">tip 1: add a base line</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tip-2-Assign-Suitable-Credit"><span class="nav-number">1.1.2.</span> <span class="nav-text">tip 2: Assign Suitable Credit</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Proximal-Policy-Optimization"><span class="nav-number">1.2.</span> <span class="nav-text">Proximal Policy Optimization</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#TRPO"><span class="nav-number">1.2.1.</span> <span class="nav-text">TRPO</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PPO2"><span class="nav-number">1.2.2.</span> <span class="nav-text">PPO2</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Chinsoyun</p>
+  <div class="site-description" itemprop="description">除了混乱还有什么是稳定的呢？</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Chinsoyun</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
