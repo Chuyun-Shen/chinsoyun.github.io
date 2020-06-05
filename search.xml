@@ -101,9 +101,6 @@
 <p>WOB和Combined方法更有可能到达最优（文章没有严格的证明）</p>
 <p><strong>总结思考</strong>：考虑公平在这篇文章上没有太大用处，因为本文的场景所有agent只有一个reward，只需要让reward更大，所以更多的考虑探索过程，如何有效的探索并且能让agent达成共识，在这个场景下可能直接使用一个agent，把action分成多维度可能更好。</p>
 ]]></content>
-      <tags>
-        <tag>MAS</tag>
-      </tags>
   </entry>
   <entry>
     <title>Q-learning（1）</title>
@@ -506,6 +503,20 @@ V^{\pi}(s)=E[G_t|s_t=s,\pi]\approx \frac{1}{N}\sum_{i=1}^NG^{(i)}_{t}</script><p
 <h4 id="4-5异步动态规划"><a href="#4-5异步动态规划" class="headerlink" title="4.5异步动态规划"></a>4.5异步动态规划</h4><p>之前的DP的一大缺点在于，它涉及到对整个状态集的操作，也就是说，他需要对整个状态集进行遍历，如果状态集合很大，哪怕单次遍历，开销也是无法承受的。</p>
 <p>异步DP算法是一种就地迭代的算法，随机选择状态值就行更新，可能一个状态值被更新一次，另外一些已经被更新多次。但只要保证，某个时间点，所有状态值都被更新，它终会收敛。</p>
 <p>一种典型的异步更新是，在价值迭代的基础上，每次只更新一个状态sk的值，而不是遍历状态集合。</p>
+]]></content>
+      <categories>
+        <category>强化学习</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>强化学习经典论文</title>
+    <url>/2020/06/04/%E5%BC%BA%E5%8C%96%E5%9F%BA%E7%A1%80%E8%AE%BA%E6%96%87/</url>
+    <content><![CDATA[<h4 id="DQN"><a href="#DQN" class="headerlink" title="DQN"></a>DQN</h4><p><a href="https://b23.tv/yVNMMJ" target="_blank" rel="noopener">https://b23.tv/yVNMMJ</a></p>
+<h4 id="DuelingDQN"><a href="#DuelingDQN" class="headerlink" title="DuelingDQN"></a>DuelingDQN</h4><p><a href="https://b23.tv/vL5GwU" target="_blank" rel="noopener">https://b23.tv/vL5GwU</a></p>
+<h4 id="DRQN"><a href="#DRQN" class="headerlink" title="DRQN"></a>DRQN</h4><p><a href="https://b23.tv/hm2Sp3" target="_blank" rel="noopener">https://b23.tv/hm2Sp3</a></p>
+<h4 id="DPG"><a href="#DPG" class="headerlink" title="DPG"></a>DPG</h4><p><a href="https://b23.tv/fcfmRJ" target="_blank" rel="noopener">https://b23.tv/fcfmRJ</a></p>
+<h4 id="DDPG"><a href="#DDPG" class="headerlink" title="DDPG"></a>DDPG</h4><p><a href="https://b23.tv/JubzBq" target="_blank" rel="noopener">https://b23.tv/JubzBq</a></p>
+<a id="more"></a>
 ]]></content>
       <categories>
         <category>强化学习</category>
