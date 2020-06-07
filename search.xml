@@ -5,7 +5,7 @@
     <url>/2020/06/05/PER/</url>
     <content><![CDATA[<p>paper:</p>
 <p><a href="https://arxiv.org/abs/1511.05952" target="_blank" rel="noopener">https://arxiv.org/abs/1511.05952</a> </p>
-<h3 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation:"></a>Motivation:</h3><p>Experience transitions were uniformly, sampled from a replay memory. However, this approach simply replays transitions at the same frequency that they were originally experienced, regardless of their significance.   </p>
+<h3 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h3><p>Experience transitions were uniformly, sampled from a replay memory. However, this approach simply replays transitions at the same frequency that they were originally experienced, regardless of their significance.   </p>
 <a id="more"></a>
 <h3 id="Main-idea"><a href="#Main-idea" class="headerlink" title="Main idea:"></a>Main idea:</h3><p>Some transitions may not be immediately useful to the agent, They propose to more frequently replay transitions with high expected learning progress, as measured by the <strong>magnitude of their TD error</strong>.  This prioritization can lead to <strong>a loss of diversity</strong>, which they alleviate with stochastic prioritization, and introduce bias, which they correct with <strong>importance sampling</strong>.   </p>
 <h3 id="Methods"><a href="#Methods" class="headerlink" title="Methods:"></a>Methods:</h3><p>Goal is choosing which experience to replay.</p>
@@ -38,7 +38,7 @@
 <p>Update Q value using wiδi instead of δi.</p>
 <p>In practice, we linearly anneal β from its initial value β0 to 1.   </p>
 <h4 id="ALGORITHM"><a href="#ALGORITHM" class="headerlink" title="ALGORITHM"></a>ALGORITHM</h4><p><img src="/2020/06/05/PER/1591447080765.png" alt="1591447080765"></p>
-<h4 id="ATARI-EXPERIMENTS"><a href="#ATARI-EXPERIMENTS" class="headerlink" title="ATARI EXPERIMENTS"></a>ATARI EXPERIMENTS</h4><p>Average score per episode  </p>
+<h3 id="ATARI-EXPERIMENTS"><a href="#ATARI-EXPERIMENTS" class="headerlink" title="ATARI EXPERIMENTS"></a>ATARI EXPERIMENTS</h3><p>Average score per episode  </p>
 <p><img src="/2020/06/05/PER/1591496100348.png" alt="1591496100348"></p>
 <p>The learning speed  </p>
 <p><img src="/2020/06/05/PER/1591496215490.png" alt="1591496215490"></p>
