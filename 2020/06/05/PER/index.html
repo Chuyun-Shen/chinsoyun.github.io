@@ -22,17 +22,29 @@
     var CONFIG = {"hostname":"chuyun-shen.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="除了混乱还有什么是稳定的呢？">
+  <meta name="description" content="paper: https:&#x2F;&#x2F;arxiv.org&#x2F;abs&#x2F;1511.05952  Motivation:Experience transitions were uniformly, sampled from a replay memory. However, this approach simply replays transitions at the same frequency that th">
 <meta property="og:type" content="article">
 <meta property="og:title" content="PER">
 <meta property="og:url" content="https://chuyun-shen.github.io/2020/06/05/PER/index.html">
 <meta property="og:site_name" content="云似乎在学习">
-<meta property="og:description" content="除了混乱还有什么是稳定的呢？">
+<meta property="og:description" content="paper: https:&#x2F;&#x2F;arxiv.org&#x2F;abs&#x2F;1511.05952  Motivation:Experience transitions were uniformly, sampled from a replay memory. However, this approach simply replays transitions at the same frequency that th">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/06/05/PER/1591347439913.png">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/06/05/PER/1591358362455.png">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/06/05/PER/1591362874248.png">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/06/05/PER/1591412006698.png">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/06/05/PER/1591412121080.png">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/06/05/PER/1591412202069.png">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/06/05/PER/1591412465369.png">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/06/05/PER/1591444087261.png">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/06/05/PER/1591447080765.png">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/06/05/PER/1591496100348.png">
+<meta property="og:image" content="https://chuyun-shen.github.io/2020/06/05/PER/1591496215490.png">
 <meta property="article:published_time" content="2020-06-05T08:11:23.000Z">
-<meta property="article:modified_time" content="2020-06-05T08:11:23.859Z">
+<meta property="article:modified_time" content="2020-06-07T02:18:21.940Z">
 <meta property="article:author" content="Chinsoyun">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://chuyun-shen.github.io/2020/06/05/PER/1591347439913.png">
 
 <link rel="canonical" href="https://chuyun-shen.github.io/2020/06/05/PER/">
 
@@ -210,6 +222,22 @@
 
               <time title="创建时间：2020-06-05 16:11:23" itemprop="dateCreated datePublished" datetime="2020-06-05T16:11:23+08:00">2020-06-05</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-06-07 10:18:21" itemprop="dateModified" datetime="2020-06-07T10:18:21+08:00">2020-06-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">强化学习</span></a>
+                </span>
+            </span>
 
           
             <span id="/2020/06/05/PER/" class="post-meta-item leancloud_visitors" data-flag-title="PER" title="阅读次数">
@@ -229,7 +257,46 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        
+        <p>paper:</p>
+<p><a href="https://arxiv.org/abs/1511.05952" target="_blank" rel="noopener">https://arxiv.org/abs/1511.05952</a> </p>
+<h3 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation:"></a>Motivation:</h3><p>Experience transitions were uniformly, sampled from a replay memory. However, this approach simply replays transitions at the same frequency that they were originally experienced, regardless of their significance.   </p>
+<a id="more"></a>
+<h3 id="Main-idea"><a href="#Main-idea" class="headerlink" title="Main idea:"></a>Main idea:</h3><p>Some transitions may not be immediately useful to the agent, They propose to more frequently replay transitions with high expected learning progress, as measured by the <strong>magnitude of their TD error</strong>.  This prioritization can lead to <strong>a loss of diversity</strong>, which they alleviate with stochastic prioritization, and introduce bias, which they correct with <strong>importance sampling</strong>.   </p>
+<h3 id="Methods"><a href="#Methods" class="headerlink" title="Methods:"></a>Methods:</h3><p>Goal is choosing which experience to replay.</p>
+<h4 id="example-‘Blind-Cliffwalk’"><a href="#example-‘Blind-Cliffwalk’" class="headerlink" title="example:  ‘Blind Cliffwalk’"></a>example:  ‘Blind Cliffwalk’</h4><p><img src="/2020/06/05/PER/1591347439913.png" alt="1591347439913" style="zoom:50%;"></p>
+<p><strong>reward</strong>: The green arrow reward is 1, others 0</p>
+<p><strong>action</strong>: “wrong”: The dashed arrow, and the episode is terminated whenever the agent takes the ‘wrong’ action.</p>
+<p>“right”:   Taking the ‘right’ action progresses through a sequence of n states (black arrows), at the end of which lies a final reward of 1 (green arrow)  </p>
+<p><strong>Feature</strong>: the successes are rare.</p>
+<p><strong>Uniform agent and oracle agent</strong>:</p>
+<p>Uniform agent sample form buffer,</p>
+<p>Oracle greedily selects the transition that maximally reduces the global loss in its current state (in hindsight, after the parameter update).  (not realistic)</p>
+<p><img src="/2020/06/05/PER/1591358362455.png" alt="1591358362455" style="zoom:67%;"></p>
+<p>Median number of learning steps required to learn the value function as a function of the size of the total<br>number of transitions in the replay memory.   </p>
+<h4 id="PRIORITIZING-WITH-TD-ERROR"><a href="#PRIORITIZING-WITH-TD-ERROR" class="headerlink" title="PRIORITIZING WITH TD-ERROR"></a>PRIORITIZING WITH TD-ERROR</h4><p>The tuple stored is (st,at,rt,st+1,TD-error)</p>
+<p>When we use Q-learning, we would get TD-error. </p>
+<p>New transitions arrive without a known TD-error, so we put them at maximal priority in order to guarantee that all experience is seen at least once.</p>
+<p><img src="/2020/06/05/PER/1591362874248.png" alt="1591362874248" style="zoom:60%;">  </p>
+<p>this algorithm results in a substantial reduction in the effort required to solve the Blind Cliffwalk task.</p>
+<h4 id="STOCHASTIC-PRIORITIZATION"><a href="#STOCHASTIC-PRIORITIZATION" class="headerlink" title="STOCHASTIC PRIORITIZATION"></a>STOCHASTIC PRIORITIZATION</h4><p>Greedy prioritization is lack of diversity that makes the system prone to over-fitting.</p>
+<p>Stochastic prioritization’s probability:</p>
+<p><img src="/2020/06/05/PER/1591412006698.png" alt="1591412006698" style="zoom:67%;"> </p>
+<p>Two variant:</p>
+<p>1)</p>
+<p><img src="/2020/06/05/PER/1591412121080.png" alt="1591412121080" style="zoom:67%;"></p>
+<p>2)</p>
+<p><img src="/2020/06/05/PER/1591412202069.png" alt="1591412202069" style="zoom: 80%;"></p>
+<p><img src="/2020/06/05/PER/1591412465369.png" alt="1591412465369" style="zoom:67%;"></p>
+<h4 id="ANNEALING-THE-BIAS"><a href="#ANNEALING-THE-BIAS" class="headerlink" title="ANNEALING THE BIAS"></a>ANNEALING THE BIAS</h4><p>Prioritized replay introduces bias, and bias can be corrected this bias by using importance-sampling (IS) weights </p>
+<p><img src="/2020/06/05/PER/1591444087261.png" alt="1591444087261" style="zoom:50%;"></p>
+<p>Update Q value using wiδi instead of δi.</p>
+<p>In practice, we linearly anneal β from its initial value β0 to 1.   </p>
+<h4 id="ALGORITHM"><a href="#ALGORITHM" class="headerlink" title="ALGORITHM"></a>ALGORITHM</h4><p><img src="/2020/06/05/PER/1591447080765.png" alt="1591447080765"></p>
+<h4 id="ATARI-EXPERIMENTS"><a href="#ATARI-EXPERIMENTS" class="headerlink" title="ATARI EXPERIMENTS"></a>ATARI EXPERIMENTS</h4><p>Average score per episode  </p>
+<p><img src="/2020/06/05/PER/1591496100348.png" alt="1591496100348"></p>
+<p>The learning speed  </p>
+<p><img src="/2020/06/05/PER/1591496215490.png" alt="1591496215490"></p>
+
     </div>
 
     
@@ -306,6 +373,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Motivation"><span class="nav-number">1.</span> <span class="nav-text">Motivation:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Main-idea"><span class="nav-number">2.</span> <span class="nav-text">Main idea:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Methods"><span class="nav-number">3.</span> <span class="nav-text">Methods:</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#example-‘Blind-Cliffwalk’"><span class="nav-number">3.1.</span> <span class="nav-text">example:  ‘Blind Cliffwalk’</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PRIORITIZING-WITH-TD-ERROR"><span class="nav-number">3.2.</span> <span class="nav-text">PRIORITIZING WITH TD-ERROR</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#STOCHASTIC-PRIORITIZATION"><span class="nav-number">3.3.</span> <span class="nav-text">STOCHASTIC PRIORITIZATION</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ANNEALING-THE-BIAS"><span class="nav-number">3.4.</span> <span class="nav-text">ANNEALING THE BIAS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ALGORITHM"><span class="nav-number">3.5.</span> <span class="nav-text">ALGORITHM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ATARI-EXPERIMENTS"><span class="nav-number">3.6.</span> <span class="nav-text">ATARI EXPERIMENTS</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

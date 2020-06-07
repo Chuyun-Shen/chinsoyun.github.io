@@ -3,7 +3,49 @@
   <entry>
     <title>PER</title>
     <url>/2020/06/05/PER/</url>
-    <content><![CDATA[]]></content>
+    <content><![CDATA[<p>paper:</p>
+<p><a href="https://arxiv.org/abs/1511.05952" target="_blank" rel="noopener">https://arxiv.org/abs/1511.05952</a> </p>
+<h3 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation:"></a>Motivation:</h3><p>Experience transitions were uniformly, sampled from a replay memory. However, this approach simply replays transitions at the same frequency that they were originally experienced, regardless of their significance.   </p>
+<a id="more"></a>
+<h3 id="Main-idea"><a href="#Main-idea" class="headerlink" title="Main idea:"></a>Main idea:</h3><p>Some transitions may not be immediately useful to the agent, They propose to more frequently replay transitions with high expected learning progress, as measured by the <strong>magnitude of their TD error</strong>.  This prioritization can lead to <strong>a loss of diversity</strong>, which they alleviate with stochastic prioritization, and introduce bias, which they correct with <strong>importance sampling</strong>.   </p>
+<h3 id="Methods"><a href="#Methods" class="headerlink" title="Methods:"></a>Methods:</h3><p>Goal is choosing which experience to replay.</p>
+<h4 id="example-‘Blind-Cliffwalk’"><a href="#example-‘Blind-Cliffwalk’" class="headerlink" title="example:  ‘Blind Cliffwalk’"></a>example:  ‘Blind Cliffwalk’</h4><p><img src="/2020/06/05/PER/1591347439913.png" alt="1591347439913" style="zoom:50%;"></p>
+<p><strong>reward</strong>: The green arrow reward is 1, others 0</p>
+<p><strong>action</strong>: “wrong”: The dashed arrow, and the episode is terminated whenever the agent takes the ‘wrong’ action.</p>
+<p>“right”:   Taking the ‘right’ action progresses through a sequence of n states (black arrows), at the end of which lies a final reward of 1 (green arrow)  </p>
+<p><strong>Feature</strong>: the successes are rare.</p>
+<p><strong>Uniform agent and oracle agent</strong>:</p>
+<p>Uniform agent sample form buffer,</p>
+<p>Oracle greedily selects the transition that maximally reduces the global loss in its current state (in hindsight, after the parameter update).  (not realistic)</p>
+<p><img src="/2020/06/05/PER/1591358362455.png" alt="1591358362455" style="zoom:67%;"></p>
+<p>Median number of learning steps required to learn the value function as a function of the size of the total<br>number of transitions in the replay memory.   </p>
+<h4 id="PRIORITIZING-WITH-TD-ERROR"><a href="#PRIORITIZING-WITH-TD-ERROR" class="headerlink" title="PRIORITIZING WITH TD-ERROR"></a>PRIORITIZING WITH TD-ERROR</h4><p>The tuple stored is (st,at,rt,st+1,TD-error)</p>
+<p>When we use Q-learning, we would get TD-error. </p>
+<p>New transitions arrive without a known TD-error, so we put them at maximal priority in order to guarantee that all experience is seen at least once.</p>
+<p><img src="/2020/06/05/PER/1591362874248.png" alt="1591362874248" style="zoom:60%;">  </p>
+<p>this algorithm results in a substantial reduction in the effort required to solve the Blind Cliffwalk task.</p>
+<h4 id="STOCHASTIC-PRIORITIZATION"><a href="#STOCHASTIC-PRIORITIZATION" class="headerlink" title="STOCHASTIC PRIORITIZATION"></a>STOCHASTIC PRIORITIZATION</h4><p>Greedy prioritization is lack of diversity that makes the system prone to over-fitting.</p>
+<p>Stochastic prioritization’s probability:</p>
+<p><img src="/2020/06/05/PER/1591412006698.png" alt="1591412006698" style="zoom:67%;"> </p>
+<p>Two variant:</p>
+<p>1)</p>
+<p><img src="/2020/06/05/PER/1591412121080.png" alt="1591412121080" style="zoom:67%;"></p>
+<p>2)</p>
+<p><img src="/2020/06/05/PER/1591412202069.png" alt="1591412202069" style="zoom: 80%;"></p>
+<p><img src="/2020/06/05/PER/1591412465369.png" alt="1591412465369" style="zoom:67%;"></p>
+<h4 id="ANNEALING-THE-BIAS"><a href="#ANNEALING-THE-BIAS" class="headerlink" title="ANNEALING THE BIAS"></a>ANNEALING THE BIAS</h4><p>Prioritized replay introduces bias, and bias can be corrected this bias by using importance-sampling (IS) weights </p>
+<p><img src="/2020/06/05/PER/1591444087261.png" alt="1591444087261" style="zoom:50%;"></p>
+<p>Update Q value using wiδi instead of δi.</p>
+<p>In practice, we linearly anneal β from its initial value β0 to 1.   </p>
+<h4 id="ALGORITHM"><a href="#ALGORITHM" class="headerlink" title="ALGORITHM"></a>ALGORITHM</h4><p><img src="/2020/06/05/PER/1591447080765.png" alt="1591447080765"></p>
+<h4 id="ATARI-EXPERIMENTS"><a href="#ATARI-EXPERIMENTS" class="headerlink" title="ATARI EXPERIMENTS"></a>ATARI EXPERIMENTS</h4><p>Average score per episode  </p>
+<p><img src="/2020/06/05/PER/1591496100348.png" alt="1591496100348"></p>
+<p>The learning speed  </p>
+<p><img src="/2020/06/05/PER/1591496215490.png" alt="1591496215490"></p>
+]]></content>
+      <categories>
+        <category>强化学习</category>
+      </categories>
   </entry>
   <entry>
     <title>FairnessIsNotStatic</title>
