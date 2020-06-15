@@ -387,10 +387,9 @@ V^{\pi}(s)=E[G_t|s_t=s,\pi]\approx \frac{1}{N}\sum_{i=1}^NG^{(i)}_{t}</script><p
       </categories>
   </entry>
   <entry>
-    <title>强化学习8-7-8-11</title>
+    <title>强化学习8.7-8.11</title>
     <url>/2020/06/15/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A08-7-8-11/</url>
-    <content><![CDATA[<p>title: 强化学习8.7-8.11<br>date: 2020-06-15 14:06:00<br>typora-root-url: 强化学习8-7-8-11<br>categories: 强化学习</p>
-<h3 id="8-7-RTDP"><a href="#8-7-RTDP" class="headerlink" title="8.7 RTDP"></a>8.7 RTDP</h3><p>实时动态规划（RTDP）是动态规划值迭代算法的on-policy轨迹采样版本。RTDP的状态价值更新是根据DP中的值迭代方法来做的，公式如下。但不同于DP的一点是更新轨迹中出现的状态的价值。 </p>
+    <content><![CDATA[<h3 id="8-7-RTDP"><a href="#8-7-RTDP" class="headerlink" title="8.7 RTDP"></a>8.7 RTDP</h3><p>实时动态规划（RTDP）是动态规划值迭代算法的on-policy轨迹采样版本。RTDP的状态价值更新是根据DP中的值迭代方法来做的，公式如下。但不同于DP的一点是更新轨迹中出现的状态的价值。 </p>
 <p><img src="/2020/06/15/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A08-7-8-11/1592202451305.png" alt="1592202451305" style="zoom:67%;"></p>
 <p>RTDP是一种异步DP。异步DP是指状态价值的更新顺序并非一个接一个的，而是不固定的。在RTDP中价值更新的顺序是根据其出现在轨迹（真实轨迹或仿真轨迹都可）中的顺序来的。</p>
 <p>RTDP的特点：</p>
@@ -399,6 +398,7 @@ V^{\pi}(s)=E[G_t|s_t=s,\pi]\approx \frac{1}{N}\sum_{i=1}^NG^{(i)}_{t}</script><p
 <li>根据采样的序列更新值函数</li>
 <li>使用on-policy的策略，总是贪心的选择使得值函数最大的动作。</li>
 </ol>
+<a id="more"></a>
 <p>RTDP的优点：</p>
 <ol>
 <li>得到最优的值函数就得到了最优的策略<img src="/2020/06/15/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A08-7-8-11/1592202623345.png" alt="1592202623345"></li>
@@ -436,6 +436,9 @@ V^{\pi}(s)=E[G_t|s_t=s,\pi]\approx \frac{1}{N}\sum_{i=1}^NG^{(i)}_{t}</script><p
 <li>反向传播：用模拟得到的结果来回溯更新整个过程的每个节点中获胜次数和访问次数。</li>
 </ul>
 ]]></content>
+      <categories>
+        <category>强化学习</category>
+      </categories>
   </entry>
   <entry>
     <title>强化学习经典论文</title>
