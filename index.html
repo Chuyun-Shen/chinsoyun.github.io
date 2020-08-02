@@ -213,7 +213,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-02 16:21:58" itemprop="dateModified" datetime="2020-08-02T16:21:58+08:00">2020-08-02</time>
+                <time title="修改时间：2020-08-02 22:13:43" itemprop="dateModified" datetime="2020-08-02T22:13:43+08:00">2020-08-02</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -245,23 +245,14 @@
       
           <p><a href="https://www.bilibili.com/video/BV1JE411g7XF?p=8" target="_blank" rel="noopener">视频链接</a></p>
 <p><img src="/2020/07/27/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E6%9C%AC%E4%BC%98%E5%8C%96/1596345717386.png" alt="1596345717386"></p>
-<p>监督学习本质的工作是要最小化loss</p>
-<p><img src="/2020/07/27/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E6%9C%AC%E4%BC%98%E5%8C%96/1596345669314.png" alt="1596345669314"></p>
-<p><img src="/2020/07/27/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E6%9C%AC%E4%BC%98%E5%8C%96/1596345922163.png" alt="1596345922163"></p>
-<p>SGDM相当于每次的梯度更新累计了过去的梯度，优势在于可以收敛到一些更小的极小值</p>
-<p><img src="/2020/07/27/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E6%9C%AC%E4%BC%98%E5%8C%96/1596346692369.png" alt="1596346692369"></p>
-<p><img src="/2020/07/27/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E6%9C%AC%E4%BC%98%E5%8C%96/1596346874568.png" alt="1596346874568"></p>
-<p>将learning rate除一个梯度的求和，调整learning rate，在梯度很大的时候减少learning rate</p>
-<p><img src="/2020/07/27/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E6%9C%AC%E4%BC%98%E5%8C%96/1596347026022.png" alt="1596347026022"></p>
-<p>​    </p>
-<p>相当于对adagrad的一个改进，个人理解就是这样不会造成learning rate 越来越小学不下去</p>
-<p><img src="/2020/07/27/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E6%9C%AC%E4%BC%98%E5%8C%96/1596347261859.png" alt="1596347261859"></p>
-<p>RMSProp仍然会停在local optima，使用的还是直接的梯度，只是调整了合适的learning rate</p>
-<p>Adam结合了SGDM和RMSProp</p>
-<p><img src="/2020/07/27/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E6%9C%AC%E4%BC%98%E5%8C%96/1596347428790.png" alt="1596347428790"></p>
-<p><img src="/2020/07/27/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E6%9C%AC%E4%BC%98%E5%8C%96/1596347460459.png" alt="1596347460459"></p>
-<p>m和v与之前的方式有细微的区别，都除了一个和t相关的数来让值比较准确（具体作用还没懂）</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/07/27/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E6%9C%AC%E4%BC%98%E5%8C%96/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -396,7 +387,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-02 22:02:13" itemprop="dateModified" datetime="2020-08-02T22:02:13+08:00">2020-08-02</time>
+                <time title="修改时间：2020-08-02 22:13:20" itemprop="dateModified" datetime="2020-08-02T22:13:20+08:00">2020-08-02</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -429,28 +420,14 @@
           <p><a href="https://www.bilibili.com/video/BV1JE411g7XF?p=22" target="_blank" rel="noopener">链接</a></p>
 <h4 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h4><p>word embedding要做的是将每一个word project到高维空间中</p>
 <p><img src="/2020/07/25/%E6%97%A0%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0/1596360826587.png" alt="1596360826587"></p>
-<p>Training data是text 没有对应的lable</p>
-<p>通过上下文的关联来判断是否是相同的class</p>
-<h4 id="Counted-based"><a href="#Counted-based" class="headerlink" title="Counted based"></a>Counted based</h4><p><img src="/2020/07/25/%E6%97%A0%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0/1596365416284.png" alt="1596365416284"></p>
-<p>两个词出现的次数越接近，两个词对应的vector就越接近</p>
-<p>所以使用的内积的方式去逼近N_i,j</p>
-<h4 id="Prediction-based"><a href="#Prediction-based" class="headerlink" title="Prediction based"></a>Prediction based</h4><p>用前一个词去预测后一个词</p>
-<p><img src="/2020/07/25/%E6%97%A0%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0/1596370886966.png" alt="1596370886966"></p>
-<p>输入是word的one hot的值，对应到hidden layer z1 z2 … zn 表示对应维度的值（我的理解是这一层是隐藏层的最后一层），网络的输出是wi的概率</p>
-<p>这样训练存在困难，因为给上一个词得到下一个词的概率这件事很困难。所以考虑几个词一起输入，比如$w<em>{i-1}$和$w</em>{i-2}$一起输入</p>
-<p><img src="/2020/07/25/%E6%97%A0%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0/1596372952990.png" alt="1596372952990"></p>
-<p>一个通常的处理方式是，input的参数使用相同的参数。方式：使用如图同样的初始化参数，然后更新使用的是所有词对应的参数。</p>
-<p><strong>CBOW</strong></p>
-<p>使用前面的词和后面的词去做预测</p>
-<p><strong>skip-gram</strong></p>
-<p>使用中间的词去预测两端的</p>
-<p>其中，CBOW和skip_gram的神经网络使用的其实是一层的线性层</p>
-<p><img src="/2020/07/25/%E6%97%A0%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0/1596376534536.png" alt="1596376534536"></p>
-<p>word embedding可以学习到词之间的一些关联</p>
-<p>（个人想法，是不是可以采用这种方式去做词语之间的因果关系，或者是其他的关系）</p>
-<p><img src="/2020/07/25/%E6%97%A0%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0/1596376802158.png" alt="1596376802158"></p>
-<p>课中提到可以用来做多模态</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/07/25/%E6%97%A0%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 

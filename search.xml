@@ -696,6 +696,7 @@ V^{\pi}(s)=E[G_t|s_t=s,\pi]\approx \frac{1}{N}\sum_{i=1}^NG^{(i)}_{t}</script><p
     <content><![CDATA[<p><a href="https://www.bilibili.com/video/BV1JE411g7XF?p=22" target="_blank" rel="noopener">链接</a></p>
 <h4 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h4><p>word embedding要做的是将每一个word project到高维空间中</p>
 <p><img src="/2020/07/25/%E6%97%A0%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0/1596360826587.png" alt="1596360826587"></p>
+<a id="more"></a>
 <p>Training data是text 没有对应的lable</p>
 <p>通过上下文的关联来判断是否是相同的class</p>
 <h4 id="Counted-based"><a href="#Counted-based" class="headerlink" title="Counted based"></a>Counted based</h4><p><img src="/2020/07/25/%E6%97%A0%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0/1596365416284.png" alt="1596365416284"></p>
@@ -727,6 +728,7 @@ V^{\pi}(s)=E[G_t|s_t=s,\pi]\approx \frac{1}{N}\sum_{i=1}^NG^{(i)}_{t}</script><p
     <url>/2020/07/27/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E6%9C%AC%E4%BC%98%E5%8C%96/</url>
     <content><![CDATA[<p><a href="https://www.bilibili.com/video/BV1JE411g7XF?p=8" target="_blank" rel="noopener">视频链接</a></p>
 <p><img src="/2020/07/27/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E6%9C%AC%E4%BC%98%E5%8C%96/1596345717386.png" alt="1596345717386"></p>
+<a id="more"></a>
 <p>监督学习本质的工作是要最小化loss</p>
 <p><img src="/2020/07/27/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E6%9C%AC%E4%BC%98%E5%8C%96/1596345669314.png" alt="1596345669314"></p>
 <p><img src="/2020/07/27/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E6%9C%AC%E4%BC%98%E5%8C%96/1596345922163.png" alt="1596345922163"></p>
